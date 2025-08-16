@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Shine On Site • Mobile Detailing | Instant Quote & On-Site Service</title>
+<meta name="description" content="Premium Mobile Car Detailing That Comes To You. Exterior & Interior Packages, Ceramic Spray, Odor Treatment, Pet Hair Removal, Headlight Restore. Get An Instant Quote And Book In Minutes." />
+<link rel="canonical" href="https://example.com/" />
+<meta property="og:title" content="Shine On Site — Mobile Detailing that Comes to You" />
+<meta property="og:description" content="Factory-Quality Results On Your Driveway. Instant Quote, Same-Day Slots, Licensed & Insured." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="logo.png" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<!-- Tailwind (CDN) -->
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+  html{scroll-behavior:smooth}
+  :root{
+    --primary:#5271FF;  /* brand blue */
+    --accent:#C267FF;   /* brand purple */
+    --bg:#0B0D12;       /* deep charcoal */
+    --panel:#0F1117;    /* card surface */
+    --ink:#E6E8EF;      /* light text */
+    --sub:#9aa3b2;      /* secondary text */
+    --ok:#16a34a; --warn:#f59e0b; --danger:#ef4444;
+  }
+  body{background: radial-gradient(1000px 600px at 20% -10%, rgba(82,113,255,.22), transparent 60%), radial-gradient(900px 700px at 120% -30%, rgba(194,103,255,.18), transparent 60%), var(--bg); color:var(--ink)}
+  .glass{backdrop-filter: blur(12px)}
+  .panel{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.08)); border:1px solid rgba(255,255,255,.06)}
+  .btn{display:inline-grid; place-items:center; border-radius:14px; padding:.9rem 1.1rem; font-weight:800; letter-spacing:.2px; transition:filter .08s ease, transform .08s ease, box-shadow .08s ease}
+  .btn-primary{background:linear-gradient(135deg,var(--primary),#6e83ff); color:#fff; box-shadow:0 16px 40px rgba(82,113,255,.35)}
+  .btn-accent{background:linear-gradient(135deg,var(--accent),#db86ff); color:#0b0d12; box-shadow:0 16px 40px rgba(194,103,255,.35)}
+  .btn-ghost{background:transparent; border:1px solid rgba(255,255,255,.14); color:var(--ink)}
+  /* Services configure button hover colors by card position */
+  #services .grid > div:nth-child(1) .btn-ghost:hover,
+  #services .grid > div:nth-child(3) .btn-ghost:hover{
+    background:linear-gradient(135deg,var(--accent),#db86ff);
+    color:#0b0d12;
+    border-color:transparent;
+    box-shadow:0 8px 24px rgba(194,103,255,.35);
+  }
+  #services .grid > div:nth-child(2) .btn-ghost:hover,
+  #services .grid > div:nth-child(4) .btn-ghost:hover{
+    background:linear-gradient(135deg,var(--primary),#6e83ff);
+    color:#fff;
+    border-color:transparent;
+    box-shadow:0 8px 24px rgba(82,113,255,.35);
+  }
+  .btn:active{ filter:brightness(1.15); transform:translateY(1px); box-shadow:0 10px 28px rgba(0,0,0,.38) }
+  .chip{display:inline-flex; align-items:center; gap:.5rem; padding:.35rem .7rem; border-radius:999px; font-size:.75rem; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08)}
+  .shadow-soft{box-shadow:0 12px 40px rgba(0,0,0,.35)}
+  .tilt{transform-style:preserve-3d; transition:transform .18s ease}
+  .tilt:hover{transform:rotateX(1.2deg) rotateY(-1.2deg)}
+  .magnet{transition:transform .06s ease-out}
+  .magnet-wrap{display:inline-block; perspective:600px}
+  .sticky-cta{position:fixed; bottom:0; left:0; right:0; z-index:50}
+  /* Before/After */
+  .ba-container{position:relative; height:450px; touch-action:none; line-height:0}
+  .ba-handle{position:absolute; top:50%; transform:translate(-50%,-50%); width:44px; height:44px; border-radius:9999px; background:#111827; color:#fff; display:grid; place-items:center; border:1px solid rgba(255,255,255,.2); box-shadow:0 10px 20px rgba(0,0,0,.45); cursor:ew-resize; z-index:10}
+  .ba-divider{position:absolute; top:0; bottom:0; width:2px; background:linear-gradient(180deg, #fff, transparent); z-index:9}
+  .ba-container > img{ display:block; width:100%; height:100%; object-fit:cover }
+  /* --- Instant Quote: segmented buttons & extras layout --- */
+ .seg{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:8px; }
+ .segbtn{ padding:.6rem .75rem; border-radius:12px; border:1px solid rgba(255,255,255,.2); background:transparent; color:#e6e8ef; font-weight:600 }
+ .segbtn.active{ background:var(--primary); color:#fff; border-color:transparent; box-shadow:0 8px 24px rgba(82,113,255,.35) }
+ .extras-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap:8px; }
+ .extra-btn{ display:flex; align-items:center; justify-content:space-between; padding:.6rem .75rem; border-radius:12px; border:1px solid rgba(255,255,255,.2); background:transparent; color:#e6e8ef; min-height:48px }
+ .extra-btn.active{ background:linear-gradient(135deg,var(--accent),#db86ff); color:#0b0d12; border-color:transparent }
+  /* Marquee */
+  @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  .marquee{white-space:nowrap; overflow:hidden}
+  .marquee-track{display:inline-block; animation:marquee 22s linear infinite}
+  /* Scroll progress */
+  #scrollbar{position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg,var(--primary),var(--accent)); width:0; z-index:60}
+  /* Neon edges */
+  .edge{border:1px solid rgba(255,255,255,.08); box-shadow:inset 0 0 0 1px rgba(255,255,255,.02), 0 0 0 1px rgba(255,255,255,.02), 0 12px 40px rgba(0,0,0,.45)}
+  .glow{ box-shadow: 0 0 0 1px rgba(82,113,255,.25), 0 0 40px rgba(82,113,255,.25) }
+  input[type], button, a{outline-offset:3px}
+  input, select { background:#0b0d12; border:1px solid rgba(255,255,255,.12); color:var(--ink) }
+  /* --- Confetti: full-width top fall --- */
+  .confetti{ position:fixed; top:-12px; border-radius:2px; will-change:transform, opacity; pointer-events:none; z-index:30; }
+  @keyframes confettiFall{
+    0%   { transform: translateY(-10px) translateX(0) rotate(0); opacity:1; }
+    100% { transform: translateY(110vh) translateX(var(--dx, 0px)) rotate(var(--rot, 720deg)); opacity:0.85; }
+  }
+</style>
+</head>
+
+<body>
+<div id="scrollbar"></div>
+<canvas id="stars" class="fixed inset-0 -z-10"></canvas>
+
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-[rgba(11,13,18,.6)] glass border-b border-white/10">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="#home" class="flex items-center gap-3">
+      <!-- Embedded logo (data URL) -->
+      <img alt="Company logo" class="h-20 w-auto" src="Logo.svg" />
+    </a>
+    <nav class="hidden md:flex items-center gap-6 text-sm text-[var(--sub)]">
+      <a href="#services" class="hover:text-white">Services</a>
+      <a href="#quote" class="hover:text-white">Instant Quote</a>
+      <a href="#results" class="hover:text-white">Results</a>
+      <a href="#faq" class="hover:text-white">FAQ</a>
+      <a href="#contact" class="hover:text-white">Contact</a>
+    </nav>
+    <div class="hidden md:flex items-center gap-3">
+      <a href="tel:+17087379781" class="btn btn-ghost edge">📞 (708) 737-9781
+      </a>
+      <span class="magnet-wrap"><a href="#quote" class="btn btn-accent magnet edge">Get Instant Quote</a></span>
+    </div>
+    <a href="#quote" class="md:hidden btn btn-accent edge">Get Quote</a>
+  </div>
+</header>
+
+<!-- Hero -->
+<section id="home" class="relative">
+  <div class="max-w-6xl mx-auto px-4 py-14 md:py-20 grid md:grid-cols-2 gap-10 items-center">
+    <div>
+      <div class="flex gap-2 flex-wrap">
+        <span class="chip border-white/10">🚐 We come to you</span>
+        <span class="chip border-white/10">🛡️ Licensed & Insured</span>
+      </div>
+      <h1 class="mt-4 text-4xl md:text-6xl font-black leading-tight text-white">Studio-quality detailing on your driveway</h1>
+      <p class="mt-3 text-lg text-[var(--sub)]">Instant pricing. Same-day slots. Swirl-safe methods and top-tier products.</p>
+      <div class="mt-7 flex flex-wrap gap-3">
+        <span class="magnet-wrap"><a href="#quote" class="btn btn-primary edge magnet">💵 Get Instant Quote</a></span>
+        <a href="#services" class="btn btn-ghost edge">See Packages</a>
+      </div>
+      <div class="mt-5 flex items-center gap-3 text-sm text-[var(--sub)]">
+        <span class="chip border-white/10">⭐ 5.0 (56 reviews)</span>
+        <span class="chip border-white/10">⏱️ 2–3 hr typical</span>
+        <span class="chip border-white/10">🌿 Eco-friendly</span>
+      </div>
+    </div>
+
+    <!-- Social proof/urgency -->
+    <div class="rounded-2xl panel edge p-6 tilt">
+      <div class="aspect-[4/3] rounded-xl overflow-hidden">
+        <div id="serviceMap" class="w-full h-full"></div>
+      </div>
+      <div class="mt-4 grid gap-3">
+        <div class="flex items-center justify-between">
+          <div class="text-sm text-[var(--sub)]">This Week’s Slots</div>
+          <div class="text-2xl font-extrabold text-white" id="slotsLeft">3 left</div>
+        </div>
+        <div class="rounded-xl bg-white/5 border border-white/10 p-3 flex items-center justify-between">
+          <div>
+            <div class="font-semibold text-white">New Customer Offer</div>
+            <div class="text-sm text-[var(--sub)]">Use code <strong id="coupon">SHINE15</strong> for $15 off</div>
+          </div>
+          <button id="copyCoupon" class="btn btn-ghost text-sm edge">Copy</button>
+        </div>
+        <a href="#quote" class="btn btn-accent edge">✨ Reserve a slot</a>
+        <div class="text-xs text-[var(--sub)]">No payment required to request. We confirm by text.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Services -->
+<section id="services" class="max-w-6xl mx-auto px-4 py-10">
+  <header class="mb-6">
+    <h2 class="text-3xl md:text-4xl font-black text-white">Packages That Fit Your Ride</h2>
+    <p class="text-[var(--sub)]">Pick a starting point. Fine-tune in the Instant Quote.</p>
+  </header>
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="rounded-2xl panel edge p-5 tilt">
+      <div class="text-lg font-semibold text-white">Exterior Detail</div>
+      <div class="mt-1 text-sm text-[var(--sub)]">Foam/hand wash, wheels & tires, spray sealant.</div>
+      <div class="mt-3 text-white"><strong>From $159</strong></div>
+      <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('Sedan',true,false,false,[])">Configure</button>
+    </div>
+    <div class="rounded-2xl panel edge p-5 tilt">
+      <div class="text-lg font-semibold text-white">Interior Deep Clean</div>
+      <div class="mt-1 text-sm text-[var(--sub)]">Vacuum, steam & shampoo, plastics reconditioned.</div>
+      <div class="mt-3 text-white"><strong>From $169</strong></div>
+      <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('SUV',false,true,false,['odor','pet'])">Configure</button>
+    </div>
+    <div class="rounded-2xl panel edge p-5 tilt">
+      <div class="text-lg font-semibold text-white">Headlight Restore</div>
+      <div class="mt-1 text-sm text-[var(--sub)]">Clarity + UV protection.</div>
+      <div class="mt-8 text-white"><strong>$40 add-on</strong></div>
+      <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('Sedan',true,true,false,['headlights'])">Configure</button>
+    </div>
+    <div class="rounded-2xl panel edge p-5 tilt">
+      <div class="text-lg font-semibold text-white">Ceramic Spray Sealant</div>
+      <div class="mt-1 text-sm text-[var(--sub)]">Months of gloss & protection.</div>
+      <div class="mt-8 text-white"><strong>$50 add-on</strong></div>
+      <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('Truck',true,true,false,['ceramic'])">Configure</button>
+    </div>
+  </div>
+</section>
+
+<!-- Instant Quote + Before/After -->
+<section id="quote" class="max-w-6xl mx-auto px-4 py-12">
+  <header class="mb-6">
+    <h2 class="text-3xl md:text-4xl font-black text-white">Instant Quote</h2>
+    <p class="text-[var(--sub)]">Pricing updates as you choose options.</p>
+  </header>
+
+  <div class="grid md:grid-cols-2 gap-6">
+    <!-- Builder -->
+    <div class="rounded-2xl panel edge p-6 shadow-soft">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-[var(--sub)] font-semibold">Build your detail</p>
+          <h3 class="text-2xl font-bold text-white">Interactive Package</h3>
+        </div>
+        <span class="px-2 py-1 rounded-lg text-xs text-white border border-white/20 bg-white/10">Live</span>
+      </div>
+
+      <div class="mt-4 grid gap-4">
+        <div>
+          <label class="mb-2 block font-medium text-white">Vehicle size</label>
+          <div class="grid grid-cols-3 gap-2" id="sizeButtons">
+            <button data-size="Sedan" class="px-3 py-2 rounded-xl border text-sm edge shadow-soft bg-transparent text-white">Sedan</button>
+            <button data-size="SUV"   class="px-3 py-2 rounded-xl border text-sm edge shadow-soft bg-transparent text-white">SUV</button>
+            <button data-size="Truck" class="px-3 py-2 rounded-xl border text-sm edge shadow-soft bg-transparent text-white">Truck</button>
+          </div>
+        </div>
+
+       <div>
+  <label class="mb-2 block font-medium text-white">Services</label>
+  <div id="serviceButtons" class="seg">
+    <button type="button" data-svc="exterior" class="segbtn edge shadow-soft bg-transparent text-white">Exterior</button>
+    <button type="button" data-svc="interior" class="segbtn edge shadow-soft bg-transparent text-white">Interior</button>
+    <button type="button" data-svc="engine"   class="segbtn edge shadow-soft bg-transparent text-white">Engine Bay</button>
+  </div>
+ </div>
+
+        <div class="grid gap-2">
+          <label class="font-medium text-white">Extras</label>
+           <div id="extras" class="extras-grid text-sm"></div>
+        </div>
+
+
+        <div class="mt-2 flex items-center justify-between">
+          <div class="text-sm text-[var(--sub)]" id="baseText">Select vehicle size to see base price</div>
+          <div class="text-2xl font-bold text-white" id="totalText">$0.00</div>
+        </div>
+
+        <a href="#contact" class="btn btn-primary h-14 edge">📅 Book this package</a>
+        <p class="text-xs text-[var(--sub)]">No charge until confirmed. Price may adjust for oversized/extra-soiled vehicles.</p>
+      </div>
+    </div>
+
+    <!-- Before/After + trust -->
+    <div class="grid gap-6">
+      <div class="rounded-2xl panel edge overflow-hidden select-none">
+        <div class="p-4 pb-3"><h3 class="text-xl font-semibold text-white">Swipe to see the difference</h3></div>
+        <div id="ba" class="ba-container w-full">
+          <!-- Dirty layer -->
+          <img id="beforeLayer" src="DirtyCar.jpeg" alt="Before detailing"
+               class="absolute inset-0 w-full h-full"
+               loading="eager" decoding="async"
+               style="object-fit:cover;" />
+          <!-- Clean layer -->
+          <img id="cleanLayer" src="CleanCar.jpeg" alt="After detailing"
+               class="absolute inset-0 w-full h-full"
+               loading="eager" decoding="async"
+               style="clip-path: inset(0 50% 0 0); object-fit:cover;" />
+          <!-- Divider + Handle -->
+          <div id="divider" class="ba-divider" style="left:50%"></div>
+          <button id="handle" class="ba-handle glow" style="left:50%" aria-label="Drag slider">⇆</button>
+        </div>
+      </div>
+
+      <div class="rounded-2xl panel edge p-4 flex gap-3 items-center">
+        <div class="w-9 h-9 rounded-lg grid place-items-center text-white border border-white/20" style="background:var(--primary)">💯</div>
+        <div>
+          <div class="font-semibold text-white leading-tight">100% Satisfaction</div>
+          <div class="text-sm text-[var(--sub)] leading-snug">If we miss anything, we’ll make it right.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Results / Testimonials -->
+<section id="results" class="max-w-6xl mx-auto px-4 py-10">
+  <header class="mb-6">
+    <h2 class="text-3xl md:text-4xl font-black text-white">Recent results</h2>
+    <p class="text-[var(--sub)]">A few snapshots from recent jobs.</p>
+  </header>
+
+  <div class="grid sm:grid-cols-3 gap-4">
+    <div class="rounded-2xl aspect-video panel edge tilt overflow-hidden flex items-center justify-center bg-black">
+      <img src="Car 1.jpeg" alt="Car 1 result" class="object-cover w-full h-full" />
+    </div>
+    <div class="rounded-2xl aspect-video panel edge tilt overflow-hidden flex items-center justify-center bg-black">
+      <img src="Car 2.jpeg" alt="Car 2 result" class="object-cover w-full h-full" />
+    </div>
+    <div class="rounded-2xl aspect-video panel edge tilt overflow-hidden flex items-center justify-center bg-black">
+      <img src="Car 3.jpeg" alt="Car 3 result" class="object-cover w-full h-full" />
+    </div>
+  </div>
+
+  <div class="rounded-2xl panel edge overflow-hidden mt-8">
+    <div class="p-4 flex items-center gap-2"><span class="text-yellow-400">⭐</span>
+      <p class="font-semibold text-white">Real customers, real results</p>
+    </div>
+    <div class="marquee pb-4 px-4">
+      <div class="marquee-track">
+        <div class="inline-flex gap-4">
+          <div class="min-w-[260px] rounded-xl panel edge p-4">
+            <div>⭐⭐⭐⭐⭐</div><p class="text-sm text-[var(--ink)] mt-1">“They saved my lease return. Looks brand new!”</p><p class="mt-2 text-xs text-[var(--sub)]">— Maya R.</p>
+          </div>
+          <div class="min-w-[260px] rounded-xl panel edge p-4">
+            <div>⭐⭐⭐⭐⭐</div><p class="text-sm text-[var(--ink)] mt-1">“Booked during lunch—super convenient.”</p><p class="mt-2 text-xs text-[var(--sub)]">— Chris P.</p>
+          </div>
+          <div class="min-w-[260px] rounded-xl panel edge p-4">
+            <div>⭐⭐⭐⭐⭐</div><p class="text-sm text-[var(--ink)] mt-1">“Pet hair? Gone. Seats smell amazing.”</p><p class="mt-2 text-xs text-[var(--sub)]">— Evelyn S.</p>
+          </div>
+          <div class="min-w-[260px] rounded-xl panel edge p-4">
+            <div>⭐⭐⭐⭐⭐</div><p class="text-sm text-[var(--ink)] mt-1">“Headlights are crystal clear now.”</p><p class="mt-2 text-xs text-[var(--sub)]">— Jordan T.</p>
+          </div>
+          <div class="min-w-[260px] rounded-xl panel edge p-4">
+            <div>⭐⭐⭐⭐⭐</div><p class="text-sm text-[var(--ink)] mt-1">“Fair pricing and they’re punctual.”</p><p class="mt-2 text-xs text-[var(--sub)]">— Andre V.</p>
+          </div>
+          <!-- duplicate for seamless loop -->
+          <div class="min-w-[260px] rounded-xl panel edge p-4">
+            <div>⭐⭐⭐⭐⭐</div><p class="text-sm text-[var(--ink)] mt-1">“They saved my lease return. Looks brand new!”</p><p class="mt-2 text-xs text-[var(--sub)]">— Maya R.</p>
+          </div>
+          <div class="min-w-[260px] rounded-xl panel edge p-4">
+            <div>⭐⭐⭐⭐⭐</div><p class="text-sm text-[var(--ink)] mt-1">“Booked during lunch—super convenient.”</p><p class="mt-2 text-xs text-[var(--sub)]">— Chris P.</p>
+          </div>
+          <div class="min-w-[260px] rounded-xl panel edge p-4">
+            <div>⭐⭐⭐⭐⭐</div><p class="text-sm text-[var(--ink)] mt-1">“Pet hair? Gone. Seats smell amazing.”</p><p class="mt-2 text-xs text-[var(--sub)]">— Evelyn S.</p>
+          </div>
+          <div class="min-w-[260px] rounded-xl panel edge p-4">
+            <div>⭐⭐⭐⭐⭐</div><p class="text-sm text-[var(--ink)] mt-1">“Headlights are crystal clear now.”</p><p class="mt-2 text-xs text-[var(--sub)]">— Jordan T.</p>
+          </div>
+          <div class="min-w-[260px] rounded-xl panel edge p-4">
+            <div>⭐⭐⭐⭐⭐</div><p class="text-sm text-[var(--ink)] mt-1">“Fair pricing and they’re punctual.”</p><p class="mt-2 text-xs text-[var(--sub)]">— Andre V.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="max-w-6xl mx-auto px-4 py-10">
+  <header class="mb-6">
+    <h2 class="text-3xl md:text-4xl font-black text-white">Questions, answered</h2>
+  </header>
+  <details class="rounded-xl panel edge p-4 mb-2">
+    <summary class="font-medium cursor-pointer text-white">Do you need water or power?</summary>
+    <p class="mt-2 text-[var(--sub)]">We’re fully self-contained with deionized water and a quiet generator when needed.</p>
+  </details>
+  <details class="rounded-xl panel edge p-4 mb-2">
+    <summary class="font-medium cursor-pointer text-white">Is the rinse-free wash safe?</summary>
+    <p class="mt-2 text-[var(--sub)]">Yes. Lubricants encapsulate dust to prevent marring; fresh towels per panel.</p>
+  </details>
+  <details class="rounded-xl panel edge p-4 mb-2">
+    <summary class="font-medium cursor-pointer text-white">How do I pay?</summary>
+    <p class="mt-2 text-[var(--sub)]">Card, Apple/Google Pay, or cash after the job.</p>
+  </details>
+  <details class="rounded-xl panel edge p-4">
+    <summary class="font-medium cursor-pointer text-white">What’s your cancellation policy?</summary>
+    <p class="mt-2 text-[var(--sub)]">Free reschedule 24 hours in advance. Same-day cancellations may incur a small fee.</p>
+  </details>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="max-w-6xl mx-auto px-4 py-3">
+  <div class="rounded-2xl panel edge p-6 grid md:grid-cols-3 gap-6 items-center">
+    <div class="md:col-span-2">
+      <h3 class="text-2xl font-bold text-white">Ready to book your mobile detail?</h3>
+      <p class="text-[var(--sub)] mt-1">Call/text for fastest response, or submit your instant quote.</p>
+      <div class="mt-4 flex gap-3">
+        <a href="tel:+17087379781" class="btn btn-primary edge">📞 (708) 737-9781</a>
+        <a href="sms:+17087379781" class="btn btn-accent edge">💬 Text Us</a>
+      </div>
+    </div>
+    <div class="md:col-span-2 rounded-2xl panel edge overflow-hidden" style="height: 320px;">
+      <div id="contactMap" class="w-full h-full"></div>
+    </div>
+
+    <!-- Simple request form -->
+    <form id="leadForm" class="grid gap-3">
+      <div class="grid gap-3">
+        <input id="name" class="h-11 rounded-xl px-3" placeholder="Name" />
+        <input id="phone" class="h-11 rounded-xl px-3" placeholder="(555) 000-1234" />
+        <input id="vehicle" class="h-11 rounded-xl px-3" placeholder="Vehicle model (e.g., 2020 Honda Civic)" />
+        <input id="address" class="h-11 rounded-xl px-3" placeholder="Service address" />
+        <input id="zip" class="h-11 rounded-xl px-3" placeholder="ZIP (e.g., 60477)"/>
+        <input id="discount" class="h-11 rounded-xl px-3" placeholder="Discount code (optional)" />
+        <p id="discountMsg" class="text-xs"></p>
+        <div class="text-sm text-[var(--ink)]">Estimated Total: <strong id="quoteBox">$0.00</strong></div>
+        <button id="submitBtn" class="btn btn-accent h-13 edge disabled:opacity-50">✅ Send Booking Request</button>
+        <p id="zipMsg" class="text-xs text-[var(--sub)]">Enter ZIP to check coverage.</p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<footer class="border-t border-white/10 bg-[rgba(11,13,18,.6)] glass">
+  <div class="max-w-6xl mx-auto px-4 py-6 text-sm text-[var(--sub)] flex flex-wrap items-center gap-3 justify-between">
+    <div>© <span id="year"></span> Elite Auto Detailing</div>
+    <div class="flex items-center gap-4">
+      <a href="#" class="hover:text-white">Terms</a>
+      <a href="#" class="hover:text-white">Privacy</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Mobile sticky CTA -->
+<div class="sticky-cta md:hidden">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between panel edge">
+    <a href="tel:+17087379781" class="font-semibold text-white">📞 Call</a>
+    <a href="#quote" class="btn btn-accent edge">Get Instant Quote</a>
+  </div>
+</div>
+
+<!-- Desktop floating live quote -->
+<div class="hidden md:block fixed bottom-4 right-4 z-40">
+  <div class="rounded-2xl panel edge p-3 flex items-center gap-3">
+    <span class="text-2xl" style="color:var(--primary)">💧</span>
+    <div class="relative translate-y-0.5">
+      <div class="text-xs text-[var(--sub)]">Your Live Quote</div>
+      <div id="floatingQuote" class="font-bold leading-none text-lg text-white">$0.00</div>
+    </div>
+    <a href="#quote" class="btn btn-primary ml-2 edge">Adjust</a>
+  </div>
+</div>
+
+<script>
+/* ---------- STARFIELD BACKGROUND ---------- */
+(function(){
+  const c = document.getElementById('stars'); const ctx = c.getContext('2d');
+  function size(){ c.width = innerWidth; c.height = innerHeight; }
+  size(); addEventListener('resize', size);
+  const stars = Array.from({length: 140}).map(()=>({x:Math.random()*c.width,y:Math.random()*c.height,z:Math.random()*1+0.2,s:Math.random()*1.6+0.2}));
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    for(const st of stars){
+      ctx.fillStyle = `rgba(255,255,255,${0.25+st.z*0.6})`;
+      ctx.beginPath(); ctx.arc(st.x, st.y, st.s, 0, Math.PI*2); ctx.fill();
+      st.y += st.z * 0.25; if(st.y>c.height) { st.y = -5; st.x = Math.random()*c.width; }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ---------- SCROLL PROGRESS BAR ---------- */
+(function(){
+  const bar = document.getElementById('scrollbar');
+  function onScroll(){
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    const pct = (h.scrollTop / max) * 100;
+    bar.style.width = pct + '%';
+  }
+  addEventListener('scroll', onScroll, {passive:true}); onScroll();
+})();
+
+/* ---------- SERVICE MAP (Tinley Park + 25mi + 200 pins) ---------- */
+(function(){
+  const el = document.getElementById('serviceMap');
+  if(!el || typeof L === 'undefined') return;
+  const brand = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#5271FF';
+  const center = [41.573, -87.803]; // Tinley Park
+  const map = L.map(el, { zoomControl:false, attributionControl:false, dragging:false, scrollWheelZoom:false, touchZoom:false, doubleClickZoom:false, boxZoom:false, keyboard:false }).setView(center, 11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+  const radiusMeters = 10 * 1609.34; // 10 miles
+  const circle = L.circle(center, { radius: radiusMeters, color: brand, weight: 2, fillColor: brand, fillOpacity: 0.12 }).addTo(map);
+  const mDegLat = 111320;
+  const mDegLon = 111320 * Math.cos(center[0] * Math.PI / 180);
+  function randomPoint(){
+    const t = Math.random() * Math.PI * 2; const r = Math.sqrt(Math.random()) * radiusMeters;
+    const dx = r * Math.cos(t), dy = r * Math.sin(t);
+    return [ center[0] + (dy / mDegLat), center[1] + (dx / mDegLon) ];
+  }
+  for(let i=0;i<200;i++){
+    L.circleMarker(randomPoint(), { radius: 3.5, color: brand, fillColor: brand, fillOpacity: .95, weight: 1 }).addTo(map);
+  }
+  map.fitBounds(circle.getBounds().pad(0.08));
+})();
+
+/* ---------- MAGNET BUTTONS ---------- */
+document.querySelectorAll('.magnet').forEach(btn=>{
+  const wrap = btn.closest('.magnet-wrap') || btn.parentElement;
+  wrap.addEventListener('mousemove', e=>{
+    const r = btn.getBoundingClientRect();
+    const x = e.clientX - (r.left + r.width/2);
+    const y = e.clientY - (r.top + r.height/2);
+    btn.style.transform = `translate(${x*0.08}px, ${y*0.08}px)`;
+  });
+  wrap.addEventListener('mouseleave', ()=> btn.style.transform = 'translate(0,0)');
+});
+
+/* ---------- WEEKLY URGENCY ---------- */
+(function(){
+  const el = document.getElementById('slotsLeft'); if(!el) return;
+  const now = new Date();
+  const day = now.getDay();              // 0=Sun .. 6=Sat
+  const hourBucket = Math.floor(now.getHours()/6); // 0-3
+  // Create a single index through the week (0..27)
+  const idx = day * 4 + hourBucket;
+  // Map early week to 3, midweek to 2, weekend to 1
+  const slots = idx >= 22 ? 1 : (idx >= 10 ? 2 : 3);
+  el.textContent = slots + " left";
+})();
+
+/* ---------- QUOTE BUILDER ---------- */
+const basePrices = { Sedan: 99, SUV: 129, Truck: 149 };
+const extrasList = [
+  { key: "pet", label: "Pet Hair Removal", price: 25 },
+  { key: "headlights", label: "Headlight Restore", price: 40 },
+  { key: "odor", label: "Odor Treatment", price: 35 },
+  { key: "ceramic", label: "Ceramic Spray Sealant", price: 50 },
+];
+// 25-mile service area around Tinley Park, IL
+const SERVICE_ZIPS = new Set([
+  "60477","60487","60462","60467","60448","60423","60451","60491",
+  "60463","60464","60465","60418","60445","60478","60429","60428",
+  "60443","60471","60422","60430","60411","60417","60475","60461",
+  "60803","60482","60455","60457","60458","60459","60638","60406",
+  "60827","60805","60439","60480","60527","60561","60435","60436",
+  "60432","60446","60440","60490","60404","60544","60585","60453",
+  "60456","60409","60419","60473","60425","60426","60476","60438",
+  "60449","60466","60484","60472","60415","60525","60521","60523",
+  "60558","60401","60408","60410","60416","60421","60428","60433",
+  "60434","60441","60442","60443","60445","60447","60452","60457",
+  "60458","60459","60460","60461","60462","60463","60464","60465",
+  "60466","60467","60468","60469","60472","60473","60474","60475",
+  "60476","60477","60478","60480","60481","60482","60484","60487",
+  "60490"
+]);
+function currency(n){ return n.toLocaleString(undefined,{style:'currency',currency:'USD'}); }
+function inServiceArea(zip){ return SERVICE_ZIPS.has(String(zip).trim()); }
+
+let carSize = null;
+let exterior = false, interior = false, engine = false;
+const extras = {};
+const baseText = document.getElementById('baseText');
+const totalText = document.getElementById('totalText');
+const quoteBox = document.getElementById('quoteBox');
+const floatingQuote = document.getElementById('floatingQuote');
+let discountValue = 0;
+
+function recalc(){
+  let t = 0;
+  if(carSize){ t += basePrices[carSize]; }
+  if(exterior) t += 60;
+  if(interior) t += 70;
+  if(engine) t += 30;
+  for(const x of extrasList){ if(extras[x.key]) t += x.price; }
+  // apply discount if any
+  if(discountValue > 0){ t = Math.max(0, t - discountValue); }
+  if(baseText) baseText.textContent = carSize ? `Base for ${carSize}: ${currency(basePrices[carSize])}` : 'Select vehicle size to see base price';
+  if(totalText) totalText.textContent = currency(t);
+  if(quoteBox) quoteBox.textContent = currency(t);
+  if(floatingQuote) floatingQuote.textContent = currency(t);
+}
+
+function bundle(size, ext, int, eng, extrasArr){
+  carSize = size; exterior = ext; interior = int; engine = eng;
+  for(const x of extrasList){ extras[x.key] = false; }
+  (extrasArr||[]).forEach(k => extras[k] = true);
+
+  const sizeWrap = document.getElementById('sizeButtons');
+  if(sizeWrap){
+    sizeWrap.querySelectorAll('button').forEach(b=>{b.style.background='transparent'; b.style.color='#fff'; b.style.borderColor='rgba(255,255,255,.2)';});
+    const btn = Array.from(sizeWrap.querySelectorAll('button')).find(b=>b.dataset.size===size);
+    if(btn){ btn.style.background='var(--primary)'; btn.style.color='#fff'; btn.style.borderColor='transparent'; }
+  }
+  syncServiceButtons();
+
+  document.querySelectorAll('#extras button').forEach(b=>{
+    const key = b.dataset.key;
+    b.classList.toggle('active', extras[key]===true);
+  });
+
+  recalc();
+  location.hash = '#quote';
+}
+
+const sizeWrap = document.getElementById('sizeButtons');
+if(sizeWrap){
+  sizeWrap.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      carSize = btn.dataset.size;
+      sizeWrap.querySelectorAll('button').forEach(b=>{
+        b.style.background='transparent'; b.style.color='#fff'; b.style.borderColor='rgba(255,255,255,.2)';
+      });
+      btn.style.background='var(--primary)'; btn.style.color='#fff'; btn.style.borderColor='transparent';
+      recalc();
+    });
+  });
+}
+
+// Services segmented buttons (Exterior / Interior / Engine Bay)
+function syncServiceButtons(){
+  const wrap = document.getElementById('serviceButtons'); if(!wrap) return;
+  wrap.querySelectorAll('button').forEach(btn=>{
+    const k = btn.dataset.svc;
+    btn.classList.toggle('active', (k==='exterior'&&exterior) || (k==='interior'&&interior) || (k==='engine'&&engine));
+  });
+}
+const svcWrap = document.getElementById('serviceButtons');
+if(svcWrap){
+  svcWrap.querySelectorAll('button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const k = btn.dataset.svc;
+      if(k==='exterior') exterior = !exterior;
+      if(k==='interior') interior = !interior;
+      if(k==='engine')   engine   = !engine;
+      btn.classList.toggle('active');
+      recalc();
+    });
+  });
+}
+
+const extrasWrap = document.getElementById('extras');
+if(extrasWrap){
+  extrasList.forEach(x => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.dataset.key = x.key;
+    b.className = 'extra-btn edge';
+    b.innerHTML = `<span>${x.label}</span><span class="opacity-80">+${currency(x.price)}</span>`;
+    b.addEventListener('click', () => {
+      extras[x.key] = !extras[x.key];
+      b.classList.toggle('active', extras[x.key]===true);
+      recalc();
+    });
+    extrasWrap.appendChild(b);
+    // initial visual state (all false by default)
+    b.classList.toggle('active', !!extras[x.key]);
+  });
+}
+
+
+// Discount code handling (optional)
+(function(){
+  const dInput = document.getElementById('discount');
+  const dMsg = document.getElementById('discountMsg');
+  function apply(){
+    const v = (dInput?.value || '').trim();
+    if(!v){ discountValue = 0; if(dMsg){ dMsg.textContent=''; dMsg.style.color=''; } recalc(); return; }
+    if(/^shine15$/i.test(v)){
+      discountValue = 15; if(dMsg){ dMsg.textContent = 'Code applied: -$15'; dMsg.style.color = 'var(--ok)'; }
+    } else {
+      discountValue = 0; if(dMsg){ dMsg.textContent = 'Invalid code'; dMsg.style.color = 'var(--danger)'; }
+    }
+    recalc();
+  }
+  if(dInput){ dInput.addEventListener('input', apply); dInput.addEventListener('change', apply); }
+})();
+
+/* ---------- BEFORE/AFTER ---------- */
+(function setupBeforeAfter(){
+  const container = document.getElementById('ba');
+  const handle = document.getElementById('handle');
+  const divider = document.getElementById('divider');
+  const clean = document.getElementById('cleanLayer');
+  if(!container || !handle || !divider || !clean) return;
+
+  const moveTo = (clientX) => {
+    const r = container.getBoundingClientRect();
+    // Clamp X within container bounds
+    const clamped = Math.min(Math.max(clientX, r.left), r.right);
+    const x = clamped - r.left; // pixel position within container
+    // Position handle & divider exactly at x (in pixels)
+    handle.style.left = x + 'px';
+    divider.style.left = x + 'px';
+    // Clip the CLEAN (after) layer so the split aligns exactly with divider
+    const rightInset = (r.width - x);
+    clean.style.clipPath = `inset(0 ${rightInset}px 0 0)`;
+  };
+
+  const startDrag = (clientX) => { moveTo(clientX); dragging = true; };
+  let dragging = false;
+
+  const onMouseDown = (e)=>{ e.preventDefault(); startDrag(e.clientX); };
+  const onMouseMove = (e)=>{ if(dragging) moveTo(e.clientX); };
+  const onMouseUp = ()=>{ dragging = false; };
+
+  [handle, divider, container].forEach(el=> el.addEventListener('mousedown', onMouseDown));
+  addEventListener('mousemove', onMouseMove);
+  addEventListener('mouseup', onMouseUp);
+
+  // Touch
+  const onTouchStart = (e)=>{ startDrag(e.touches[0].clientX); };
+  const onTouchMove = (e)=>{ if(dragging) moveTo(e.touches[0].clientX); };
+  const onTouchEnd = ()=>{ dragging = false; };
+  [handle, divider, container].forEach(el=> el.addEventListener('touchstart', onTouchStart, {passive:true}));
+  addEventListener('touchmove', onTouchMove, {passive:true});
+  addEventListener('touchend', onTouchEnd);
+
+  // Click to jump
+  container.addEventListener('click', (e)=> moveTo(e.clientX));
+
+  // Set initial position to dead center in pixels for perfect alignment
+  const r0 = container.getBoundingClientRect();
+  moveTo(r0.left + r0.width / 2);
+})();
+
+// Explicitly set Before/After images for the slider
+(function ensureBeforeAfterImages() {
+    // For generality, support .ba-slider containers if present, else fallback to #ba
+    const beforeAfterContainers = document.querySelectorAll('.ba-slider');
+    if (beforeAfterContainers.length > 0) {
+        beforeAfterContainers.forEach(container => {
+            const beforeImg = container.querySelector('img:first-child');
+            const afterImg = container.querySelector('img:last-child');
+            if (beforeImg) beforeImg.src = "Clean1200.jpeg";
+            if (afterImg) afterImg.src = "Dirty1200.jpeg";
+        });
+    } else {
+        // Fallback: set specific IDs for this site's markup
+        const before = document.getElementById('beforeLayer');
+        const after = document.getElementById('cleanLayer');
+        if (before) before.src = "Clean1200.jpeg";
+        if (after) after.src = "Dirty1200.jpeg";
+    }
+})();
+/* ---------- COUPON COPY + CONFETTI ---------- */
+document.getElementById('copyCoupon').addEventListener('click', async ()=>{
+  const code = document.getElementById('coupon').textContent.trim();
+  try{
+    await navigator.clipboard.writeText(code);
+    burstConfetti();
+    const b = document.getElementById('copyCoupon'); b.textContent = 'Copied!'; setTimeout(()=>b.textContent='Copy', 1500);
+  }catch(e){ alert('Copy failed—code: '+code); }
+});
+function burstConfetti(){
+  const TOTAL = 170; // more pieces for full-width effect
+  for(let i=0;i<TOTAL;i++){
+    const s = document.createElement('span');
+    s.className = 'confetti';
+    const size = 6 + Math.random()*6;
+    s.style.width = size + 'px';
+    s.style.height = (size * 0.6) + 'px';
+    // spawn across entire width of the viewport along the top
+    s.style.left = Math.random() * window.innerWidth + 'px';
+    s.style.background = Math.random() < 0.5 ? 'var(--primary)' : 'var(--accent)';
+    s.style.opacity = '0.95';
+    // random horizontal drift and rotation
+    s.style.setProperty('--dx', (Math.random()*240 - 120) + 'px');
+    s.style.setProperty('--rot', (Math.random()*1440 - 720) + 'deg');
+    // random duration and delay for a natural cascade
+    const dur = 3 + Math.random()*2.5;     // 3–5.5s
+    const delay = Math.random()*0.6;       // 0–0.6s
+    s.style.animation = `confettiFall ${dur}s linear ${delay}s forwards`;
+    document.body.appendChild(s);
+    s.addEventListener('animationend', ()=> s.remove());
+  }
+}
+
+/* ---------- BOOKING ENABLE / VALIDATION ---------- */
+(function(){
+  const submit = document.getElementById('submitBtn');
+  const zip = document.getElementById('zip');
+  const zipMsg = document.getElementById('zipMsg');
+  const ids = ['name','phone','vehicle','address','zip'];
+  const inputs = ids.map(id=>document.getElementById(id)).filter(Boolean);
+
+  function check(){
+    const ok = inputs.every(i=>!!i.value) && inServiceArea(zip.value);
+    if(submit) submit.disabled = !ok;
+    if(zipMsg){
+      if(!zip.value){ zipMsg.textContent = 'Enter ZIP to check coverage.'; zipMsg.className='text-xs text-[var(--sub)]'; }
+      else if(inServiceArea(zip.value)){ zipMsg.textContent = "You're in our service area!"; zipMsg.className='text-xs'; zipMsg.style.color='var(--ok)'; }
+      else { zipMsg.textContent = 'Currently outside our demo area. Ask to add your ZIP.'; zipMsg.className='text-xs'; zipMsg.style.color='var(--danger)'; }
+    }
+  }
+  inputs.forEach(i=> i.addEventListener('input', check));
+  if(submit) submit.addEventListener('click', (e)=>{
+    e.preventDefault();
+    burstConfetti();
+    submit.textContent = 'Request sent 🎉';
+    submit.disabled = true;
+    // swap accent -> primary and force white text
+    submit.classList.remove('btn-accent');
+    submit.classList.add('btn-primary');
+    submit.style.color = '#ffffff';
+  });
+  check();
+
+  // Contact Map + Address Geocode (Nominatim)
+  const mapEl = document.getElementById('contactMap');
+  if (mapEl && typeof L !== 'undefined') {
+    const brand = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#5271FF';
+    const tp = [41.573, -87.803];
+    const cmap = L.map(mapEl, { zoomControl: false, attributionControl: true, dragging:false, scrollWheelZoom:false, touchZoom:false, doubleClickZoom:false, boxZoom:false, keyboard:false }).setView(tp, 11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(cmap);
+    let pin = L.circleMarker(tp, { radius: 6, color: brand, fillColor: brand, fillOpacity: 0.95, weight: 2 }).addTo(cmap);
+
+    async function geocode(addr){
+      if(!addr) return;
+      try{
+        const url = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(addr + ' Tinley Park IL');
+        const res = await fetch(url, { headers: { 'Accept':'application/json' } });
+        const data = await res.json();
+        if(data && data[0]){
+          const lat = parseFloat(data[0].lat), lon = parseFloat(data[0].lon);
+          pin.setLatLng([lat, lon]);
+          cmap.setView([lat, lon], 15, { animate: true });
+        }
+      }catch(e){ console.warn('Geocode error', e); }
+    }
+
+    const addrInput = document.getElementById('address');
+    if(addrInput){
+      let t; addrInput.addEventListener('input', ()=>{ clearTimeout(t); t = setTimeout(()=> geocode(addrInput.value), 500); });
+      addrInput.addEventListener('change', ()=> geocode(addrInput.value));
+    }
+  }
+})();
+
+/* ---------- INIT ---------- */
+document.getElementById('year').textContent = new Date().getFullYear();
+syncServiceButtons();
+recalc();
+</script>
+</body>
+</html>
