@@ -3,10 +3,32 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Shine On Site • Mobile Detailing | Instant Quote & On-Site Service</title>
+<title>Elite Auto Detailing • Mobile Detailing | Instant Quote & On-Site Service</title>
 <meta name="description" content="Premium Mobile Car Detailing That Comes To You. Exterior & Interior Packages, Ceramic Spray, Odor Treatment, Pet Hair Removal, Headlight Restore. Get An Instant Quote And Book In Minutes." />
+<!-- SEO: indexing + language + theme -->
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="theme-color" content="#0B0D12" />
+<meta http-equiv="content-language" content="en-US" />
+
+<!-- Open Graph refinements -->
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="https://example.com/" />
+<meta property="og:image:alt" content="Elite Auto Detailing – Mobile detailing results" />
+<meta name="twitter:site" content="@eliteautodetailing" />
+<meta name="twitter:title" content="Elite Auto Detailing — Mobile Detailing that Comes to You" />
+<meta name="twitter:description" content="Instant Quote • Exterior & Interior Packages • Mobile Service in the Tinley Park area" />
+
+<!-- Performance hints -->
+<link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
+<link rel="dns-prefetch" href="https://tile.openstreetmap.org">
 <link rel="canonical" href="https://example.com/" />
-<meta property="og:title" content="Shine On Site — Mobile Detailing that Comes to You" />
+<!-- Favicon / App Icons -->
+<link rel="icon" type="image/svg+xml" href="Tab Logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="Tab Logo.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="Tab Logo.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="Tab Logo.svg">
+<meta property="og:title" content="Elite Auto Detailing — Mobile Detailing that Comes to You" />
 <meta property="og:description" content="Factory-Quality Results On Your Driveway. Instant Quote, Same-Day Slots, Licensed & Insured." />
 <meta property="og:type" content="website" />
 <meta property="og:image" content="logo.png" />
@@ -33,6 +55,41 @@
   .panel{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.08)); border:1px solid rgba(255,255,255,.06)}
   .btn{display:inline-grid; place-items:center; border-radius:14px; padding:.9rem 1.1rem; font-weight:800; letter-spacing:.2px; transition:filter .08s ease, transform .08s ease, box-shadow .08s ease}
   .btn-primary{background:linear-gradient(135deg,var(--primary),#6e83ff); color:#fff; box-shadow:0 16px 40px rgba(82,113,255,.35)}
+  /* Ripple effect for #home .btn-primary */
+  #home .btn-primary {
+    position: relative;
+    overflow: hidden;
+  }
+
+  #home .btn-primary::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 50%;
+    top: var(--ripple-y);
+    left: var(--ripple-x);
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    pointer-events: none;
+  }
+  #home .btn-primary::after{ will-change: transform, opacity; }
+
+  #home .btn-primary.ripple::after {
+    animation: ripple-animation 0.6s ease-out forwards;
+  }
+
+  @keyframes ripple-animation {
+    0% {
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0.6;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(15);
+      opacity: 0;
+    }
+  }
   .btn-accent{background:linear-gradient(135deg,var(--accent),#db86ff); color:#0b0d12; box-shadow:0 16px 40px rgba(194,103,255,.35)}
   .btn-ghost{background:transparent; border:1px solid rgba(255,255,255,.14); color:var(--ink)}
   /* Services configure button hover colors by card position */
@@ -58,14 +115,73 @@
   .magnet{transition:transform .06s ease-out}
   .magnet-wrap{display:inline-block; perspective:600px}
   .sticky-cta{position:fixed; bottom:0; left:0; right:0; z-index:50}
+  .sticky-bar{ background:rgba(0,0,0,0.75); backdrop-filter:blur(6px); }
   /* Before/After */
-  .ba-container{position:relative; height:450px; touch-action:none; line-height:0}
+  .ba-container{position:relative; height:clamp(220px, 50vw, 480px); touch-action:none; line-height:0}
   .ba-handle{position:absolute; top:50%; transform:translate(-50%,-50%); width:44px; height:44px; border-radius:9999px; background:#111827; color:#fff; display:grid; place-items:center; border:1px solid rgba(255,255,255,.2); box-shadow:0 10px 20px rgba(0,0,0,.45); cursor:ew-resize; z-index:10}
   .ba-divider{position:absolute; top:0; bottom:0; width:2px; background:linear-gradient(180deg, #fff, transparent); z-index:9}
-  .ba-container > img{ display:block; width:100%; height:100%; object-fit:cover }
+  .ba-container > img{ display:block; width:100%; height: 110%; object-fit:cover }
+  @media (max-width: 640px){
+    .ba-handle{ width:56px; height:56px; }
+    body{ padding-bottom: 72px; } /* ensure content isn't hidden behind mobile sticky CTA */
+    .extras-grid{ grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); }
+  }
+  /* Make Before/After slider a bit larger on mobile */
+  @media (max-width: 640px){
+    .ba-container{ height: clamp(300px, 68vw, 520px); }
+  }
+
+  /* --- Mobile: unify container backgrounds with header glass (containers only) --- */
+  @media (max-width: 640px){
+    /* Apply header-like glass only to cards/containers */
+    .panel,
+    #builderCard,
+    #wxCard,
+    .wx-card,
+    .sticky-cta,
+    .rounded-2xl.panel.edge,
+    .edge.bg-override-mobile {
+      background: rgba(11,13,18,.6) !important;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* Ensure sections & footer keep their original page background */
+    section, footer{
+      background: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+  }
+
+  /* --- Desktop: match blocks to header glass background --- */
+  @media (min-width: 1024px){
+    /* Apply header-like glass to key cards/containers on desktop */
+    .panel,
+    #builderCard,
+    #wxCard,
+    .wx-card,
+    .rounded-2xl.panel.edge,
+    .edge.bg-override-desktop {
+      background: rgba(11,13,18,.6) !important;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      /* keep existing borders/shadows from .edge/.panel */
+    }
+
+    /* Ensure sections & footer keep page background (not forced glass) */
+    section, footer{
+      background: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+  }
+  /* Make segmented buttons wrap nicely on small screens */
+  .seg{ grid-template-columns: repeat(auto-fill, minmax(110px,1fr)); }
   /* --- Instant Quote: segmented buttons & extras layout --- */
- .seg{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:8px; }
- .segbtn{ padding:.6rem .75rem; border-radius:12px; border:1px solid rgba(255,255,255,.2); background:transparent; color:#e6e8ef; font-weight:600 }
+ .seg{ display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:8px; }
+.segbtn{ padding:.8rem 1rem; border-radius:12px; border:1px solid rgba(255,255,255,.2); background:transparent; color:#e6e8ef; font-weight:600; font-size:1rem; min-height:48px }
+#sizeButtons button{ font-weight:600; font-size:1rem; padding:.8rem 1rem; min-height:48px }
  .segbtn.active{ background:var(--primary); color:#fff; border-color:transparent; box-shadow:0 8px 24px rgba(82,113,255,.35) }
  .extras-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap:8px; }
  .extra-btn{ display:flex; align-items:center; justify-content:space-between; padding:.6rem .75rem; border-radius:12px; border:1px solid rgba(255,255,255,.2); background:transparent; color:#e6e8ef; min-height:48px }
@@ -87,7 +203,293 @@
     0%   { transform: translateY(-10px) translateX(0) rotate(0); opacity:1; }
     100% { transform: translateY(110vh) translateX(var(--dx, 0px)) rotate(var(--rot, 720deg)); opacity:0.85; }
   }
+
+  /* Live quote bump on change */
+  @keyframes bump{ 0%{transform:scale(1)} 40%{transform:scale(1.06)} 100%{transform:scale(1)} }
+
+  /* --- Live Quoter: slightly larger + header-matched background --- */
+  #builderCard{ backdrop-filter: blur(12px); }
+  @media (min-width: 768px){ #builderCard{ transform: translateZ(0); } }
+  /* Subtle enlargement of key text inside the builder */
+  #builderCard h3{ font-size: clamp(1.75rem, 2vw, 2rem); }
+
+  #builderCard #totalText{ font-size: clamp(1.6rem, 2vw, 1.9rem); }
+
+  /* Responsive adjustment for the "Live" button inside the quoter */
+  @media (max-width: 640px) {
+    #builderCard span.rounded-lg.text-xs {
+      margin-top: -30px;
+    }
+  }
+  /* --- Service Breakdown Bottom Sheet --- */
+  .sheet-overlay{position:fixed; inset:0; background:rgba(0,0,0,.5); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); opacity:0; pointer-events:none; transition:opacity .3s ease; z-index:60}
+  .sheet{position:fixed; left:0; right:0; bottom:-100%; background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(0,0,0,.18)); border-top:1px solid rgba(255,255,255,.12); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-radius:18px 18px 0 0; box-shadow:0 -20px 60px rgba(0,0,0,.45); transition:bottom .24s ease; z-index:61}
+  .sheet.open{bottom:0}
+  .sheet-overlay.open{opacity:1; pointer-events:auto}
+  .sheet .handle{width:46px; height:5px; border-radius:999px; background:rgba(255,255,255,.22); margin:8px auto 6px}
+  .bd-title{font-weight:800; font-size:1.1rem}
+  .bd-row{display:flex; align-items:start; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px dashed rgba(255,255,255,.12)}
+  .bd-row:last-child{border-bottom:none}
+  .bd-left{display:flex; gap:10px; align-items:start}
+  .bd-icon{width:28px; height:28px; border-radius:8px; display:grid; place-items:center; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12)}
+  .bd-items{font-size:.85rem; color:var(--sub)}
+  .sheet-actions{display:flex; gap:8px}
+  .bd-total{font-size:1.25rem; font-weight:800}
+  /* --- Breakdown Button Pop Animation (on service select) --- */
+  #viewBreakdown.pop{ animation: bd-pop .34s ease; }
+  @keyframes bd-pop{
+    0%{ transform: scale(1); box-shadow: none; }
+    45%{ transform: scale(1.09); box-shadow: 0 0 0 2px rgba(194,103,255,.25), 0 8px 24px rgba(194,103,255,.35); }
+    100%{ transform: scale(1); box-shadow: none; }
+  }
+  @media (min-width: 640px){
+    .sheet{ left:50%; transform:translateX(-50%); max-width:740px; border:1px solid rgba(255,255,255,.12); border-bottom-left-radius:18px; border-bottom-right-radius:18px; }
+  }
+  /* --- Contact Map: push behind floating UI + disable hit-testing --- */
+  #contactMap { position: relative; z-index: 0 !important; }
+  #contactMap .leaflet-pane,
+  #contactMap .leaflet-top,
+  #contactMap .leaflet-bottom,
+  #contactMap .leaflet-control-container { z-index: 0 !important; }
+  /* Ensure clicks go to overlays (sticky bars, floating quote, etc.) */
+  #contactMap, #contactMap * { pointer-events: none; }
+  /* --- Mobile & Weather: better wrapping and bubble fit --- */
+  @media (max-width: 640px){
+    .chip{ max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+  }
+  /* Weather chip (location) should not overflow */
+  #weather .chip{ max-width: 65vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  /* Force weather grid to auto-fit cards cleanly on all screens */
+  #wxGrid{ display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)) !important; }
+  @media (max-width: 400px){ #wxGrid{ grid-template-columns: 1fr !important; } }
+  /* Mobile: center the last weather day card across the row */
+  @media (max-width: 640px){
+    #wxGrid > .wx-card:last-child{
+      grid-column: 1 / -1;   /* span full row */
+      justify-self: center;
+      width: 100%;
+      max-width: 190px; /* center inside row */
+    }
+  }
+  /* Weather card layout + typography that wraps nicely */
+  .wx-card{ display: grid; grid-template-rows: auto auto auto auto; gap: 4px; min-width: 0; }
+  .wx-card .date{ font-weight: 700; }
+  .wx-card .icon{ font-size: clamp(18px, 5.5vw, 24px); line-height: 1; }
+  .wx-card .temps{ font-size: .95rem; }
+  .wx-card .desc{ font-size: 12px; color: var(--sub); line-height: 1.2; white-space: normal; word-break: break-word; }
+  /* Mobile: center “Book this package” text perfectly inside the bubble */
+  @media (max-width: 640px){
+    #bdBook{
+      display:flex;               /* ensure flex centering */
+      align-items:center;         /* vertical center */
+      justify-content:center;     /* horizontal center */
+      text-align:center;          /* center multi-line text just in case */
+      height:50px;                /* consistent tap target */
+    }
+  }
+  /* --- Weather Section: Make last day card same width as others on mobile --- */
+  @media (max-width: 768px) {
+    .weather-section .weather-day {
+      flex: 1 1 30%;
+      max-width: 30%;
+    }
+    .weather-section .weather-day:last-child {
+      flex: 1 1 30%;
+      max-width: 30%;
+      justify-self: center;
+      margin: auto; /* centers if fewer items on row */
+    }
+  }
+  /* --- Weather Section (DESKTOP): lock to 7 equal columns + consistent sizing --- */
+  @media (min-width: 1024px){
+    /* Align weather card width with other sections */
+    #wxCard{
+      max-width: var(--container-width, 1200px);
+      margin-left:auto;
+      margin-right:auto;
+      width: 100%;
+    }
+
+    #wxGrid{
+      grid-template-columns: repeat(7, minmax(130px, 1fr)) !important;
+      justify-content: center;
+      align-items: stretch;
+      gap: 12px;
+    }
+
+    .wx-card{ min-height: 170px; height: 100%; }
+  }
+/* Mobile: make images and maps fill their cards */
+@media (max-width: 640px){
+  /* Ensure card wrappers clip overflow */
+  .rounded-2xl.panel.edge.overflow-hidden { position: relative; overflow: hidden; }
+
+  /* Recent results images fill card */
+  #results .panel.edge img{ width:100% !important; height:100% !important; object-fit:cover !important; display:block; }
+
+  /* Maps fill their card height */
+  #serviceMap, #contactMap { width:100% !important; height:100% !important; }
+  #serviceMap .leaflet-container, #contactMap .leaflet-container { width:100% !important; height:100% !important; }
+
+  /* Generic safety: any direct child media inside overflow-hidden cards */
+  .rounded-2xl.panel.edge.overflow-hidden > img,
+  .rounded-2xl.panel.edge.overflow-hidden > video,
+  .rounded-2xl.panel.edge.overflow-hidden > canvas { width:100% !important; height:100% !important; object-fit:cover !important; }
+}
+/* === Unique Animations: Scroll Reveal, Shine Sweep, Subtle Floats === */
+/* Scroll reveal baseline */
+.reveal{
+  opacity:0;
+  transform: translateY(12px) scale(.98);
+  filter: blur(2px);
+  transition: opacity .5s ease, transform .5s ease, filter .5s ease;
+}
+.reveal.in{ opacity:1; transform: translateY(0) scale(1); filter: blur(0); }
+/* Light stagger via data-delay attr */
+.reveal[data-delay="1"]{ transition-delay: .05s; }
+.reveal[data-delay="2"]{ transition-delay: .1s; }
+.reveal[data-delay="3"]{ transition-delay: .15s; }
+
+/* Sheen/shine sweep on hover for cards and images */
+.shine{ position: relative; overflow: hidden; }
+.shine::after{
+  content:"";
+  position:absolute;
+  top:-120%; left:-60%;
+  width:40%; height:300%;
+  transform: rotate(25deg);
+  pointer-events:none;
+  background: linear-gradient(
+    to right,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,.12) 45%,
+    rgba(255,255,255,0) 100%
+  );
+  opacity:0;
+  transition: transform .8s ease, opacity .3s ease;
+}
+.shine:hover::after{ opacity:1; transform: translateX(260%) rotate(25deg); }
+
+/* Subtle float for hero chips */
+@keyframes floaty { 0%{ transform: translateY(0) } 50%{ transform: translateY(-2px) } 100%{ transform: translateY(0) } }
+#home .chip{ animation: floaty 5s ease-in-out infinite; }
+#home .chip:nth-child(2){ animation-delay: .8s; }
+#home .chip:nth-child(3){ animation-delay: 1.6s; }
+
+/* Respect user preferences */
+@media (prefers-reduced-motion: reduce){
+  .reveal{ transition: none; transform: none !important; filter: none !important; opacity: 1 !important; }
+  #home .chip{ animation: none !important; }
+  .shine::after{ transition: none; }
+}
 </style>
+<style>
+/* --- Mobile: even vertical spacing between sections (fix) --- */
+:root{ --mobile-section-gap: 30px; }
+@media (max-width: 640px){
+  /* Hero (first section) tighter + mobile-friendly */
+  #home > div{ padding-top: 12px !important; padding-bottom: 18px !important; }
+  #home h1{ font-size: clamp(28px, 7vw, 34px) !important; line-height: 1.18 !important; }
+  #home .mt-7{ margin-top: 0.9rem !important; }
+  #home .mt-5{ margin-top: 0.6rem !important; }
+
+  /* --- Hero chips: make bubbles fit nicely on mobile --- */
+  #home .mt-5.flex{ 
+    flex-wrap: wrap !important; 
+    gap: 6px !important; 
+  }
+  #home .chip{
+    white-space: normal !important; 
+    overflow-wrap: anywhere !important; 
+    word-break: break-word !important; 
+    line-height: 1.25 !important; 
+    font-size: 12px !important; 
+    padding: .32rem .6rem !important; 
+  }
+}
+
+/* --- Mobile: equalize spacing between all main containers --- */
+:root{ --mobile-block-gap: 15px; --mobile-block-pad: 15px; }
+@media (max-width: 640px){
+  /* (rules removed per instructions; only :root remains) */
+}
+/* Gap under sticky header */
+header.sticky ~ section#home { margin-top: 20px !important; }
+@media (max-width: 640px){ header.sticky ~ section#home { margin-top: 20px !important; } }
+</style>
+<!-- Structured Data: Local Business + Service Area -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AutomotiveBusiness",
+  "name": "Elite Auto Detailing",
+  "image": "https://example.com/logo.png",
+  "url": "https://example.com/",
+  "telephone": "+1-708-737-9781",
+  "priceRange": "$",
+  "description": "Mobile auto detailing: exterior & interior packages, ceramic spray, odor treatment, pet hair removal. Instant quote and on‑site service in the Tinley Park area.",
+  "areaServed": {
+    "@type": "GeoCircle",
+    "geoMidpoint": { "@type": "GeoCoordinates", "latitude": 41.573, "longitude": -87.803 },
+    "geoRadius": 40233
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Tinley Park",
+    "addressRegion": "IL",
+    "addressCountry": "US"
+  },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+    "opens": "08:00",
+    "closes": "18:00"
+  }],
+  "sameAs": []
+}
+</script>
+
+<!-- Structured Data: FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Do you need water or power?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — we’ll need access to a standard outdoor water spigot and a household power outlet within reach."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the rinse-free wash safe?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Lubricants encapsulate dust to prevent marring; fresh towels per panel."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I pay?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We currently accept Cash or Zelle."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What’s your cancellation policy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Need to reschedule? Please let us know at least 24 hours in advance. Same‑day cancellations may incur a small fee."
+      }
+    }
+  ]
+}
+</script>
 </head>
 
 <body>
@@ -99,7 +501,7 @@
   <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
     <a href="#home" class="flex items-center gap-3">
       <!-- Embedded logo (data URL) -->
-      <img alt="Company logo" class="h-20 w-auto" src="Logo.svg" />
+      <img alt="Elite Auto Detailing logo" class="h-20 w-auto" src="Logo.svg" />
     </a>
     <nav class="hidden md:flex items-center gap-6 text-sm text-[var(--sub)]">
       <a href="#services" class="hover:text-white">Services</a>
@@ -125,11 +527,15 @@
         <span class="chip border-white/10">🚐 We come to you</span>
         <span class="chip border-white/10">🛡️ Licensed & Insured</span>
       </div>
-      <h1 class="mt-4 text-4xl md:text-6xl font-black leading-tight text-white">Studio-quality detailing on your driveway</h1>
+      <h1 class="mt-4 text-4xl md:text-6xl font-black leading-tight text-white">Studio-Quality Detailing On Your Driveway</h1>
       <p class="mt-3 text-lg text-[var(--sub)]">Instant pricing. Same-day slots. Swirl-safe methods and top-tier products.</p>
       <div class="mt-7 flex flex-wrap gap-3">
-        <span class="magnet-wrap"><a href="#quote" class="btn btn-primary edge magnet">💵 Get Instant Quote</a></span>
-        <a href="#services" class="btn btn-ghost edge">See Packages</a>
+        <!-- Mobile: swap so See Packages is primary, Get Instant Quote is ghost -->
+        <a href="#services" class="btn btn-primary edge w-3/4 md:hidden">💵 See Packages</a>
+
+        <!-- Desktop (md+): original order/styles preserved -->
+        <span class="magnet-wrap hidden md:inline-block"><a href="#quote" class="btn btn-primary edge magnet w-full md:w-auto">💵 Get Instant Quote</a></span>
+        <a href="#services" class="btn btn-ghost edge hidden md:inline-grid md:w-auto">See Packages</a>
       </div>
       <div class="mt-5 flex items-center gap-3 text-sm text-[var(--sub)]">
         <span class="chip border-white/10">⭐ 5.0 (56 reviews)</span>
@@ -140,6 +546,7 @@
 
     <!-- Social proof/urgency -->
     <div class="rounded-2xl panel edge p-6 tilt">
+      <h3 class="text-xl font-semibold text-white mb-3 text-left">Will You Be Next On The Map?</h3>
       <div class="aspect-[4/3] rounded-xl overflow-hidden">
         <div id="serviceMap" class="w-full h-full"></div>
       </div>
@@ -153,7 +560,7 @@
             <div class="font-semibold text-white">New Customer Offer</div>
             <div class="text-sm text-[var(--sub)]">Use code <strong id="coupon">SHINE15</strong> for $15 off</div>
           </div>
-          <button id="copyCoupon" class="btn btn-ghost text-sm edge">Copy</button>
+          <button id="copyCoupon" class="btn btn-ghost text-sm edge">Apply</button>
         </div>
         <a href="#quote" class="btn btn-accent edge">✨ Reserve a slot</a>
         <div class="text-xs text-[var(--sub)]">No payment required to request. We confirm by text.</div>
@@ -168,32 +575,36 @@
     <h2 class="text-3xl md:text-4xl font-black text-white">Packages That Fit Your Ride</h2>
     <p class="text-[var(--sub)]">Pick a starting point. Fine-tune in the Instant Quote.</p>
   </header>
-  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-    <div class="rounded-2xl panel edge p-5 tilt">
-      <div class="text-lg font-semibold text-white">Exterior Detail</div>
-      <div class="mt-1 text-sm text-[var(--sub)]">Foam/hand wash, wheels & tires, spray sealant.</div>
-      <div class="mt-3 text-white"><strong>From $159</strong></div>
-      <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('Sedan',true,false,false,[])">Configure</button>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="rounded-2xl panel edge p-5 tilt">
+        <div class="text-lg font-semibold text-white">Full Detail</div>
+        <div class="mt-1 text-sm text-[var(--sub)]">Includes interior & exterior detail.</div>
+        <div class="mt-8 text-white"><strong>From $150–$200</strong></div>
+        <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('Sedan',true,true,false,[])">Configure</button>
+      </div>
+      <div class="rounded-2xl panel edge p-5 tilt">
+        <div class="text-lg font-semibold text-white">Deep Full Detail</div>
+        <div class="mt-1 text-sm text-[var(--sub)]">Full deep clean: exterior decontamination & interior reset.</div>
+        <div class="mt-3 text-white"><strong> From $250–$350</strong></div>
+        <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('SUV',false,false,false,['__deepBoth__'])">Configure</button>
+      </div>
+      <div class="rounded-2xl panel edge p-5 tilt">
+        <div class="text-lg font-semibold text-white">Furry Friend Package</div>
+        <p class="mt-1 text-sm text-[var(--sub)]">Perfect for pet lovers</p>
+        <ul class="mt-8 text-white text-sm list-disc list-inside space-y-1">
+        </ul>
+        <div class="mt-4 text-white"><strong>From $135-$175</strong></div>
+        <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('Truck',false,true,false,['pet'])">Configure</button>
+      </div>
+      <div class="rounded-2xl panel edge p-5 tilt">
+        <div class="text-lg font-semibold text-white">Showoff Package</div>
+        <div class="mt-1 text-sm text-[var(--sub)]">For those who like to show whose the real boss in the neighborhood.</div>
+        <ul class="mt-3 text-white text-sm list-disc list-inside space-y-1">
+        </ul>
+        <div class="mt-4 text-white"><strong>From $180–$210</strong></div>
+        <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('Sedan',true,false,false,['hardwax'])">Configure</button>
+      </div>
     </div>
-    <div class="rounded-2xl panel edge p-5 tilt">
-      <div class="text-lg font-semibold text-white">Interior Deep Clean</div>
-      <div class="mt-1 text-sm text-[var(--sub)]">Vacuum, steam & shampoo, plastics reconditioned.</div>
-      <div class="mt-3 text-white"><strong>From $169</strong></div>
-      <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('SUV',false,true,false,['odor','pet'])">Configure</button>
-    </div>
-    <div class="rounded-2xl panel edge p-5 tilt">
-      <div class="text-lg font-semibold text-white">Headlight Restore</div>
-      <div class="mt-1 text-sm text-[var(--sub)]">Clarity + UV protection.</div>
-      <div class="mt-8 text-white"><strong>$40 add-on</strong></div>
-      <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('Sedan',true,true,false,['headlights'])">Configure</button>
-    </div>
-    <div class="rounded-2xl panel edge p-5 tilt">
-      <div class="text-lg font-semibold text-white">Ceramic Spray Sealant</div>
-      <div class="mt-1 text-sm text-[var(--sub)]">Months of gloss & protection.</div>
-      <div class="mt-8 text-white"><strong>$50 add-on</strong></div>
-      <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('Truck',true,true,false,['ceramic'])">Configure</button>
-    </div>
-  </div>
 </section>
 
 <!-- Instant Quote + Before/After -->
@@ -205,7 +616,7 @@
 
   <div class="grid md:grid-cols-2 gap-6">
     <!-- Builder -->
-    <div class="rounded-2xl panel edge p-6 shadow-soft">
+    <div id="builderCard" class="rounded-2xl edge p-7 md:p-8 shadow-soft glass bg-[rgba(11,13,18,.6)] border border-white/10">
       <div class="flex items-center justify-between">
         <div>
           <p class="text-sm text-[var(--sub)] font-semibold">Build your detail</p>
@@ -229,7 +640,8 @@
   <div id="serviceButtons" class="seg">
     <button type="button" data-svc="exterior" class="segbtn edge shadow-soft bg-transparent text-white">Exterior</button>
     <button type="button" data-svc="interior" class="segbtn edge shadow-soft bg-transparent text-white">Interior</button>
-    <button type="button" data-svc="engine"   class="segbtn edge shadow-soft bg-transparent text-white">Engine Bay</button>
+    <button type="button" data-svc="deepExterior" class="segbtn edge shadow-soft bg-transparent text-white">Deep Exterior</button>
+    <button type="button" data-svc="deepInterior" class="segbtn edge shadow-soft bg-transparent text-white">Deep Interior</button>
   </div>
  </div>
 
@@ -240,11 +652,15 @@
 
 
         <div class="mt-2 flex items-center justify-between">
-          <div class="text-sm text-[var(--sub)]" id="baseText">Select vehicle size to see base price</div>
-          <div class="text-2xl font-bold text-white" id="totalText">$0.00</div>
+          <div class="flex items-center gap-3">
+            <button id="viewBreakdown" type="button" class="bd-trigger hidden px-3 py-1.5 rounded-md font-semibold text-white bg-purple-600 hover:bg-purple-700 transition edge text-xs">View breakdown</button>
+          </div>
+          <button id="totalBtn" type="button" class="leading-none" aria-label="Open breakdown">
+            <span class="text-2xl font-bold text-white" id="totalText">$0</span>
+          </button>
         </div>
 
-        <a href="#contact" class="btn btn-primary h-14 edge">📅 Book this package</a>
+        <a href="#contact" class="btn btn-primary h-14 edge w-full md:w-auto">📅 Book this package</a>
         <p class="text-xs text-[var(--sub)]">No charge until confirmed. Price may adjust for oversized/extra-soiled vehicles.</p>
       </div>
     </div>
@@ -252,8 +668,8 @@
     <!-- Before/After + trust -->
     <div class="grid gap-6">
       <div class="rounded-2xl panel edge overflow-hidden select-none">
-        <div class="p-4 pb-3"><h3 class="text-xl font-semibold text-white">Swipe to see the difference</h3></div>
-        <div id="ba" class="ba-container w-full">
+        <div class="px-4 pt-4 pb-4"><h3 class="text-xl font-semibold text-white">Swipe to see the difference</h3></div>
+        <div id="ba" class="ba-container w-full mb-0">
           <!-- Dirty layer -->
           <img id="beforeLayer" src="DirtyCar.jpeg" alt="Before detailing"
                class="absolute inset-0 w-full h-full"
@@ -290,13 +706,13 @@
 
   <div class="grid sm:grid-cols-3 gap-4">
     <div class="rounded-2xl aspect-video panel edge tilt overflow-hidden flex items-center justify-center bg-black">
-      <img src="Car 1.jpeg" alt="Car 1 result" class="object-cover w-full h-full" />
+      <img src="Car 1.jpeg" alt="Exterior detail result on sedan – Elite Auto Detailing" class="object-cover w-full h-full" loading="lazy" decoding="async" />
     </div>
     <div class="rounded-2xl aspect-video panel edge tilt overflow-hidden flex items-center justify-center bg-black">
-      <img src="Car 2.jpeg" alt="Car 2 result" class="object-cover w-full h-full" />
+      <img src="Car 2.jpeg" alt="Interior detail result – stain removal and shine" class="object-cover w-full h-full" loading="lazy" decoding="async" />
     </div>
     <div class="rounded-2xl aspect-video panel edge tilt overflow-hidden flex items-center justify-center bg-black">
-      <img src="Car 3.jpeg" alt="Car 3 result" class="object-cover w-full h-full" />
+      <img src="Car 3.jpeg" alt="Deep exterior decontamination and wax finish" class="object-cover w-full h-full" loading="lazy" decoding="async" />
     </div>
   </div>
 
@@ -351,7 +767,7 @@
   </header>
   <details class="rounded-xl panel edge p-4 mb-2">
     <summary class="font-medium cursor-pointer text-white">Do you need water or power?</summary>
-    <p class="mt-2 text-[var(--sub)]">We’re fully self-contained with deionized water and a quiet generator when needed.</p>
+    <p class="mt-2 text-[var(--sub)]">Yes — we’ll need access to a standard outdoor water spigot and a household power outlet within reach.</p>
   </details>
   <details class="rounded-xl panel edge p-4 mb-2">
     <summary class="font-medium cursor-pointer text-white">Is the rinse-free wash safe?</summary>
@@ -359,44 +775,68 @@
   </details>
   <details class="rounded-xl panel edge p-4 mb-2">
     <summary class="font-medium cursor-pointer text-white">How do I pay?</summary>
-    <p class="mt-2 text-[var(--sub)]">Card, Apple/Google Pay, or cash after the job.</p>
+    <p class="mt-2 text-[var(--sub)]">We currently accept Cash or Zelle.</p>
   </details>
   <details class="rounded-xl panel edge p-4">
     <summary class="font-medium cursor-pointer text-white">What’s your cancellation policy?</summary>
-    <p class="mt-2 text-[var(--sub)]">Free reschedule 24 hours in advance. Same-day cancellations may incur a small fee.</p>
+    <p class="mt-2 text-[var(--sub)]">Need to reschedule? No problem — please let us know at least 24 hours in advance. Same‑day cancellations may incur a small fee.</p>
   </details>
 </section>
 
+<!-- Weather (viewer location) -->
+<section id="weather" class="max-w-6xl mx-auto px-4 py-10">
+  <header class="mb-4 flex items-center justify-between gap-3">
+    <div>
+      <h2 class="text-3xl md:text-4xl font-black text-white">This Week's Weather</h2>
+      <p class="text-[var(--sub)]">Great days to book are highlighted.</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="chip border-white/10">📍 <span id="wxPlace">Detecting…</span></span>
+      <button id="wxUnit" class="btn btn-ghost edge text-sm">°F</button>
+    </div>
+  </header>
+
+  <div id="wxCard" class="rounded-2xl panel edge p-4">
+    <div id="wxGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3"></div>
+  </div>
+</section>
+
 <!-- Contact -->
-<section id="contact" class="max-w-6xl mx-auto px-4 py-3">
+<section id="contact" class="max-w-6xl mx-auto px-4 py-3 mb-10 md:mb-12">
   <div class="rounded-2xl panel edge p-6 grid md:grid-cols-3 gap-6 items-center">
-    <div class="md:col-span-2">
+    <div class="md:col-span-2 order-1 md:order-none">
       <h3 class="text-2xl font-bold text-white">Ready to book your mobile detail?</h3>
       <p class="text-[var(--sub)] mt-1">Call/text for fastest response, or submit your instant quote.</p>
       <div class="mt-4 flex gap-3">
-        <a href="tel:+17087379781" class="btn btn-primary edge">📞 (708) 737-9781</a>
-        <a href="sms:+17087379781" class="btn btn-accent edge">💬 Text Us</a>
+        <a href="tel:+17087379781" class="btn btn-primary edge h-13 text-base w-full md:w-auto">📞 (708) 737-9781</a>
       </div>
     </div>
-    <div class="md:col-span-2 rounded-2xl panel edge overflow-hidden" style="height: 320px;">
-      <div id="contactMap" class="w-full h-full"></div>
-    </div>
-
     <!-- Simple request form -->
-    <form id="leadForm" class="grid gap-3">
+    <form id="leadForm" class="grid gap-3 order-3 md:order-none md:row-span-2 md:self-center md:justify-self-center md:w-full md:max-w-sm">
       <div class="grid gap-3">
-        <input id="name" class="h-11 rounded-xl px-3" placeholder="Name" />
-        <input id="phone" class="h-11 rounded-xl px-3" placeholder="(555) 000-1234" />
-        <input id="vehicle" class="h-11 rounded-xl px-3" placeholder="Vehicle model (e.g., 2020 Honda Civic)" />
-        <input id="address" class="h-11 rounded-xl px-3" placeholder="Service address" />
-        <input id="zip" class="h-11 rounded-xl px-3" placeholder="ZIP (e.g., 60477)"/>
-        <input id="discount" class="h-11 rounded-xl px-3" placeholder="Discount code (optional)" />
+        <input id="name" class="h-11 rounded-xl px-3" placeholder="Name" autocomplete="name" required />
+        <input 
+          type="text"
+          id="phone"
+          name="phone"
+          placeholder="708-555-1234"
+          required
+          class="h-11 rounded-xl px-3"
+        />
+        <input id="vehicle" class="h-11 rounded-xl px-3" placeholder="Vehicle model (e.g., 2020 Honda Civic)" autocomplete="off" required />
+        <input id="address" class="h-11 rounded-xl px-3" placeholder="Service address" autocomplete="street-address" required />
+        <input id="zip" class="h-11 rounded-xl px-3" placeholder="ZIP (e.g., 60477)" inputmode="numeric" pattern="\d{5}" autocomplete="postal-code" required/>
+        <input id="discount" class="h-11 rounded-xl px-3" placeholder="Discount code (optional)" autocomplete="off" />
         <p id="discountMsg" class="text-xs"></p>
-        <div class="text-sm text-[var(--ink)]">Estimated Total: <strong id="quoteBox">$0.00</strong></div>
-        <button id="submitBtn" class="btn btn-accent h-13 edge disabled:opacity-50">✅ Send Booking Request</button>
+        <div class="text-sm text-[var(--ink)]">Estimated Total: <strong id="quoteBox">$0</strong></div>
+        <button id="submitBtn" type="button" class="btn btn-accent h-13 edge disabled:opacity-50">✅ Send Booking Request</button>
+        <p id="formStatus" class="text-xs"></p>
         <p id="zipMsg" class="text-xs text-[var(--sub)]">Enter ZIP to check coverage.</p>
       </div>
     </form>
+    <div class="md:col-span-2 order-2 md:order-none rounded-2xl panel edge overflow-hidden" style="height: clamp(200px, 50vh, 320px);">
+      <div id="contactMap" class="w-full h-full"></div>
+    </div>
   </div>
 </section>
 
@@ -411,28 +851,62 @@
 </footer>
 
 <!-- Mobile sticky CTA -->
-<div class="sticky-cta md:hidden">
-  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between panel edge">
+<div class="sticky-cta md:hidden bg-[rgba(11,13,18,.6)] glass border-t border-white/10">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
     <a href="tel:+17087379781" class="font-semibold text-white">📞 Call</a>
-    <a href="#quote" class="btn btn-accent edge">Get Instant Quote</a>
+    <div class="flex items-center gap-2">
+      <span class="text-2xl" style="color:var(--primary)">💧</span>
+      <div class="leading-tight">
+        <div class="text-[10px] uppercase tracking-wide text-[var(--sub)]">Your Live Quote</div>
+        <div id="mobileQuote" class="font-semibold text-white">$0</div>
+      </div>
+      <a href="#quote" class="btn btn-primary edge ml-2">Adjust</a>
+    </div>
   </div>
 </div>
 
 <!-- Desktop floating live quote -->
 <div class="hidden md:block fixed bottom-4 right-4 z-40">
-  <div class="rounded-2xl panel edge p-3 flex items-center gap-3">
+  <div class="rounded-xl edge flex items-center gap-4 px-6 py-4"
+    style="background:rgba(11,13,18,0.6); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); box-shadow:0 16px 40px rgba(82,113,255,.15)">
     <span class="text-2xl" style="color:var(--primary)">💧</span>
     <div class="relative translate-y-0.5">
       <div class="text-xs text-[var(--sub)]">Your Live Quote</div>
-      <div id="floatingQuote" class="font-bold leading-none text-lg text-white">$0.00</div>
+      <div id="floatingQuote" class="font-bold leading-none text-lg text-white">$0</div>
     </div>
     <a href="#quote" class="btn btn-primary ml-2 edge">Adjust</a>
+  </div>
+</div>
+
+<!-- Service Breakdown Bottom Sheet -->
+<div id="bdOverlay" class="sheet-overlay"></div>
+<div id="bdSheet" class="sheet">
+  <div class="handle"></div>
+  <div class="p-4 md:p-6">
+    <div class="flex items-start justify-between">
+      <div>
+        <div class="bd-title text-white">Service breakdown</div>
+        <div class="text-xs text-[var(--sub)]" id="bdSubtitle">Interactive summary of your selections</div>
+      </div>
+      <div class="sheet-actions">
+        <button id="bdClose" type="button" class="btn btn-ghost edge text-sm">Close</button>
+        <a href="#contact" id="bdBook" class="btn btn-primary edge text-sm">Book this package</a>
+      </div>
+    </div>
+
+    <div id="bdList" class="mt-3"></div>
+
+    <div class="mt-4 flex items-center justify-between">
+      <div class="text-sm text-[var(--sub)]" id="bdNotes"></div>
+      <div class="bd-total text-white" id="bdTotal">$0</div>
+    </div>
   </div>
 </div>
 
 <script>
 /* ---------- STARFIELD BACKGROUND ---------- */
 (function(){
+  if (window.matchMedia && window.matchMedia('(max-width: 640px)').matches) { return; }
   const c = document.getElementById('stars'); const ctx = c.getContext('2d');
   function size(){ c.width = innerWidth; c.height = innerHeight; }
   size(); addEventListener('resize', size);
@@ -469,7 +943,7 @@
   const center = [41.573, -87.803]; // Tinley Park
   const map = L.map(el, { zoomControl:false, attributionControl:false, dragging:false, scrollWheelZoom:false, touchZoom:false, doubleClickZoom:false, boxZoom:false, keyboard:false }).setView(center, 11);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
-  const radiusMeters = 10 * 1609.34; // 10 miles
+  const radiusMeters = 25 * 1609.34; // 25 miles
   const circle = L.circle(center, { radius: radiusMeters, color: brand, weight: 2, fillColor: brand, fillOpacity: 0.12 }).addTo(map);
   const mDegLat = 111320;
   const mDegLon = 111320 * Math.cos(center[0] * Math.PI / 180);
@@ -510,12 +984,12 @@ document.querySelectorAll('.magnet').forEach(btn=>{
 })();
 
 /* ---------- QUOTE BUILDER ---------- */
-const basePrices = { Sedan: 99, SUV: 129, Truck: 149 };
+const basePrices = {}; // base pay removed
 const extrasList = [
   { key: "pet", label: "Pet Hair Removal", price: 25 },
-  { key: "headlights", label: "Headlight Restore", price: 40 },
   { key: "odor", label: "Odor Treatment", price: 35 },
-  { key: "ceramic", label: "Ceramic Spray Sealant", price: 50 },
+  { key: "engine", label: "Engine Bay", price: 30 },
+  { key: "hardwax", label: "Hard Wax", price: 100 },
 ];
 // 25-mile service area around Tinley Park, IL
 const SERVICE_ZIPS = new Set([
@@ -534,11 +1008,18 @@ const SERVICE_ZIPS = new Set([
   "60476","60477","60478","60480","60481","60482","60484","60487",
   "60490"
 ]);
-function currency(n){ return n.toLocaleString(undefined,{style:'currency',currency:'USD'}); }
+function currency(n){
+  return n.toLocaleString(undefined, {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  });
+}
 function inServiceArea(zip){ return SERVICE_ZIPS.has(String(zip).trim()); }
 
 let carSize = null;
-let exterior = false, interior = false, engine = false;
+let exterior = false, interior = false, deepExterior = false, deepInterior = false;
 const extras = {};
 const baseText = document.getElementById('baseText');
 const totalText = document.getElementById('totalText');
@@ -547,44 +1028,116 @@ const floatingQuote = document.getElementById('floatingQuote');
 let discountValue = 0;
 
 function recalc(){
-  let t = 0;
-  if(carSize){ t += basePrices[carSize]; }
-  if(exterior) t += 60;
-  if(interior) t += 70;
-  if(engine) t += 30;
-  for(const x of extrasList){ if(extras[x.key]) t += x.price; }
-  // apply discount if any
-  if(discountValue > 0){ t = Math.max(0, t - discountValue); }
-  if(baseText) baseText.textContent = carSize ? `Base for ${carSize}: ${currency(basePrices[carSize])}` : 'Select vehicle size to see base price';
-  if(totalText) totalText.textContent = currency(t);
-  if(quoteBox) quoteBox.textContent = currency(t);
-  if(floatingQuote) floatingQuote.textContent = currency(t);
+  // Ranged pricing per selection
+  const PRICE = {
+    exterior:    {min:80,  max:110},
+    interior:    {min:110, max:150},
+    both:        {min:150, max:200},
+    deepExterior:{min:130, max:170},
+    deepInterior:{min:170, max:220},
+    deepBoth:    {min:250, max:350}
+  };
+
+  let min = 0, max = 0;
+
+  // Vehicle size no longer affects price (base removed)
+  if(carSize){ /* no base pay */ }
+
+  // Core services with deep pairing treated as deep full
+  if(deepExterior && deepInterior){
+    min += PRICE.deepBoth.min; max += PRICE.deepBoth.max;
+  } else if(deepExterior){
+    min += PRICE.deepExterior.min; max += PRICE.deepExterior.max;
+  } else if(deepInterior){
+    min += PRICE.deepInterior.min; max += PRICE.deepInterior.max;
+  } else if(exterior && interior){
+    min += PRICE.both.min; max += PRICE.both.max;
+  } else if(exterior && !interior){
+    min += PRICE.exterior.min; max += PRICE.exterior.max;
+  } else if(interior && !exterior){
+    min += PRICE.interior.min; max += PRICE.interior.max;
+  }
+
+  // Extras (fixed add-ons)
+  for(const x of extrasList){ if(extras[x.key]){ min += x.price; max += x.price; } }
+
+  // apply discount equally across range
+  if(discountValue > 0){
+    min = Math.max(0, min - discountValue);
+    max = Math.max(0, max - discountValue);
+  }
+
+  const rangeText = (min === max) ? currency(min) : `${currency(min)}–${currency(max)}`;
+
+  if(baseText) baseText.textContent = carSize ? `Selected: ${carSize}` : 'Choose a vehicle size';
+  if(totalText) totalText.textContent = rangeText;
+  if(quoteBox) quoteBox.textContent = rangeText;
+  if(floatingQuote) floatingQuote.textContent = rangeText;
+  const mobileQuote = document.getElementById('mobileQuote');
+  if(mobileQuote) mobileQuote.textContent = rangeText;
+  const bdT = document.getElementById('bdTotal'); if(bdT && document.getElementById('bdSheet')?.classList.contains('open')) bdT.textContent = rangeText;
+
+  // subtle bump animation to confirm change
+  function bump(el){ if(!el) return; el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+  bump(totalText);
+  bump(document.getElementById('floatingQuote'));
+  bump(document.getElementById('mobileQuote'));
 }
 
 function bundle(size, ext, int, eng, extrasArr){
-  carSize = size; exterior = ext; interior = int; engine = eng;
-  for(const x of extrasList){ extras[x.key] = false; }
-  (extrasArr||[]).forEach(k => extras[k] = true);
+  // carSize = size;
+  // default regular service selections
+  exterior = !!ext; interior = !!int;
 
-  const sizeWrap = document.getElementById('sizeButtons');
-  if(sizeWrap){
-    sizeWrap.querySelectorAll('button').forEach(b=>{b.style.background='transparent'; b.style.color='#fff'; b.style.borderColor='rgba(255,255,255,.2)';});
-    const btn = Array.from(sizeWrap.querySelectorAll('button')).find(b=>b.dataset.size===size);
-    if(btn){ btn.style.background='var(--primary)'; btn.style.color='#fff'; btn.style.borderColor='transparent'; }
+  // clear deep flags
+  deepExterior = false; deepInterior = false;
+
+  // parse special deep sentinels from extrasArr
+  const arr = Array.isArray(extrasArr) ? extrasArr : [];
+  const wantDeepBoth = arr.includes('__deepBoth__');
+  const wantDeepExterior = arr.includes('__deepExterior__');
+  const wantDeepInterior = arr.includes('__deepInterior__');
+
+  if (wantDeepBoth) { deepExterior = true; deepInterior = true; exterior = false; interior = false; }
+  else {
+    if (wantDeepExterior) { deepExterior = true; exterior = false; }
+    if (wantDeepInterior) { deepInterior = true; interior = false; }
   }
-  syncServiceButtons();
 
+  // reset extras, only apply real extras that exist in extrasList
+  for (const x of extrasList) { extras[x.key] = false; }
+  arr.forEach(k => { if (extrasList.some(x => x.key === k)) extras[k] = true; });
+
+  // set vehicle size visual
+  // const sizeWrap = document.getElementById('sizeButtons');
+  // if(sizeWrap){
+  //   sizeWrap.querySelectorAll('button').forEach(b=>{b.style.background='transparent'; b.style.color='#fff'; b.style.borderColor='rgba(255,255,255,.2)';});
+  //   const btn = Array.from(sizeWrap.querySelectorAll('button')).find(b=>b.dataset.size===size);
+  //   if(btn){ btn.style.background='var(--primary)'; btn.style.color='#fff'; btn.style.borderColor='transparent'; }
+  // }
+
+  // sync services + extras visual state
+  syncServiceButtons();
   document.querySelectorAll('#extras button').forEach(b=>{
     const key = b.dataset.key;
     b.classList.toggle('active', extras[key]===true);
   });
 
   recalc();
-  location.hash = '#quote';
+  // ensure the breakdown button state reflects current selections
+  if (typeof updateBreakdownButtonVisibility === 'function') updateBreakdownButtonVisibility();
+  if(exterior || interior || deepExterior || deepInterior){ popBreakdown(); }
+
+  const quote = document.getElementById('quote');
+  if(quote){ quote.scrollIntoView({behavior:'smooth', block:'start'}); }
 }
 
-const sizeWrap = document.getElementById('sizeButtons');
-if(sizeWrap){
+// --- One-time setup & helpers (top-level) ---
+
+// Size buttons: set carSize and recalc
+(function(){
+  const sizeWrap = document.getElementById('sizeButtons');
+  if(!sizeWrap) return;
   sizeWrap.querySelectorAll('button').forEach(btn => {
     btn.addEventListener('click', () => {
       carSize = btn.dataset.size;
@@ -593,34 +1146,79 @@ if(sizeWrap){
       });
       btn.style.background='var(--primary)'; btn.style.color='#fff'; btn.style.borderColor='transparent';
       recalc();
+      updateBreakdownButtonVisibility();
     });
   });
-}
+})();
 
-// Services segmented buttons (Exterior / Interior / Engine Bay)
+// Services segmented buttons (Exterior / Interior / Deep)
 function syncServiceButtons(){
   const wrap = document.getElementById('serviceButtons'); if(!wrap) return;
   wrap.querySelectorAll('button').forEach(btn=>{
     const k = btn.dataset.svc;
-    btn.classList.toggle('active', (k==='exterior'&&exterior) || (k==='interior'&&interior) || (k==='engine'&&engine));
-  });
-}
-const svcWrap = document.getElementById('serviceButtons');
-if(svcWrap){
-  svcWrap.querySelectorAll('button').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const k = btn.dataset.svc;
-      if(k==='exterior') exterior = !exterior;
-      if(k==='interior') interior = !interior;
-      if(k==='engine')   engine   = !engine;
-      btn.classList.toggle('active');
-      recalc();
-    });
+    const active = (
+      (k==='exterior'     && exterior) ||
+      (k==='interior'     && interior) ||
+      (k==='deepExterior' && deepExterior) ||
+      (k==='deepInterior' && deepInterior)
+    );
+    btn.classList.toggle('active', active);
   });
 }
 
-const extrasWrap = document.getElementById('extras');
-if(extrasWrap){
+// Briefly animate the purple breakdown button to draw attention
+function popBreakdown(){
+  const b = document.getElementById('viewBreakdown');
+  if(!b) return;
+  b.classList.remove('pop');
+  void b.offsetWidth;
+  b.classList.add('pop');
+}
+
+// Show/hide breakdown button depending on selections
+function updateBreakdownButtonVisibility() {
+  const bdBtn = document.getElementById('viewBreakdown');
+  if (!bdBtn) return;
+  if (exterior || interior || deepExterior || deepInterior) {
+    bdBtn.classList.remove('hidden');
+  } else {
+    bdBtn.classList.add('hidden');
+  }
+}
+
+// Wire service buttons once
+(function(){
+  const svcWrap = document.getElementById('serviceButtons');
+  if(!svcWrap) return;
+  svcWrap.querySelectorAll('button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const k = btn.dataset.svc;
+      if(k==='deepExterior'){
+        deepExterior = !deepExterior;
+        if(deepExterior){ exterior = false; }
+      } else if(k==='deepInterior'){
+        deepInterior = !deepInterior;
+        if(deepInterior){ interior = false; }
+      } else if(k==='exterior'){
+        exterior = !exterior;
+        if(exterior){ deepExterior = false; }
+      } else if(k==='interior'){
+        interior = !interior;
+        if(interior){ deepInterior = false; }
+      }
+      syncServiceButtons();
+      recalc();
+      updateBreakdownButtonVisibility();
+      if(exterior || interior || deepExterior || deepInterior){ popBreakdown(); }
+    });
+  });
+})();
+
+// Build extras buttons once (guard against duplicates)
+(function(){
+  const extrasWrap = document.getElementById('extras');
+  if(!extrasWrap) return;
+  if (extrasWrap.dataset.built === '1') return;
   extrasList.forEach(x => {
     const b = document.createElement('button');
     b.type = 'button';
@@ -633,10 +1231,10 @@ if(extrasWrap){
       recalc();
     });
     extrasWrap.appendChild(b);
-    // initial visual state (all false by default)
     b.classList.toggle('active', !!extras[x.key]);
   });
-}
+  extrasWrap.dataset.built = '1';
+})();
 
 
 // Discount code handling (optional)
@@ -663,18 +1261,18 @@ if(extrasWrap){
   const divider = document.getElementById('divider');
   const clean = document.getElementById('cleanLayer');
   if(!container || !handle || !divider || !clean) return;
+  let lastRatio = 0.5; // remember split position (0..1)
 
   const moveTo = (clientX) => {
     const r = container.getBoundingClientRect();
-    // Clamp X within container bounds
     const clamped = Math.min(Math.max(clientX, r.left), r.right);
     const x = clamped - r.left; // pixel position within container
-    // Position handle & divider exactly at x (in pixels)
     handle.style.left = x + 'px';
     divider.style.left = x + 'px';
-    // Clip the CLEAN (after) layer so the split aligns exactly with divider
     const rightInset = (r.width - x);
     clean.style.clipPath = `inset(0 ${rightInset}px 0 0)`;
+    // store ratio for responsive resize handling
+    lastRatio = r.width > 0 ? (x / r.width) : lastRatio;
   };
 
   const startDrag = (clientX) => { moveTo(clientX); dragging = true; };
@@ -702,6 +1300,10 @@ if(extrasWrap){
   // Set initial position to dead center in pixels for perfect alignment
   const r0 = container.getBoundingClientRect();
   moveTo(r0.left + r0.width / 2);
+  addEventListener('resize', ()=>{
+    const r = container.getBoundingClientRect();
+    moveTo(r.left + r.width * lastRatio);
+  });
 })();
 
 // Explicitly set Before/After images for the slider
@@ -712,25 +1314,33 @@ if(extrasWrap){
         beforeAfterContainers.forEach(container => {
             const beforeImg = container.querySelector('img:first-child');
             const afterImg = container.querySelector('img:last-child');
-            if (beforeImg) beforeImg.src = "Clean1200.jpeg";
-            if (afterImg) afterImg.src = "Dirty1200.jpeg";
+            if (beforeImg) beforeImg.src = "Dirty1200.jpeg";
+            if (afterImg) afterImg.src = "Clean1200.jpeg";
         });
     } else {
         // Fallback: set specific IDs for this site's markup
         const before = document.getElementById('beforeLayer');
         const after = document.getElementById('cleanLayer');
-        if (before) before.src = "Clean1200.jpeg";
-        if (after) after.src = "Dirty1200.jpeg";
+        if (before) before.src = "Dirty1200.jpeg";
+        if (after) after.src = "Clean1200.jpeg";
     }
 })();
 /* ---------- COUPON COPY + CONFETTI ---------- */
-document.getElementById('copyCoupon').addEventListener('click', async ()=>{
+document.getElementById('copyCoupon').addEventListener('click', ()=>{
   const code = document.getElementById('coupon').textContent.trim();
-  try{
-    await navigator.clipboard.writeText(code);
-    burstConfetti();
-    const b = document.getElementById('copyCoupon'); b.textContent = 'Copied!'; setTimeout(()=>b.textContent='Copy', 1500);
-  }catch(e){ alert('Copy failed—code: '+code); }
+  const dInput = document.getElementById('discount');
+
+  // Fill discount input in the contact form and trigger existing listeners to recalc totals
+  if (dInput) {
+    dInput.value = code;
+    dInput.dispatchEvent(new Event('input', { bubbles: true }));
+    dInput.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  // Celebrate & give quick feedback
+  burstConfetti();
+  const b = document.getElementById('copyCoupon');
+  if (b) { b.textContent = 'Applied'; setTimeout(()=> b.textContent = 'Apply', 1500); }
 });
 function burstConfetti(){
   const TOTAL = 170; // more pieces for full-width effect
@@ -757,12 +1367,219 @@ function burstConfetti(){
 }
 
 /* ---------- BOOKING ENABLE / VALIDATION ---------- */
+// --- Booking via Telegram ---------------------------------------------
+// This section collects data from the contact form + live quoter snapshot
+// and sends a formatted booking request to your Telegram bot.
+// To change the destination, set TELEGRAM_CHAT_ID or add ?tg_chat_id=YOUR_ID
+// to the page URL. Ensure you've messaged your bot at least once in Telegram.
+// ---- Telegram Bot submission config ----
+const TELEGRAM_BOT_TOKEN = '7953566875:AAGhDPVvyyEdH3yyu8DeFezKgEMDsDNC_-A';
+const TELEGRAM_CHAT_ID   = '6699962258'; // e.g. 123456789 (DM) or -1001234567890 (supergroup)
+
+function resolveChatId(){
+  // 1) hardcoded const, 2) URL param ?tg_chat_id=..., 3) localStorage
+  const urlId = new URLSearchParams(location.search).get('tg_chat_id');
+  const stored = localStorage.getItem('tg_chat_id');
+  const id = (TELEGRAM_CHAT_ID && String(TELEGRAM_CHAT_ID).trim()) || (urlId && String(urlId).trim()) || (stored && String(stored).trim()) || '';
+  if (id) localStorage.setItem('tg_chat_id', id);
+  return id;
+}
+// Extract the bot's own numeric id from the token
+function tokenBotId(){
+  try{ return TELEGRAM_BOT_TOKEN.split(':')[0]; }catch(e){ return ''; }
+}
+// Try to discover a valid chat_id by calling getUpdates (works if you've sent /start to the bot at least once)
+async function discoverChatIdViaUpdates(){
+  try{
+    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates`;
+    const res = await fetch(url, { method:'GET' });
+    if(!res.ok) return null;
+    const j = await res.json();
+    if(!j.ok || !Array.isArray(j.result)) return null;
+    // Look for the most recent message/update with a chat id we can use (ignore the bot's own id)
+    for(let i = j.result.length - 1; i >= 0; i--){
+      const upd = j.result[i];
+      const chat = upd.message?.chat || upd.channel_post?.chat || upd.my_chat_member?.chat || null;
+      const cid = chat?.id ? String(chat.id) : '';
+      if(cid && cid !== tokenBotId()){
+        localStorage.setItem('tg_chat_id', cid);
+        return cid;
+      }
+    }
+    return null;
+  }catch(e){ return null; }
+}
+
+// Basic HTML escape for safe Telegram HTML formatting
+function esc(s){
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// Build a nicely formatted Telegram message using the current form + quote snapshot
+function buildTelegramMessage(){
+  const snap = gatherQuoteSnapshot();
+  const name = document.getElementById('name')?.value || '';
+  const phone = phoneInput.value.trim();
+  const vehicle = document.getElementById('vehicle')?.value || '';
+  const address = document.getElementById('address')?.value || '';
+  const zip = document.getElementById('zip')?.value || '';
+  const discountCode = document.getElementById('discount')?.value || '';
+
+  const lines = [
+    `<b>New Booking Request 🚗</b>`,
+
+    `👤 Name: ${esc(name)}`,
+    `📞 Phone: ${esc(phone)}`,
+    `🚗 Vehicle: ${esc(vehicle)}`,
+    `📍 Address: ${esc(address)}`,
+    `✉️ ZIP: ${esc(zip)}`,
+
+    discountCode ? `💯 Discount Code: ${esc(discountCode)}` : null,
+    `<b>Requested Services 🧼</b>`,
+    `Vehicle Size: ${esc(snap.vehicleSize)}`,
+    `Services: ${esc((snap.services.join(', ') || 'None'))}`,
+    `Extras: ${esc((snap.extras.join(', ') || 'None'))}`,
+    `Estimated Total: ${esc('$'+snap.price.min)} – ${esc('$'+snap.price.max)}`,
+    `Coupon Applied: ${esc(snap.coupon)}`,
+    ``,
+  ].filter(Boolean);
+
+  // Telegram has a 4096 char limit; truncate if needed
+  let text = lines.join('\n');
+  if (text.length > 4000){
+    text = text.slice(0, 4000) + '\n…(truncated)';
+  }
+  return text;
+}
+
+// Telegram GET requires URL-encoding and we want compact line breaks
+function encodeTelegramText(s){
+  // Telegram GET requires URL-encoding and we want compact line breaks
+  return encodeURIComponent(String(s).replace(/\n/g,'\n'));
+}
+
+// Resilient Telegram sender: POST first, fallback to CORS-free GET image beacon with diagnostics
+async function sendTelegramMessage(chatId, text){
+  const tgURL = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+  // First try a standard POST (works if CORS is allowed in your context)
+  try{
+    const res = await fetch(tgURL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: text,
+        parse_mode: 'HTML',
+        disable_web_page_preview: true
+      })
+    });
+    let data = null;
+    try { data = await res.json(); } catch(_) {}
+
+    if (res.ok && data && data.ok === true){
+      return { ok:true };
+    } else {
+      // Bubble up Telegram's error if available (e.g., 400: chat not found)
+      const desc = (data && data.description) ? data.description : `HTTP ${res.status}`;
+      return { ok:false, code: res.status, description: desc, from:'post' };
+    }
+  }catch(err){
+    // Network error on POST - continue to beacon fallback
+  }
+
+  // Fallback: CORS-free GET via Image beacon (no response we can read)
+  // Keep the URL under ~1800 chars to be safe
+  const base = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+  const params = `?chat_id=${encodeURIComponent(chatId)}&parse_mode=HTML&disable_web_page_preview=1&text=${encodeTelegramText(text).slice(0,1700)}`;
+  const hint = await new Promise((resolve)=>{
+    const img = new Image();
+    const timer = setTimeout(()=>{ resolve('timeout'); }, 3500);
+    img.onload = ()=>{ clearTimeout(timer); resolve('beacon-ok'); };
+    img.onerror = ()=>{ clearTimeout(timer); resolve('beacon-error'); };
+    img.src = base + params; // fire-and-forget
+  });
+  // If the image loaded, we assume Telegram accepted it
+  if (hint === 'beacon-ok'){ return { ok:true, from:'beacon' }; }
+  return { ok:false, description:'Beacon send failed', from:'beacon' };
+}
+
+// Compute the current quote range (min/max and friendly text) using current UI state
+function getCurrentQuoteRange(){
+  const PRICE = {
+    exterior:    {min:80,  max:110},
+    interior:    {min:110, max:150},
+    both:        {min:150, max:200},
+    deepExterior:{min:130, max:170},
+    deepInterior:{min:170, max:220},
+    deepBoth:    {min:250, max:350}
+  };
+  let min = 0, max = 0;
+
+  if (deepExterior && deepInterior){
+    min += PRICE.deepBoth.min; max += PRICE.deepBoth.max;
+  } else if (deepExterior){
+    min += PRICE.deepExterior.min; max += PRICE.deepExterior.max;
+  } else if (deepInterior){
+    min += PRICE.deepInterior.min; max += PRICE.deepInterior.max;
+  } else if (exterior && interior){
+    min += PRICE.both.min; max += PRICE.both.max;
+  } else if (exterior && !interior){
+    min += PRICE.exterior.min; max += PRICE.exterior.max;
+  } else if (interior && !exterior){
+    min += PRICE.interior.min; max += PRICE.interior.max;
+  }
+
+  // Extras (fixed add-ons)
+  for(const x of extrasList){ if(extras[x.key]){ min += x.price; max += x.price; } }
+
+  // apply discount equally across range
+  if (typeof discountValue !== 'undefined' && discountValue > 0){
+    min = Math.max(0, min - discountValue);
+    max = Math.max(0, max - discountValue);
+  }
+
+  const rangeText = (min === max)
+    ? min.toLocaleString(undefined,{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0})
+    : `${min.toLocaleString(undefined,{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0})}–${max.toLocaleString(undefined,{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0})}`;
+
+  return { min, max, text: rangeText };
+}
+
+// Gather a clean snapshot of the current selections to send with the form
+function gatherQuoteSnapshot(){
+  const services = [];
+  if (exterior) services.push('Exterior');
+  if (interior) services.push('Interior');
+  if (deepExterior) services.push('Deep Exterior');
+  if (deepInterior) services.push('Deep Interior');
+
+  const extrasPicked = extrasList
+    .filter(x => extras[x.key] === true)
+    .map(x => x.label);
+
+  return {
+    vehicleSize: carSize || 'Not selected',
+    services,
+    extras: extrasPicked,
+    price: getCurrentQuoteRange(), // {min,max,text}
+    coupon: (typeof discountValue !== 'undefined' && discountValue > 0) ? `SHINE15 (-$${discountValue})` : 'None',
+    timestamp: new Date().toISOString(),
+    page: location.href
+  };
+}
+
 (function(){
   const submit = document.getElementById('submitBtn');
   const zip = document.getElementById('zip');
   const zipMsg = document.getElementById('zipMsg');
   const ids = ['name','phone','vehicle','address','zip'];
   const inputs = ids.map(id=>document.getElementById(id)).filter(Boolean);
+
+  // Prevent native form submission (Enter key, etc)
+  const form = document.getElementById('leadForm');
+  if (form){
+    form.addEventListener('submit', (e)=> e.preventDefault());
+  }
 
   function check(){
     const ok = inputs.every(i=>!!i.value) && inServiceArea(zip.value);
@@ -774,15 +1591,90 @@ function burstConfetti(){
     }
   }
   inputs.forEach(i=> i.addEventListener('input', check));
-  if(submit) submit.addEventListener('click', (e)=>{
+
+  // Clear status on input (quality-of-life)
+  if (document.getElementById('formStatus')) inputs.forEach(i => i.addEventListener('input', () => { document.getElementById('formStatus').textContent = ''; }));
+
+  if (submit) submit.addEventListener('click', async (e) => {
     e.preventDefault();
-    burstConfetti();
-    submit.textContent = 'Request sent 🎉';
+
+    const status = document.getElementById('formStatus');
+    function setStatus(msg, ok){
+      if (!status) return;
+      status.textContent = msg;
+      status.style.color = ok ? 'var(--ok)' : 'var(--danger)';
+    }
+
+    // Basic validation reuse
+    const okAll = inputs.every(i => !!i.value) && inServiceArea(zip.value);
+    if (!okAll){
+      setStatus('Please complete all fields and ensure your ZIP is in our service area.', false);
+      return;
+    }
+
+    // Snapshot current selections and price
+    const snap = gatherQuoteSnapshot();
+
+    // Prepare Telegram message
+    const messageText = buildTelegramMessage();
+
+    // UI: sending state
     submit.disabled = true;
-    // swap accent -> primary and force white text
-    submit.classList.remove('btn-accent');
-    submit.classList.add('btn-primary');
-    submit.style.color = '#ffffff';
+    const oldText = submit.textContent;
+    submit.textContent = 'Sending…';
+    setStatus('', true);
+
+    try{
+      let chatId = resolveChatId();
+      // Guard: if the configured chat id equals the bot's own id, it's invalid
+      const botId = tokenBotId();
+      if (chatId === botId) chatId = '';
+      if (!chatId){
+        const botId = tokenBotId();
+        const misMatch = (String(TELEGRAM_CHAT_ID||'').trim() === botId);
+        const hint = misMatch
+          ? 'Config issue: chat_id equals your bot id. Open Telegram, send /start to your bot from your account, then set your actual chat_id (not the bot id).'
+          : 'Setup needed: open Telegram, send /start to your bot (or add it to a group), then reload this page. You can also add ?tg_chat_id=YOUR_ID to the URL once.';
+        setStatus(hint, false);
+        submit.disabled = false;
+        submit.textContent = oldText;
+        return;
+      }
+      // Use resilient Telegram sender (POST first, fallback to GET beacon)
+      const sendRes = await sendTelegramMessage(chatId, messageText);
+      if (sendRes.ok){
+        burstConfetti();
+        submit.textContent = 'Request sent 🎉';
+        submit.classList.remove('btn-accent');
+        submit.classList.add('btn-primary');
+        submit.style.color = '#ffffff';
+        setStatus('Thanks! We received your request and will text you to confirm a time.', true);
+        // Clear form fields and reset UI after successful send
+        if (form) form.reset();
+        // Reset optional discount state + message
+        if (typeof discountValue !== 'undefined') { discountValue = 0; }
+        const dMsgEl = document.getElementById('discountMsg');
+        if (dMsgEl) { dMsgEl.textContent = ''; dMsgEl.style.color = ''; }
+        // Reset service selections and extras
+        exterior = false; interior = false; deepExterior = false; deepInterior = false;
+        for (const x of extrasList) { extras[x.key] = false; }
+        syncServiceButtons();
+        const extrasWrap = document.getElementById('extras');
+        if (extrasWrap) { extrasWrap.querySelectorAll('button').forEach(b => b.classList.remove('active')); }
+        recalc();
+        updateBreakdownButtonVisibility();
+      } else {
+        const detail = sendRes.description ? ` (${sendRes.description})` : '';
+        throw new Error('Telegram send failed' + detail);
+      }
+    } catch(err){
+      console.error('Submit error', err);
+      const msg = (err && err.message) ? `Sorry—there was a problem sending your request: ${err.message}` : 'Sorry—there was a problem sending your request.';
+      setStatus(msg, false);
+      submit.disabled = false;
+      submit.textContent = oldText;
+      submit.classList.add('btn-accent');
+    }
   });
   check();
 
@@ -821,6 +1713,407 @@ function burstConfetti(){
 document.getElementById('year').textContent = new Date().getFullYear();
 syncServiceButtons();
 recalc();
+updateBreakdownButtonVisibility();
+
+// --------- PHONE INPUT FORMATTING & VALIDATION ---------
+function digitsOnly(str) {
+  return str.replace(/\D/g, "");
+}
+
+function formatPhone(value) {
+  const digits = digitsOnly(value).substring(0, 10);
+  if (digits.length < 4) return digits;
+  if (digits.length < 7) return digits.slice(0,3) + "-" + digits.slice(3);
+  return digits.slice(0,3) + "-" + digits.slice(3,6) + "-" + digits.slice(6);
+}
+
+function isValidPhone(value) {
+  return digitsOnly(value).length === 10;
+}
+
+// attach validation/formatting
+const phoneInput = document.querySelector("#phone");
+const phoneMsg = document.querySelector("#phoneMsg");
+const submitBtn = document.querySelector("button[type='submit'], #submitBtn");
+
+if (phoneInput && phoneMsg && submitBtn) {
+  phoneInput.addEventListener("input", () => {
+    phoneInput.value = formatPhone(phoneInput.value);
+
+    if (isValidPhone(phoneInput.value)) {
+      phoneMsg.textContent = "Looks good.";
+      phoneMsg.classList.remove("text-red-500");
+      phoneMsg.classList.add("text-green-500");
+      submitBtn.disabled = false;
+    } else {
+      phoneMsg.textContent = "Enter a 10-digit number (XXX-XXX-XXXX).";
+      phoneMsg.classList.remove("text-green-500");
+      phoneMsg.classList.add("text-red-500");
+      submitBtn.disabled = true;
+    }
+  });
+}
+</script>
+
+<script>
+/* ---------- WEEKLY WEATHER (viewer location) ---------- */
+(function(){
+  const grid = document.getElementById('wxGrid');
+  const placeEl = document.getElementById('wxPlace');
+  const unitBtn = document.getElementById('wxUnit');
+  if(!grid || !placeEl || !unitBtn) return;
+
+  let state = { unit:'F', tz: 'America/Chicago', lat:null, lon:null, place:null, data:null };
+
+  // Enforce all date formatting to use Chicago time
+  (function enforceChicagoTZ(){
+    const TZ = 'America/Chicago';
+    const origToLocaleString = Date.prototype.toLocaleString;
+    const origToLocaleDateString = Date.prototype.toLocaleDateString;
+    const origToLocaleTimeString = Date.prototype.toLocaleTimeString;
+    function withTZ(method){
+      return function(locale, options){
+        const opts = Object.assign({}, options || {}, { timeZone: TZ });
+        return method.call(this, locale || undefined, opts);
+      };
+    }
+    Date.prototype.toLocaleString = withTZ(origToLocaleString);
+    Date.prototype.toLocaleDateString = withTZ(origToLocaleDateString);
+    Date.prototype.toLocaleTimeString = withTZ(origToLocaleTimeString);
+  })();
+
+  const WMO = {
+    0: ['Clear','☀️'], 1:['Mainly clear','🌤️'], 2:['Partly cloudy','⛅'], 3:['Overcast','☁️'],
+    45:['Fog','🌫️'], 48:['Rime fog','🌫️'], 51:['Light drizzle','🌦️'], 53:['Drizzle','🌦️'], 55:['Heavy drizzle','🌧️'],
+    56:['Freezing drizzle','🌧️'], 57:['Frz. drizzle','🌧️'], 61:['Light rain','🌦️'], 63:['Rain','🌧️'], 65:['Heavy rain','🌧️'],
+    66:['Freezing rain','🌧️'], 67:['Freezing rain','🌧️'], 71:['Light snow','🌨️'], 73:['Snow','🌨️'], 75:['Heavy snow','❄️'],
+    77:['Snow grains','🌨️'], 80:['Rain showers','🌦️'], 81:['Shower','🌧️'], 82:['Heavy shower','🌧️'], 85:['Snow shw','🌨️'], 86:['Heavy snow shw','❄️'],
+    95:['Thunderstorm','⛈️'], 96:['Tstorm w/ hail','⛈️'], 99:['Severe tstorm','⛈️']
+  };
+
+  function kToF(c){ return c * 9/5 + 32; }
+  function fmtTemp(c){ return state.unit==='F' ? Math.round(kToF(c*1)) + '°' : Math.round(c) + '°'; }
+  function mph(ms){ return state.unit==='F' ? Math.round(ms*2.23694) + ' mph' : Math.round(ms*3.6) + ' km/h'; }
+  function dayLabel(iso){ const d = new Date(iso); return d.toLocaleDateString(undefined,{weekday:'short'}); }
+
+      function render(){
+        if(!state.data) return;
+        grid.innerHTML = '';
+        const { daily } = state.data;
+        const todayIso = (new Date()).toISOString().slice(0,10);
+        for(let i=0;i<daily.time.length;i++){
+          const code = daily.weathercode[i];
+          const [desc, icon] = WMO[code] || ['Weather','🌡️'];
+          const hiC = daily.temperature_2m_max[i];
+          const loC = daily.temperature_2m_min[i];
+          const pr = daily.precipitation_sum[i];
+          // Only highlight if rain is exactly 0 mm
+          const greatDay = pr === 0;
+          const dateStr = new Date(daily.time[i]).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+          const weekdayStr = dayLabel(daily.time[i]);
+          const isToday = daily.time[i] === todayIso;
+          const dateHTML = isToday
+            ? `<div class="date text-base font-bold mb-1" style="color:var(--accent);">${dateStr}</div>`
+            : `<div class="date text-base font-bold text-white mb-1">${dateStr}</div>`;
+          const card = document.createElement('div');
+          card.className = 'wx-card rounded-xl p-3 border edge ' + (greatDay ? 'bg-white/10 border-white/20 glow' : 'panel');
+
+          let descText = WMO[code] ? WMO[code][0] : desc;
+          if (descText && descText.length > 26) descText = descText.slice(0, 26) + '…';
+
+          card.innerHTML = `
+            <div class="flex flex-col items-start">
+              ${dateHTML}
+              <div class="text-sm text-[var(--sub)]">${weekdayStr}</div>
+            </div>
+            <div class="icon text-white font-bold leading-none">${icon}</div>
+            <div class="temps mt-1 text-white">${fmtTemp(hiC)}<span class="opacity-70">/${fmtTemp(loC)}</span></div>
+            <div class="desc">${descText}</div>
+          `;
+          grid.appendChild(card);
+        }
+      }
+
+  unitBtn.addEventListener('click', ()=>{ state.unit = state.unit==='F'?'C':'F'; unitBtn.textContent = '°' + state.unit; render(); });
+
+  async function fetchForecast(lat, lon){
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode,windspeed_10m_max&timezone=${encodeURIComponent(state.tz)}`;
+    const res = await fetch(url);
+    if(!res.ok) throw new Error('Weather fetch failed');
+    state.data = await res.json();
+    render();
+  }
+
+  async function reverseGeocode(lat, lon){
+    try{
+      const r = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+      if(r.ok){ const j = await r.json(); return j.address.city || j.address.town || j.address.village || j.address.hamlet || j.display_name || 'Your area'; }
+    }catch(e){}
+    return 'Your area';
+  }
+
+  async function locate(){
+    // 1) Precise (with permission)
+    const precise = new Promise((resolve)=>{
+      if(!navigator.geolocation) return resolve(null);
+      navigator.geolocation.getCurrentPosition(
+        pos=> resolve({lat:pos.coords.latitude, lon:pos.coords.longitude}),
+        ()=> resolve(null),
+        { enableHighAccuracy:false, timeout:8000, maximumAge:600000 }
+      );
+    });
+    // 2) IP fallback
+    const ipFallback = fetch('https://ipapi.co/json/').then(r=> r.ok ? r.json() : null).then(j=> j? {lat:j.latitude, lon:j.longitude, city:j.city}: null).catch(()=>null);
+
+    const got = (await precise) || (await ipFallback);
+    if(!got) throw new Error('Location unavailable');
+    state.lat = got.lat; state.lon = got.lon; state.place = got.city || null;
+    if(!state.place) state.place = await reverseGeocode(state.lat, state.lon);
+    placeEl.textContent = state.place;
+    await fetchForecast(state.lat, state.lon);
+  }
+
+  locate().catch(()=>{ placeEl.textContent = 'Location unavailable'; grid.innerHTML = '<div class="text-sm text-[var(--sub)]">Unable to access your location. Try enabling location services in your browser.</div>'; });
+})();
+</script>
+
+<script>
+  // Service Breakdown Bottom Sheet Logic
+  const bdOverlay = document.getElementById("bdOverlay");
+  const bdSheet = document.getElementById("bdSheet");
+  const bdClose = document.getElementById("bdClose");
+  const bdBook = document.getElementById("bdBook");
+  const bdList = document.getElementById("bdList");
+  const bdTotal = document.getElementById("bdTotal");
+  const bdNotes = document.getElementById("bdNotes");
+  const bdSubtitle = document.getElementById("bdSubtitle");
+
+  // Included items for Exterior service
+  const EXTERIOR_INCLUDED = [
+    'Foam Hand Wash',
+    'Microfiber Drying',
+    'In & Out Windows Cleaned',
+    'Tire & Rims Detailed',
+    'Tire Shine Applied',
+    'Clay Bar',
+    'Applied Ceramic Spray',
+    'Applied Wax Spray'
+  ];
+
+  // Included items for Interior Detail
+  const INTERIOR_INCLUDED = [
+    'Vacuum Entire Interior (Cabin, Trunk, Under Seats, Compartments)',
+    'Detail (Cup Holders, Vents, Door Jambs, Dash)',
+    'In & Out Windows Cleaned',
+    'Full Shine Application',
+    'Remove Small Stains (If Applicable)',
+    'Deodorize',
+    'Leather Conditioner\n(If Applicable)',
+    'Cleaned Carpets & Mats'
+  ];
+
+  // Trigger elements (adjust selectors as needed)
+  const bdTriggers = document.querySelectorAll(".bd-trigger, #viewBreakdown, #totalBtn, #totalText");
+
+  function openSheet() {
+    buildBreakdownFromState();
+    bdOverlay.classList.add('open');
+    bdSheet.classList.add('open');
+  }
+
+  function closeSheet() {
+    bdOverlay.classList.remove("open");
+    bdSheet.classList.remove("open");
+  }
+
+  bdTriggers.forEach(el => {
+    el.addEventListener("click", openSheet);
+  });
+
+  // Ensure direct IDs are also wired (in case NodeList was empty at parse time)
+  document.getElementById('viewBreakdown')?.addEventListener('click', openSheet);
+  document.getElementById('totalBtn')?.addEventListener('click', openSheet);
+  document.getElementById('totalText')?.addEventListener('click', openSheet);
+
+  bdClose.addEventListener("click", closeSheet);
+  bdOverlay.addEventListener("click", closeSheet);
+  bdBook.addEventListener("click", closeSheet);
+
+  // Live breakdown builder from current quoter state
+  function buildBreakdownFromState(){
+    if(!bdList) return;
+    bdList.innerHTML = '';
+
+    // 1) Services (only Exterior requested for detailed includes)
+    const hasExterior = (typeof exterior !== 'undefined') && !!exterior;
+    const hasAnyDeep = (typeof deepExterior !== 'undefined' && deepExterior) || (typeof deepInterior !== 'undefined' && deepInterior);
+    const hasInterior = (typeof interior !== 'undefined') && !!interior;
+
+    let anyRows = false;
+
+    if(hasExterior){
+      const itemsHTML = EXTERIOR_INCLUDED.map(it=>`<div>• ${it}</div>`).join('');
+      const row = document.createElement('div');
+      row.className = 'bd-row';
+      row.innerHTML = `
+        <div class="bd-left">
+          <div class="bd-icon">🚗</div>
+          <div>
+            <div class="text-white font-semibold">Exterior Detail</div>
+            <div class="bd-items">${itemsHTML}</div>
+          </div>
+        </div>
+        <div class="text-sm text-white/80 whitespace-nowrap">Included</div>
+      `;
+      bdList.appendChild(row);
+      anyRows = true;
+    }
+
+    // Interior Detail row (new)
+    if(hasInterior){
+      const itemsHTMLi = INTERIOR_INCLUDED.map(it=>`<div>• ${it}</div>`).join('');
+      const rowI = document.createElement('div');
+      rowI.className = 'bd-row';
+      rowI.innerHTML = `
+        <div class="bd-left">
+          <div class="bd-icon">🧽</div>
+          <div>
+            <div class="text-white font-semibold">Interior Detail</div>
+            <div class="bd-items">${itemsHTMLi}</div>
+          </div>
+        </div>
+        <div class="text-sm text-white/80 whitespace-nowrap">Included</div>
+      `;
+      bdList.appendChild(rowI);
+      anyRows = true;
+    }
+
+    // Deep variants
+    // Deep Exterior: include all Exterior items + note about dirtier cars & more thorough cleaning
+    if (typeof deepExterior !== 'undefined' && deepExterior) {
+      const note = `<div class="text-[var(--sub)] italic mb-1">Includes everything in <span class="text-white">Exterior Detail</span>. Recommended for dirtier cars and a more thorough cleaning.</div>`;
+      const itemsHTMLDeepEx = note + EXTERIOR_INCLUDED.map(it=>`<div>• ${it}</div>`).join('');
+      const rowDeepEx = document.createElement('div');
+      rowDeepEx.className = 'bd-row';
+      rowDeepEx.innerHTML = `
+        <div class="bd-left">
+          <div class="bd-icon">✨</div>
+          <div>
+            <div class="text-white font-semibold">Deep Exterior Detail</div>
+            <div class="bd-items">${itemsHTMLDeepEx}</div>
+          </div>
+        </div>
+        <div class="text-sm text-white/80 whitespace-nowrap">Included</div>
+      `;
+      bdList.appendChild(rowDeepEx);
+      anyRows = true;
+    }
+
+    // Deep Interior: include all Interior items + note about dirtier cars & more thorough cleaning
+    if (typeof deepInterior !== 'undefined' && deepInterior) {
+      const noteI = `<div class="text-[var(--sub)] italic mb-1">Includes everything in <span class="text-white">Interior Detail</span>. Recommended for dirtier cars and a more thorough cleaning.</div>`;
+      const itemsHTMLDeepIn = noteI + INTERIOR_INCLUDED.map(it=>`<div>• ${it}</div>`).join('');
+      const rowDeepIn = document.createElement('div');
+      rowDeepIn.className = 'bd-row';
+      rowDeepIn.innerHTML = `
+        <div class="bd-left">
+          <div class="bd-icon">✨</div>
+          <div>
+            <div class="text-white font-semibold">Deep Interior Detail</div>
+            <div class="bd-items">${itemsHTMLDeepIn}</div>
+          </div>
+        </div>
+        <div class="text-sm text-white/80 whitespace-nowrap">Included</div>
+      `;
+      bdList.appendChild(rowDeepIn);
+      anyRows = true;
+    }
+
+    // 2) Extras (selected ones with prices)
+    if(typeof extrasList !== 'undefined' && Array.isArray(extrasList)){
+      extrasList.forEach(x=>{
+        const isOn = extras && extras[x.key] === true;
+        if(isOn){
+          const row = document.createElement('div');
+          row.className = 'bd-row';
+
+          // assign icons by name
+          let icon = "✨";
+          if (x.label.includes("Pet Hair")) icon = "🐾";
+          if (x.label.includes("Odor")) icon = "🌬️";
+          if (x.label.includes("Engine")) icon = "🔧";
+          if (x.label.includes("Wax")) icon = "🛡️";
+
+          row.innerHTML = `
+            <div class="bd-left">
+              <div class="bd-icon bg-purple-600">${icon}</div>
+              <div class="text-white font-semibold">${x.label}</div>
+            </div>
+            <div class="text-sm text-white/90 whitespace-nowrap">+${(typeof currency==='function')? currency(x.price) : ('$'+x.price)}</div>
+          `;
+          bdList.appendChild(row);
+          anyRows = true;
+        }
+      });
+    }
+
+    if(!anyRows){
+      bdList.innerHTML = '<div class="text-sm text-[var(--sub)]">No services selected yet. Choose options in the builder to see the breakdown.</div>';
+    }
+
+    // 3) Subtitle and notes
+    if(bdSubtitle){ bdSubtitle.textContent = (typeof carSize !== 'undefined' && carSize) ? `${carSize} • Live quote details` : 'Live quote details'; }
+
+    const notes = [];
+    if(typeof discountValue !== 'undefined' && discountValue>0) notes.push(`Discount applied: -$${discountValue}`);
+    if(typeof carSize === 'undefined' || !carSize) notes.push('Tip: select a vehicle size');
+    if(bdNotes) bdNotes.textContent = notes.join(' • ');
+
+    // 4) Total from current UI
+    if(bdTotal){
+      const totalEl = document.getElementById('totalText');
+      bdTotal.textContent = totalEl ? totalEl.textContent : '$0';
+    }
+  }
+</script>
+</script>
+</script>
+<script>
+/* ---------- SCROLL REVEAL (IntersectionObserver) ---------- */
+(function(){
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const els = Array.from(document.querySelectorAll(
+    '.panel.edge, .tilt, #results img, .wx-card, #services .grid > div, #quote #builderCard, #quote .panel.edge, #faq details, footer'
+  ));
+
+  // Add baseline reveal state + gentle stagger
+  els.forEach((el,i)=>{ el.classList.add('reveal'); el.dataset.delay = String((i % 3) + 1); });
+
+  const io = new IntersectionObserver((entries, obs)=>{
+    entries.forEach(ent=>{
+      if(ent.isIntersecting){ ent.target.classList.add('in'); obs.unobserve(ent.target); }
+    });
+  }, { threshold: .12 });
+
+  els.forEach(el=> io.observe(el));
+})();
+</script>
+<script>
+/* ---------- CLICK RIPPLE (attach to hero primary buttons) ---------- */
+(function(){
+  const btns = document.querySelectorAll('#home .btn-primary');
+  btns.forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      const r = btn.getBoundingClientRect();
+      const x = e.clientX - r.left, y = e.clientY - r.top;
+      btn.style.setProperty('--ripple-x', x + 'px');
+      btn.style.setProperty('--ripple-y', y + 'px');
+      btn.classList.remove('ripple'); void btn.offsetWidth; btn.classList.add('ripple');
+      btn.addEventListener('animationend', ()=> btn.classList.remove('ripple'), { once:true });
+    });
+  });
+})();
 </script>
 </body>
 </html>
