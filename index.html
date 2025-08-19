@@ -670,13 +670,13 @@ header.sticky ~ section#home { margin-top: 20px !important; }
       <div class="rounded-2xl panel edge overflow-hidden select-none">
         <div class="px-4 pt-4 pb-4"><h3 class="text-xl font-semibold text-white">Swipe to see the difference</h3></div>
         <div id="ba" class="ba-container w-full mb-0">
-          <!-- Dirty layer -->
-          <img id="beforeLayer" src="DirtyCar.jpeg" alt="Before detailing"
+          <!-- Clean example as "before" -->
+          <img id="beforeLayer" src="CleanCar.jpeg" alt="Before (clean example)"
                class="absolute inset-0 w-full h-full"
                loading="eager" decoding="async"
                style="object-fit:cover;" />
-          <!-- Clean layer -->
-          <img id="cleanLayer" src="CleanCar.jpeg" alt="After detailing"
+          <!-- Dirty example as "after" -->
+          <img id="cleanLayer" src="DirtyCar.jpeg" alt="After (dirty example)"
                class="absolute inset-0 w-full h-full"
                loading="eager" decoding="async"
                style="clip-path: inset(0 50% 0 0); object-fit:cover;" />
@@ -1321,8 +1321,8 @@ function updateBreakdownButtonVisibility() {
         // Fallback: set specific IDs for this site's markup
         const before = document.getElementById('beforeLayer');
         const after = document.getElementById('cleanLayer');
-        if (before) before.src = "Dirty1200.jpeg";
-        if (after) after.src = "Clean1200.jpeg";
+        if (before) before.src = "Clean1200.jpeg";
+        if (after) after.src = "Dirty1200.jpeg";
     }
 })();
 /* ---------- COUPON COPY + CONFETTI ---------- */
