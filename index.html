@@ -116,6 +116,9 @@
   .magnet-wrap{display:inline-block; perspective:600px}
   .sticky-cta{position:fixed; bottom:0; left:0; right:0; z-index:50}
   .sticky-bar{ background:rgba(0,0,0,0.75); backdrop-filter:blur(6px); }
+  /* Float Quote: hidden by default, animated in after using the quoter */
+  .float-quote{ opacity:0; transform: translateY(12px) scale(.98); pointer-events:none; transition: opacity .25s ease, transform .25s ease; }
+  .float-quote.show{ opacity:1; transform: translateY(0) scale(1); pointer-events:auto; }
   /* Before/After */
   .ba-container{position:relative; height:clamp(220px, 50vw, 480px); touch-action:none; line-height:0}
   .ba-handle{position:absolute; top:50%; transform:translate(-50%,-50%); width:44px; height:44px; border-radius:9999px; background:#111827; color:#fff; display:grid; place-items:center; border:1px solid rgba(255,255,255,.2); box-shadow:0 10px 20px rgba(0,0,0,.45); cursor:ew-resize; z-index:10}
@@ -414,8 +417,8 @@
   /* (rules removed per instructions; only :root remains) */
 }
 /* Gap under sticky header */
-header.sticky ~ section#home { margin-top: 20px !important; }
-@media (max-width: 640px){ header.sticky ~ section#home { margin-top: 20px !important; } }
+header.sticky ~ section#home { margin-top: 4px !important; }
+@media (max-width: 640px){ header.sticky ~ section#home { margin-top: 4px !important; } }
 </style>
 <!-- Structured Data: Local Business + Service Area -->
 <script type="application/ld+json">
@@ -447,6 +450,9 @@ header.sticky ~ section#home { margin-top: 20px !important; }
   }],
   "sameAs": []
 }
+// Always scroll to top on page load/refresh
+window.addEventListener('beforeunload', () => { window.scrollTo(0, 0); });
+window.addEventListener('load', () => { window.scrollTo(0, 0); });
 </script>
 
 <!-- Structured Data: FAQPage -->
@@ -497,7 +503,7 @@ header.sticky ~ section#home { margin-top: 20px !important; }
 <canvas id="stars" class="fixed inset-0 -z-10"></canvas>
 
 <!-- Header -->
-<header class="sticky top-0 z-50 bg-[rgba(11,13,18,.6)] glass border-b border-white/10">
+<header class="sticky top-0 z-50 bg-[rgba(11,13,18,.6)] glass border-b border-white/10 mb-0">
   <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
     <a href="#home" class="flex items-center gap-3">
       <!-- Embedded logo (data URL) -->
@@ -520,8 +526,8 @@ header.sticky ~ section#home { margin-top: 20px !important; }
 </header>
 
 <!-- Hero -->
-<section id="home" class="relative">
-  <div class="max-w-6xl mx-auto px-4 py-14 md:py-20 grid md:grid-cols-2 gap-10 items-center">
+<section id="home" class="relative min-h-[87svh] grid place-items-center">
+  <div class="max-w-6xl mx-auto px-4 py-3 md:py-0 grid md:grid-cols-2 gap-10 items-center mt-0">
     <div>
       <div class="flex gap-2 flex-wrap">
         <span class="chip border-white/10">🚐 We come to you</span>
@@ -866,7 +872,7 @@ header.sticky ~ section#home { margin-top: 20px !important; }
 </div>
 
 <!-- Desktop floating live quote -->
-<div class="hidden md:block fixed bottom-4 right-4 z-40">
+<div id="floatQuoteWrap" class="hidden md:block fixed bottom-4 right-4 z-40 float-quote">
   <div class="rounded-xl edge flex items-center gap-4 px-6 py-4"
     style="background:rgba(11,13,18,0.6); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); box-shadow:0 16px 40px rgba(82,113,255,.15)">
     <span class="text-2xl" style="color:var(--primary)">💧</span>
@@ -1025,6 +1031,15 @@ const baseText = document.getElementById('baseText');
 const totalText = document.getElementById('totalText');
 const quoteBox = document.getElementById('quoteBox');
 const floatingQuote = document.getElementById('floatingQuote');
+// Floating quote: reveal only after user uses the quoter
+const floatQuoteWrap = document.getElementById('floatQuoteWrap');
+let _fqShown = false;
+let _userInteractedWithQuoter = false;
+function showFloatingQuoteOnce(){
+  if (_fqShown || !floatQuoteWrap) return;
+  floatQuoteWrap.classList.add('show');
+  _fqShown = true;
+}
 let discountValue = 0;
 
 function recalc(){
@@ -1082,6 +1097,9 @@ function recalc(){
   bump(totalText);
   bump(document.getElementById('floatingQuote'));
   bump(document.getElementById('mobileQuote'));
+
+  // Show floating quote if user has interacted
+  if (_userInteractedWithQuoter) { showFloatingQuoteOnce(); }
 }
 
 function bundle(size, ext, int, eng, extrasArr){
@@ -1145,6 +1163,8 @@ function bundle(size, ext, int, eng, extrasArr){
         b.style.background='transparent'; b.style.color='#fff'; b.style.borderColor='rgba(255,255,255,.2)';
       });
       btn.style.background='var(--primary)'; btn.style.color='#fff'; btn.style.borderColor='transparent';
+      _userInteractedWithQuoter = true;
+      showFloatingQuoteOnce();
       recalc();
       updateBreakdownButtonVisibility();
     });
@@ -1206,6 +1226,8 @@ function updateBreakdownButtonVisibility() {
         interior = !interior;
         if(interior){ deepInterior = false; }
       }
+      _userInteractedWithQuoter = true;
+      showFloatingQuoteOnce();
       syncServiceButtons();
       recalc();
       updateBreakdownButtonVisibility();
@@ -1226,6 +1248,8 @@ function updateBreakdownButtonVisibility() {
     b.className = 'extra-btn edge';
     b.innerHTML = `<span>${x.label}</span><span class="opacity-80">+${currency(x.price)}</span>`;
     b.addEventListener('click', () => {
+      _userInteractedWithQuoter = true;
+      showFloatingQuoteOnce();
       extras[x.key] = !extras[x.key];
       b.classList.toggle('active', extras[x.key]===true);
       recalc();
