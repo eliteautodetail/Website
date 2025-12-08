@@ -1,0 +1,2192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Elite Auto Detailing • Mobile Detailing | Instant Quote & On-Site Service</title>
+<meta name="description" content="Premium Mobile Car Detailing That Comes To You. Exterior & Interior Packages, Ceramic Spray, Odor Treatment, Pet Hair Removal, Headlight Restore. Get An Instant Quote And Book In Minutes." />
+<!-- SEO: indexing + language + theme -->
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="theme-color" content="#0B0D12" />
+<meta http-equiv="content-language" content="en-US" />
+
+<!-- Open Graph refinements -->
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="https://example.com/" />
+<meta property="og:image:alt" content="Elite Auto Detailing – Mobile detailing results" />
+<meta name="twitter:site" content="@eliteautodetailing" />
+<meta name="twitter:title" content="Elite Auto Detailing — Mobile Detailing that Comes to You" />
+<meta name="twitter:description" content="Instant Quote • Exterior & Interior Packages • Mobile Service in the Tinley Park area" />
+
+<!-- Performance hints -->
+<link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
+<link rel="dns-prefetch" href="https://tile.openstreetmap.org">
+<link rel="canonical" href="https://example.com/" />
+<!-- Favicon / App Icons -->
+<link rel="icon" type="image/svg+xml" href="Tab Logo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="Tab Logo.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="Tab Logo.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="Tab Logo.svg">
+<meta property="og:title" content="Elite Auto Detailing — Mobile Detailing that Comes to You" />
+<meta property="og:description" content="Factory-Quality Results On Your Driveway. Instant Quote, Same-Day Slots, Licensed & Insured." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="logo.png" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<!-- Tailwind (CDN) -->
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+  html{scroll-behavior:smooth}
+  :root{
+    --primary:#5271FF;  /* brand blue */
+    --accent:#C267FF;   /* brand purple */
+    --bg:#0B0D12;       /* deep charcoal */
+    --panel:#0F1117;    /* card surface */
+    --ink:#E6E8EF;      /* light text */
+    --sub:#9aa3b2;      /* secondary text */
+    --ok:#16a34a; --warn:#f59e0b; --danger:#ef4444;
+  }
+  body{background: radial-gradient(1000px 600px at 20% -10%, rgba(82,113,255,.22), transparent 60%), radial-gradient(900px 700px at 120% -30%, rgba(194,103,255,.18), transparent 60%), var(--bg); color:var(--ink)}
+  .glass{backdrop-filter: blur(12px)}
+  .panel{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.08)); border:1px solid rgba(255,255,255,.06)}
+  .btn{display:inline-grid; place-items:center; border-radius:14px; padding:.9rem 1.1rem; font-weight:800; letter-spacing:.2px; transition:filter .08s ease, transform .08s ease, box-shadow .08s ease}
+  .btn-primary{background:linear-gradient(135deg,var(--primary),#6e83ff); color:#fff; box-shadow:0 16px 40px rgba(82,113,255,.35)}
+  /* Ripple effect for #home .btn-primary */
+  #home .btn-primary {
+    position: relative;
+    overflow: hidden;
+  }
+
+  #home .btn-primary::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 50%;
+    top: var(--ripple-y);
+    left: var(--ripple-x);
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    pointer-events: none;
+  }
+  #home .btn-primary::after{ will-change: transform, opacity; }
+
+  #home .btn-primary.ripple::after {
+    animation: ripple-animation 0.6s ease-out forwards;
+  }
+
+  @keyframes ripple-animation {
+    0% {
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0.6;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(15);
+      opacity: 0;
+    }
+  }
+  .btn-accent{background:linear-gradient(135deg,var(--accent),#db86ff); color:#0b0d12; box-shadow:0 16px 40px rgba(194,103,255,.35)}
+  .btn-ghost{background:transparent; border:1px solid rgba(255,255,255,.14); color:var(--ink)}
+  /* Services configure button hover colors by card position */
+  #services .grid > div:nth-child(1) .btn-ghost:hover,
+  #services .grid > div:nth-child(3) .btn-ghost:hover{
+    background:linear-gradient(135deg,var(--accent),#db86ff);
+    color:#0b0d12;
+    border-color:transparent;
+    box-shadow:0 8px 24px rgba(194,103,255,.35);
+  }
+  #services .grid > div:nth-child(2) .btn-ghost:hover,
+  #services .grid > div:nth-child(4) .btn-ghost:hover{
+    background:linear-gradient(135deg,var(--primary),#6e83ff);
+    color:#fff;
+    border-color:transparent;
+    box-shadow:0 8px 24px rgba(82,113,255,.35);
+  }
+  .btn:active{ filter:brightness(1.15); transform:translateY(1px); box-shadow:0 10px 28px rgba(0,0,0,.38) }
+  .chip{display:inline-flex; align-items:center; gap:.5rem; padding:.35rem .7rem; border-radius:999px; font-size:.75rem; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08)}
+  .shadow-soft{box-shadow:0 12px 40px rgba(0,0,0,.35)}
+  .tilt{transform-style:preserve-3d; transition:transform .18s ease}
+  .tilt:hover{transform:rotateX(1.2deg) rotateY(-1.2deg)}
+  .magnet{transition:transform .06s ease-out}
+  .magnet-wrap{display:inline-block; perspective:600px}
+  .sticky-cta{position:fixed; bottom:0; left:0; right:0; z-index:50}
+  .sticky-bar{ background:rgba(0,0,0,0.75); backdrop-filter:blur(6px); }
+  /* Float Quote: hidden by default, animated in after using the quoter */
+  .float-quote{ opacity:0; transform: translateY(12px) scale(.98); pointer-events:none; transition: opacity .25s ease, transform .25s ease; }
+  .float-quote.show{ opacity:1; transform: translateY(0) scale(1); pointer-events:auto; }
+  /* Before/After */
+  .ba-container{position:relative; height:clamp(220px, 50vw, 480px); touch-action:none; line-height:0}
+  .ba-handle{position:absolute; top:50%; transform:translate(-50%,-50%); width:44px; height:44px; border-radius:9999px; background:#111827; color:#fff; display:grid; place-items:center; border:1px solid rgba(255,255,255,.2); box-shadow:0 10px 20px rgba(0,0,0,.45); cursor:ew-resize; z-index:10}
+  .ba-divider{position:absolute; top:0; bottom:0; width:2px; background:linear-gradient(180deg, #fff, transparent); z-index:9}
+  .ba-container > img{ display:block; width:100%; height: 110%; object-fit:cover }
+  @media (max-width: 640px){
+    .ba-handle{ width:56px; height:56px; }
+    body{ padding-bottom: 72px; } /* ensure content isn't hidden behind mobile sticky CTA */
+    .extras-grid{ grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); }
+  }
+  /* Make Before/After slider a bit larger on mobile */
+  @media (max-width: 640px){
+    .ba-container{ height: clamp(300px, 68vw, 520px); }
+  }
+
+  /* --- Mobile: unify container backgrounds with header glass (containers only) --- */
+  @media (max-width: 640px){
+    /* Apply header-like glass only to cards/containers */
+    .panel,
+    #builderCard,
+    #wxCard,
+    .wx-card,
+    .sticky-cta,
+    .rounded-2xl.panel.edge,
+    .edge.bg-override-mobile {
+      background: rgba(11,13,18,.6) !important;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* Ensure sections & footer keep their original page background */
+    section, footer{
+      background: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+  }
+
+  /* --- Desktop: match blocks to header glass background --- */
+  @media (min-width: 1024px){
+    /* Apply header-like glass to key cards/containers on desktop */
+    .panel,
+    #builderCard,
+    #wxCard,
+    .wx-card,
+    .rounded-2xl.panel.edge,
+    .edge.bg-override-desktop {
+      background: rgba(11,13,18,.6) !important;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      /* keep existing borders/shadows from .edge/.panel */
+    }
+
+    /* Ensure sections & footer keep page background (not forced glass) */
+    section, footer{
+      background: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+  }
+  /* Make segmented buttons wrap nicely on small screens */
+  .seg{ grid-template-columns: repeat(auto-fill, minmax(110px,1fr)); }
+  /* --- Instant Quote: segmented buttons & extras layout --- */
+ .seg{ display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:8px; }
+.segbtn{ padding:.8rem 1rem; border-radius:12px; border:1px solid rgba(255,255,255,.2); background:transparent; color:#e6e8ef; font-weight:600; font-size:1rem; min-height:48px }
+#sizeButtons button{ font-weight:600; font-size:1rem; padding:.8rem 1rem; min-height:48px }
+ .segbtn.active{ background:var(--primary); color:#fff; border-color:transparent; box-shadow:0 8px 24px rgba(82,113,255,.35) }
+ .extras-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap:8px; }
+ .extra-btn{ display:flex; align-items:center; justify-content:space-between; padding:.6rem .75rem; border-radius:12px; border:1px solid rgba(255,255,255,.2); background:transparent; color:#e6e8ef; min-height:48px }
+ .extra-btn.active{ background:linear-gradient(135deg,var(--accent),#db86ff); color:#0b0d12; border-color:transparent }
+  /* Marquee */
+  @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  .marquee{white-space:nowrap; overflow:hidden}
+  .marquee-track{display:inline-block; animation:marquee 22s linear infinite}
+  /* Scroll progress */
+  #scrollbar{position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg,var(--primary),var(--accent)); width:0; z-index:60}
+  /* Neon edges */
+  .edge{border:1px solid rgba(255,255,255,.08); box-shadow:inset 0 0 0 1px rgba(255,255,255,.02), 0 0 0 1px rgba(255,255,255,.02), 0 12px 40px rgba(0,0,0,.45)}
+  .glow{ box-shadow: 0 0 0 1px rgba(82,113,255,.25), 0 0 40px rgba(82,113,255,.25) }
+  input[type], button, a{outline-offset:3px}
+  input, select { background:#0b0d12; border:1px solid rgba(255,255,255,.12); color:var(--ink) }
+  /* --- Confetti: full-width top fall --- */
+  .confetti{ position:fixed; top:-12px; border-radius:2px; will-change:transform, opacity; pointer-events:none; z-index:30; }
+  @keyframes confettiFall{
+    0%   { transform: translateY(-10px) translateX(0) rotate(0); opacity:1; }
+    100% { transform: translateY(110vh) translateX(var(--dx, 0px)) rotate(var(--rot, 720deg)); opacity:0.85; }
+  }
+
+  /* Live quote bump on change */
+  @keyframes bump{ 0%{transform:scale(1)} 40%{transform:scale(1.06)} 100%{transform:scale(1)} }
+
+  /* --- Live Quoter: slightly larger + header-matched background --- */
+  #builderCard{ backdrop-filter: blur(12px); }
+  @media (min-width: 768px){ #builderCard{ transform: translateZ(0); } }
+  /* Subtle enlargement of key text inside the builder */
+  #builderCard h3{ font-size: clamp(1.75rem, 2vw, 2rem); }
+
+  #builderCard #totalText{ font-size: clamp(1.6rem, 2vw, 1.9rem); }
+
+  /* Responsive adjustment for the "Live" button inside the quoter */
+  @media (max-width: 640px) {
+    #builderCard span.rounded-lg.text-xs {
+      margin-top: -30px;
+    }
+  }
+  /* --- Service Breakdown Bottom Sheet --- */
+  .sheet-overlay{position:fixed; inset:0; background:rgba(0,0,0,.5); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); opacity:0; pointer-events:none; transition:opacity .3s ease; z-index:60}
+  .sheet{position:fixed; left:0; right:0; bottom:-100%; background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(0,0,0,.18)); border-top:1px solid rgba(255,255,255,.12); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-radius:18px 18px 0 0; box-shadow:0 -20px 60px rgba(0,0,0,.45); transition:bottom .24s ease; z-index:61}
+  .sheet.open{bottom:0}
+  .sheet-overlay.open{opacity:1; pointer-events:auto}
+  .sheet .handle{width:46px; height:5px; border-radius:999px; background:rgba(255,255,255,.22); margin:8px auto 6px}
+  .bd-title{font-weight:800; font-size:1.1rem}
+  .bd-row{display:flex; align-items:start; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px dashed rgba(255,255,255,.12)}
+  .bd-row:last-child{border-bottom:none}
+  .bd-left{display:flex; gap:10px; align-items:start}
+  .bd-icon{width:28px; height:28px; border-radius:8px; display:grid; place-items:center; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12)}
+  .bd-items{font-size:.85rem; color:var(--sub)}
+  .sheet-actions{display:flex; gap:8px}
+  .bd-total{font-size:1.25rem; font-weight:800}
+  /* --- Breakdown Button Pop Animation (on service select) --- */
+  #viewBreakdown.pop{ animation: bd-pop .34s ease; }
+  @keyframes bd-pop{
+    0%{ transform: scale(1); box-shadow: none; }
+    45%{ transform: scale(1.09); box-shadow: 0 0 0 2px rgba(194,103,255,.25), 0 8px 24px rgba(194,103,255,.35); }
+    100%{ transform: scale(1); box-shadow: none; }
+  }
+  @media (min-width: 640px){
+    .sheet{ left:50%; transform:translateX(-50%); max-width:740px; border:1px solid rgba(255,255,255,.12); border-bottom-left-radius:18px; border-bottom-right-radius:18px; }
+  }
+  /* --- Contact Map: push behind floating UI + disable hit-testing --- */
+  #contactMap { position: relative; z-index: 0 !important; }
+  #contactMap .leaflet-pane,
+  #contactMap .leaflet-top,
+  #contactMap .leaflet-bottom,
+  #contactMap .leaflet-control-container { z-index: 0 !important; }
+  /* Ensure clicks go to overlays (sticky bars, floating quote, etc.) */
+  #contactMap, #contactMap * { pointer-events: none; }
+  /* --- Mobile & Weather: better wrapping and bubble fit --- */
+  @media (max-width: 640px){
+    .chip{ max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+  }
+  /* Weather chip (location) should not overflow */
+  #weather .chip{ max-width: 65vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  /* Force weather grid to auto-fit cards cleanly on all screens */
+  #wxGrid{ display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)) !important; }
+  @media (max-width: 400px){ #wxGrid{ grid-template-columns: 1fr !important; } }
+  /* Mobile: center the last weather day card across the row */
+  @media (max-width: 640px){
+    #wxGrid > .wx-card:last-child{
+      grid-column: 1 / -1;   /* span full row */
+      justify-self: center;
+      width: 100%;
+      max-width: 190px; /* center inside row */
+    }
+  }
+  /* Weather card layout + typography that wraps nicely */
+  .wx-card{ display: grid; grid-template-rows: auto auto auto auto; gap: 4px; min-width: 0; }
+  .wx-card .date{ font-weight: 700; }
+  .wx-card .icon{ font-size: clamp(18px, 5.5vw, 24px); line-height: 1; }
+  .wx-card .temps{ font-size: .95rem; }
+  .wx-card .desc{ font-size: 12px; color: var(--sub); line-height: 1.2; white-space: normal; word-break: break-word; }
+  /* Mobile: center “Book this package” text perfectly inside the bubble */
+  @media (max-width: 640px){
+    #bdBook{
+      display:flex;               /* ensure flex centering */
+      align-items:center;         /* vertical center */
+      justify-content:center;     /* horizontal center */
+      text-align:center;          /* center multi-line text just in case */
+      height:50px;                /* consistent tap target */
+    }
+  }
+  /* --- Weather Section: Make last day card same width as others on mobile --- */
+  @media (max-width: 768px) {
+    .weather-section .weather-day {
+      flex: 1 1 30%;
+      max-width: 30%;
+    }
+    .weather-section .weather-day:last-child {
+      flex: 1 1 30%;
+      max-width: 30%;
+      justify-self: center;
+      margin: auto; /* centers if fewer items on row */
+    }
+  }
+  /* --- Weather Section (DESKTOP): lock to 7 equal columns + consistent sizing --- */
+  @media (min-width: 1024px){
+    /* Align weather card width with other sections */
+    #wxCard{
+      max-width: var(--container-width, 1200px);
+      margin-left:auto;
+      margin-right:auto;
+      width: 100%;
+    }
+
+    #wxGrid{
+      grid-template-columns: repeat(7, minmax(130px, 1fr)) !important;
+      justify-content: center;
+      align-items: stretch;
+      gap: 12px;
+    }
+
+    .wx-card{ min-height: 170px; height: 100%; }
+  }
+/* Mobile: make images and maps fill their cards */
+@media (max-width: 640px){
+  /* Ensure card wrappers clip overflow */
+  .rounded-2xl.panel.edge.overflow-hidden { position: relative; overflow: hidden; }
+
+  /* Recent results images fill card */
+  #results .panel.edge img{ width:100% !important; height:100% !important; object-fit:cover !important; display:block; }
+
+  /* Maps fill their card height */
+  #serviceMap, #contactMap { width:100% !important; height:100% !important; }
+  #serviceMap .leaflet-container, #contactMap .leaflet-container { width:100% !important; height:100% !important; }
+
+  /* Generic safety: any direct child media inside overflow-hidden cards */
+  .rounded-2xl.panel.edge.overflow-hidden > img,
+  .rounded-2xl.panel.edge.overflow-hidden > video,
+  .rounded-2xl.panel.edge.overflow-hidden > canvas { width:100% !important; height:100% !important; object-fit:cover !important; }
+}
+/* === Unique Animations: Scroll Reveal, Shine Sweep, Subtle Floats === */
+/* Scroll reveal baseline */
+.reveal{
+  opacity:0;
+  transform: translateY(12px) scale(.98);
+  filter: blur(2px);
+  transition: opacity .5s ease, transform .5s ease, filter .5s ease;
+}
+.reveal.in{ opacity:1; transform: translateY(0) scale(1); filter: blur(0); }
+/* Light stagger via data-delay attr */
+.reveal[data-delay="1"]{ transition-delay: .05s; }
+.reveal[data-delay="2"]{ transition-delay: .1s; }
+.reveal[data-delay="3"]{ transition-delay: .15s; }
+
+/* Sheen/shine sweep on hover for cards and images */
+.shine{ position: relative; overflow: hidden; }
+.shine::after{
+  content:"";
+  position:absolute;
+  top:-120%; left:-60%;
+  width:40%; height:300%;
+  transform: rotate(25deg);
+  pointer-events:none;
+  background: linear-gradient(
+    to right,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,.12) 45%,
+    rgba(255,255,255,0) 100%
+  );
+  opacity:0;
+  transition: transform .8s ease, opacity .3s ease;
+}
+.shine:hover::after{ opacity:1; transform: translateX(260%) rotate(25deg); }
+
+/* Subtle float for hero chips */
+@keyframes floaty { 0%{ transform: translateY(0) } 50%{ transform: translateY(-2px) } 100%{ transform: translateY(0) } }
+#home .chip{ animation: floaty 5s ease-in-out infinite; }
+#home .chip:nth-child(2){ animation-delay: .8s; }
+#home .chip:nth-child(3){ animation-delay: 1.6s; }
+
+/* Respect user preferences */
+@media (prefers-reduced-motion: reduce){
+  .reveal{ transition: none; transform: none !important; filter: none !important; opacity: 1 !important; }
+  #home .chip{ animation: none !important; }
+  .shine::after{ transition: none; }
+}
+</style>
+<style>
+/* --- Mobile: even vertical spacing between sections (fix) --- */
+:root{ --mobile-section-gap: 30px; }
+@media (max-width: 640px){
+  /* Hero (first section) tighter + mobile-friendly */
+  #home > div{ padding-top: 12px !important; padding-bottom: 18px !important; }
+  #home h1{ font-size: clamp(28px, 7vw, 34px) !important; line-height: 1.18 !important; }
+  #home .mt-7{ margin-top: 0.9rem !important; }
+  #home .mt-5{ margin-top: 0.6rem !important; }
+
+  /* --- Hero chips: make bubbles fit nicely on mobile --- */
+  #home .mt-5.flex{ 
+    flex-wrap: wrap !important; 
+    gap: 6px !important; 
+  }
+  #home .chip{
+    white-space: normal !important; 
+    overflow-wrap: anywhere !important; 
+    word-break: break-word !important; 
+    line-height: 1.25 !important; 
+    font-size: 12px !important; 
+    padding: .32rem .6rem !important; 
+  }
+}
+
+/* --- Mobile: equalize spacing between all main containers --- */
+:root{ --mobile-block-gap: 15px; --mobile-block-pad: 15px; }
+@media (max-width: 640px){
+  /* (rules removed per instructions; only :root remains) */
+}
+/* Gap under sticky header */
+header.sticky ~ section#home { margin-top: 4px !important; }
+@media (max-width: 640px){ header.sticky ~ section#home { margin-top: 4px !important; } }
+</style>
+<!-- Structured Data: Local Business + Service Area -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AutomotiveBusiness",
+  "name": "Elite Auto Detailing",
+  "image": "https://example.com/logo.png",
+  "url": "https://example.com/",
+  "telephone": "+1-708-737-9781",
+  "priceRange": "$",
+  "description": "Mobile auto detailing: exterior & interior packages, ceramic spray, odor treatment, pet hair removal. Instant quote and on‑site service in the Tinley Park area.",
+  "areaServed": {
+    "@type": "GeoCircle",
+    "geoMidpoint": { "@type": "GeoCoordinates", "latitude": 41.573, "longitude": -87.803 },
+    "geoRadius": 40233
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Tinley Park",
+    "addressRegion": "IL",
+    "addressCountry": "US"
+  },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+    "opens": "08:00",
+    "closes": "18:00"
+  }],
+  "sameAs": []
+}
+// Always scroll to top on page load/refresh
+window.addEventListener('beforeunload', () => { window.scrollTo(0, 0); });
+window.addEventListener('load', () => { window.scrollTo(0, 0); });
+</script>
+
+<!-- Structured Data: FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Do you need water or power?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — we’ll need access to a standard outdoor water spigot and a household power outlet within reach."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the rinse-free wash safe?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Lubricants encapsulate dust to prevent marring; fresh towels per panel."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I pay?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We currently accept Cash or Zelle."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What’s your cancellation policy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Need to reschedule? Please let us know at least 24 hours in advance. Same‑day cancellations may incur a small fee."
+      }
+    }
+  ]
+}
+</script>
+</head>
+
+<body>
+<div id="scrollbar"></div>
+<canvas id="stars" class="fixed inset-0 -z-10"></canvas>
+
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-[rgba(11,13,18,.6)] glass border-b border-white/10 mb-0">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="#home" class="flex items-center gap-3">
+      <!-- Embedded logo (data URL) -->
+      <img alt="Elite Auto Detailing logo" class="h-20 w-auto" src="Logo.svg" />
+    </a>
+    <nav class="hidden md:flex items-center gap-6 text-sm text-[var(--sub)]">
+      <a href="#services" class="hover:text-white">Services</a>
+      <a href="#quote" class="hover:text-white">Instant Quote</a>
+      <a href="#results" class="hover:text-white">Results</a>
+      <a href="#faq" class="hover:text-white">FAQ</a>
+      <a href="#contact" class="hover:text-white">Contact</a>
+    </nav>
+    <div class="hidden md:flex items-center gap-3">
+      <a href="tel:+17087379781" class="btn btn-ghost edge">📞 (708) 737-9781
+      </a>
+      <span class="magnet-wrap"><a href="#quote" class="btn btn-accent magnet edge">Get Instant Quote</a></span>
+    </div>
+    <a href="#quote" class="md:hidden btn btn-accent edge">Get Quote</a>
+  </div>
+</header>
+
+<!-- Hero -->
+<section id="home" class="relative min-h-[87svh] grid place-items-center">
+  <div class="max-w-6xl mx-auto px-4 py-3 md:py-0 grid md:grid-cols-2 gap-10 items-center mt-0">
+    <div>
+      <div class="flex gap-2 flex-wrap">
+        <span class="chip border-white/10">🚐 We come to you</span>
+        <span class="chip border-white/10">🛡️ Licensed & Insured</span>
+      </div>
+      <h1 class="mt-4 text-4xl md:text-6xl font-black leading-tight text-white">Studio-Quality Detailing On Your Driveway</h1>
+      <p class="mt-3 text-lg text-[var(--sub)]">Instant pricing. Same-day slots. Swirl-safe methods and top-tier products.</p>
+      <div class="mt-7 flex flex-wrap gap-3">
+        <!-- Mobile: swap so See Packages is primary, Get Instant Quote is ghost -->
+        <a href="#services" class="btn btn-primary edge w-3/4 md:hidden">💵 See Packages</a>
+
+        <!-- Desktop (md+): original order/styles preserved -->
+        <span class="magnet-wrap hidden md:inline-block"><a href="#quote" class="btn btn-primary edge magnet w-full md:w-auto">💵 Get Instant Quote</a></span>
+        <a href="#services" class="btn btn-ghost edge hidden md:inline-grid md:w-auto">See Packages</a>
+      </div>
+      <div class="mt-5 flex items-center gap-3 text-sm text-[var(--sub)]">
+        <span class="chip border-white/10">⭐ 5.0 (56 reviews)</span>
+        <span class="chip border-white/10">⏱️ 2–3 hr typical</span>
+        <span class="chip border-white/10">🌿 Eco-friendly</span>
+      </div>
+    </div>
+
+    <!-- Social proof/urgency -->
+    <div class="rounded-2xl panel edge p-6 tilt">
+      <h3 class="text-xl font-semibold text-white mb-3 text-left">Will You Be Next On The Map?</h3>
+      <div class="aspect-[4/3] rounded-xl overflow-hidden">
+        <div id="serviceMap" class="w-full h-full"></div>
+      </div>
+      <div class="mt-4 grid gap-3">
+        <div class="flex items-center justify-between">
+          <div class="text-sm text-[var(--sub)]">This Week’s Slots</div>
+          <div class="text-2xl font-extrabold text-white" id="slotsLeft">3 left</div>
+        </div>
+        <div class="rounded-xl bg-white/5 border border-white/10 p-3 flex items-center justify-between">
+          <div>
+            <div class="font-semibold text-white">New Customer Offer</div>
+            <div class="text-sm text-[var(--sub)]">Use code <strong id="coupon">SHINE15</strong> for $15 off</div>
+          </div>
+          <button id="copyCoupon" class="btn btn-ghost text-sm edge">Apply</button>
+        </div>
+        <a href="#quote" class="btn btn-accent edge">✨ Reserve a slot</a>
+        <div class="text-xs text-[var(--sub)]">No payment required to request. We confirm by text.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Services -->
+<section id="services" class="max-w-6xl mx-auto px-4 py-10">
+  <header class="mb-6">
+    <h2 class="text-3xl md:text-4xl font-black text-white">Packages That Fit Your Ride</h2>
+    <p class="text-[var(--sub)]">Pick a starting point. Fine-tune in the Instant Quote.</p>
+  </header>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="rounded-2xl panel edge p-5 tilt">
+        <div class="text-lg font-semibold text-white">Full Detail</div>
+        <div class="mt-1 text-sm text-[var(--sub)]">Includes interior & exterior detail.</div>
+        <div class="mt-8 text-white"><strong>From $150–$200</strong></div>
+        <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('Sedan',true,true,false,[])">Configure</button>
+      </div>
+      <div class="rounded-2xl panel edge p-5 tilt">
+        <div class="text-lg font-semibold text-white">Deep Full Detail</div>
+        <div class="mt-1 text-sm text-[var(--sub)]">Full deep clean: exterior decontamination & interior reset.</div>
+        <div class="mt-3 text-white"><strong> From $250–$350</strong></div>
+        <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('SUV',false,false,false,['__deepBoth__'])">Configure</button>
+      </div>
+      <div class="rounded-2xl panel edge p-5 tilt">
+        <div class="text-lg font-semibold text-white">Furry Friend Package</div>
+        <p class="mt-1 text-sm text-[var(--sub)]">Perfect for pet lovers</p>
+        <ul class="mt-8 text-white text-sm list-disc list-inside space-y-1">
+        </ul>
+        <div class="mt-4 text-white"><strong>From $135-$175</strong></div>
+        <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('Truck',false,true,false,['pet'])">Configure</button>
+      </div>
+      <div class="rounded-2xl panel edge p-5 tilt">
+        <div class="text-lg font-semibold text-white">Showoff Package</div>
+        <div class="mt-1 text-sm text-[var(--sub)]">For those who like to show whose the real boss in the neighborhood.</div>
+        <ul class="mt-3 text-white text-sm list-disc list-inside space-y-1">
+        </ul>
+        <div class="mt-4 text-white"><strong>From $180–$210</strong></div>
+        <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('Sedan',true,false,false,['hardwax'])">Configure</button>
+      </div>
+    </div>
+</section>
+
+<!-- Instant Quote + Before/After -->
+<section id="quote" class="max-w-6xl mx-auto px-4 py-12">
+  <header class="mb-6">
+    <h2 class="text-3xl md:text-4xl font-black text-white">Instant Quote</h2>
+    <p class="text-[var(--sub)]">Pricing updates as you choose options.</p>
+  </header>
+
+  <div class="grid md:grid-cols-2 gap-6">
+    <!-- Builder -->
+    <div id="builderCard" class="rounded-2xl edge p-7 md:p-8 shadow-soft glass bg-[rgba(11,13,18,.6)] border border-white/10">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-[var(--sub)] font-semibold">Build your detail</p>
+          <h3 class="text-2xl font-bold text-white">Interactive Package</h3>
+        </div>
+        <span class="px-2 py-1 rounded-lg text-xs text-white border border-white/20 bg-white/10">Live</span>
+      </div>
+
+      <div class="mt-4 grid gap-4">
+        <div>
+          <label class="mb-2 block font-medium text-white">Vehicle size</label>
+          <div class="grid grid-cols-3 gap-2" id="sizeButtons">
+            <button data-size="Sedan" class="px-3 py-2 rounded-xl border text-sm edge shadow-soft bg-transparent text-white">Sedan</button>
+            <button data-size="SUV"   class="px-3 py-2 rounded-xl border text-sm edge shadow-soft bg-transparent text-white">SUV</button>
+            <button data-size="Truck" class="px-3 py-2 rounded-xl border text-sm edge shadow-soft bg-transparent text-white">Truck</button>
+          </div>
+        </div>
+
+       <div>
+  <label class="mb-2 block font-medium text-white">Services</label>
+  <div id="serviceButtons" class="seg">
+    <button type="button" data-svc="exterior" class="segbtn edge shadow-soft bg-transparent text-white">Exterior</button>
+    <button type="button" data-svc="interior" class="segbtn edge shadow-soft bg-transparent text-white">Interior</button>
+    <button type="button" data-svc="deepExterior" class="segbtn edge shadow-soft bg-transparent text-white">Deep Exterior</button>
+    <button type="button" data-svc="deepInterior" class="segbtn edge shadow-soft bg-transparent text-white">Deep Interior</button>
+  </div>
+ </div>
+
+        <div class="grid gap-2">
+          <label class="font-medium text-white">Extras</label>
+           <div id="extras" class="extras-grid text-sm"></div>
+        </div>
+
+
+        <div class="mt-2 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <button id="viewBreakdown" type="button" class="bd-trigger hidden px-3 py-1.5 rounded-md font-semibold text-white bg-purple-600 hover:bg-purple-700 transition edge text-xs">View breakdown</button>
+          </div>
+          <button id="totalBtn" type="button" class="leading-none" aria-label="Open breakdown">
+            <span class="text-2xl font-bold text-white" id="totalText">$0</span>
+          </button>
+        </div>
+
+        <a href="#contact" class="btn btn-primary h-14 edge w-full md:w-auto">📅 Book this package</a>
+        <p class="text-xs text-[var(--sub)]">No charge until confirmed. Price may adjust for oversized/extra-soiled vehicles.</p>
+      </div>
+    </div>
+
+    <!-- Before/After + trust -->
+    <div class="grid gap-6">
+      <div class="rounded-2xl panel edge overflow-hidden select-none">
+        <div class="px-4 pt-4 pb-4"><h3 class="text-xl font-semibold text-white">Swipe to see the difference</h3></div>
+        <div id="ba" class="ba-container w-full mb-0">
+          <!-- Clean example as "before" -->
+          <img id="beforeLayer" src="CleanCar.jpeg" alt="Before (clean example)"
+               class="absolute inset-0 w-full h-full"
+               loading="eager" decoding="async"
+               style="object-fit:cover;" />
+          <!-- Dirty example as "after" -->
+          <img id="cleanLayer" src="DirtyCar.jpeg" alt="After (dirty example)"
+               class="absolute inset-0 w-full h-full"
+               loading="eager" decoding="async"
+               style="clip-path: inset(0 50% 0 0); object-fit:cover;" />
+          <!-- Divider + Handle -->
+          <div id="divider" class="ba-divider" style="left:50%"></div>
+          <button id="handle" class="ba-handle glow" style="left:50%" aria-label="Drag slider">⇆</button>
+        </div>
+      </div>
+
+      <div class="rounded-2xl panel edge p-4 flex gap-3 items-center">
+        <div class="w-9 h-9 rounded-lg grid place-items-center text-white border border-white/20" style="background:var(--primary)">💯</div>
+        <div>
+          <div class="font-semibold text-white leading-tight">100% Satisfaction</div>
+          <div class="text-sm text-[var(--sub)] leading-snug">If we miss anything, we’ll make it right.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Results / Testimonials -->
+<section id="results" class="max-w-6xl mx-auto px-4 py-10">
+  <header class="mb-6">
+    <h2 class="text-3xl md:text-4xl font-black text-white">Recent results</h2>
+    <p class="text-[var(--sub)]">A few snapshots from recent jobs.</p>
+  </header>
+
+  <div class="grid sm:grid-cols-3 gap-4">
+    <div class="rounded-2xl aspect-video panel edge tilt overflow-hidden flex items-center justify-center bg-black">
+      <img src="Car 1.jpeg" alt="Exterior detail result on sedan – Elite Auto Detailing" class="object-cover w-full h-full" loading="lazy" decoding="async" />
+    </div>
+    <div class="rounded-2xl aspect-video panel edge tilt overflow-hidden flex items-center justify-center bg-black">
+      <img src="Car 2.jpeg" alt="Interior detail result – stain removal and shine" class="object-cover w-full h-full" loading="lazy" decoding="async" />
+    </div>
+    <div class="rounded-2xl aspect-video panel edge tilt overflow-hidden flex items-center justify-center bg-black">
+      <img src="Car 3.jpeg" alt="Deep exterior decontamination and wax finish" class="object-cover w-full h-full" loading="lazy" decoding="async" />
+    </div>
+  </div>
+
+  <div class="rounded-2xl panel edge overflow-hidden mt-8">
+    <div class="p-4 flex items-center gap-2"><span class="text-yellow-400">⭐</span>
+      <p class="font-semibold text-white">Real customers, real results</p>
+    </div>
+    <div class="marquee pb-4 px-4">
+      <div class="marquee-track">
+        <div class="inline-flex gap-4">
+          <div class="min-w-[260px] rounded-xl panel edge p-4">
+            <div>⭐⭐⭐⭐⭐</div><p class="text-sm text-[var(--ink)] mt-1">“They saved my lease return. Looks brand new!”</p><p class="mt-2 text-xs text-[var(--sub)]">— Maya R.</p>
+          </div>
+          <div class="min-w-[260px] rounded-xl panel edge p-4">
+            <div>⭐⭐⭐⭐⭐</div><p class="text-sm text-[var(--ink)] mt-1">“Booked during lunch—super convenient.”</p><p class="mt-2 text-xs text-[var(--sub)]">— Chris P.</p>
+          </div>
+          <div class="min-w-[260px] rounded-xl panel edge p-4">
+            <div>⭐⭐⭐⭐⭐</div><p class="text-sm text-[var(--ink)] mt-1">“Pet hair? Gone. Seats smell amazing.”</p><p class="mt-2 text-xs text-[var(--sub)]">— Evelyn S.</p>
+          </div>
+          <div class="min-w-[260px] rounded-xl panel edge p-4">
+            <div>⭐⭐⭐⭐⭐</div><p class="text-sm text-[var(--ink)] mt-1">“Headlights are crystal clear now.”</p><p class="mt-2 text-xs text-[var(--sub)]">— Jordan T.</p>
+          </div>
+          <div class="min-w-[260px] rounded-xl panel edge p-4">
+            <div>⭐⭐⭐⭐⭐</div><p class="text-sm text-[var(--ink)] mt-1">“Fair pricing and they’re punctual.”</p><p class="mt-2 text-xs text-[var(--sub)]">— Andre V.</p>
+          </div>
+          <!-- duplicate for seamless loop -->
+          <div class="min-w-[260px] rounded-xl panel edge p-4">
+            <div>⭐⭐⭐⭐⭐</div><p class="text-sm text-[var(--ink)] mt-1">“They saved my lease return. Looks brand new!”</p><p class="mt-2 text-xs text-[var(--sub)]">— Maya R.</p>
+          </div>
+          <div class="min-w-[260px] rounded-xl panel edge p-4">
+            <div>⭐⭐⭐⭐⭐</div><p class="text-sm text-[var(--ink)] mt-1">“Booked during lunch—super convenient.”</p><p class="mt-2 text-xs text-[var(--sub)]">— Chris P.</p>
+          </div>
+          <div class="min-w-[260px] rounded-xl panel edge p-4">
+            <div>⭐⭐⭐⭐⭐</div><p class="text-sm text-[var(--ink)] mt-1">“Pet hair? Gone. Seats smell amazing.”</p><p class="mt-2 text-xs text-[var(--sub)]">— Evelyn S.</p>
+          </div>
+          <div class="min-w-[260px] rounded-xl panel edge p-4">
+            <div>⭐⭐⭐⭐⭐</div><p class="text-sm text-[var(--ink)] mt-1">“Headlights are crystal clear now.”</p><p class="mt-2 text-xs text-[var(--sub)]">— Jordan T.</p>
+          </div>
+          <div class="min-w-[260px] rounded-xl panel edge p-4">
+            <div>⭐⭐⭐⭐⭐</div><p class="text-sm text-[var(--ink)] mt-1">“Fair pricing and they’re punctual.”</p><p class="mt-2 text-xs text-[var(--sub)]">— Andre V.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="max-w-6xl mx-auto px-4 py-10">
+  <header class="mb-6">
+    <h2 class="text-3xl md:text-4xl font-black text-white">Questions, answered</h2>
+  </header>
+  <details class="rounded-xl panel edge p-4 mb-2">
+    <summary class="font-medium cursor-pointer text-white">Do you need water or power?</summary>
+    <p class="mt-2 text-[var(--sub)]">Yes — we’ll need access to a standard outdoor water spigot and a household power outlet within reach.</p>
+  </details>
+  <details class="rounded-xl panel edge p-4 mb-2">
+    <summary class="font-medium cursor-pointer text-white">Is the rinse-free wash safe?</summary>
+    <p class="mt-2 text-[var(--sub)]">Yes. Lubricants encapsulate dust to prevent marring; fresh towels per panel.</p>
+  </details>
+  <details class="rounded-xl panel edge p-4 mb-2">
+    <summary class="font-medium cursor-pointer text-white">How do I pay?</summary>
+    <p class="mt-2 text-[var(--sub)]">We currently accept Cash or Zelle.</p>
+  </details>
+  <details class="rounded-xl panel edge p-4">
+    <summary class="font-medium cursor-pointer text-white">What’s your cancellation policy?</summary>
+    <p class="mt-2 text-[var(--sub)]">Need to reschedule? No problem — please let us know at least 24 hours in advance. Same‑day cancellations may incur a small fee.</p>
+  </details>
+</section>
+
+<!-- Weather (viewer location) -->
+<section id="weather" class="max-w-6xl mx-auto px-4 py-10">
+  <header class="mb-4 flex items-center justify-between gap-3">
+    <div>
+      <h2 class="text-3xl md:text-4xl font-black text-white">This Week's Weather</h2>
+      <p class="text-[var(--sub)]">Great days to book are highlighted.</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="chip border-white/10">📍 <span id="wxPlace">Detecting…</span></span>
+      <button id="wxUnit" class="btn btn-ghost edge text-sm">°F</button>
+    </div>
+  </header>
+
+  <div id="wxCard" class="rounded-2xl panel edge p-4">
+    <div id="wxGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3"></div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="max-w-6xl mx-auto px-4 py-3 mb-10 md:mb-12">
+  <div class="rounded-2xl panel edge p-6 grid md:grid-cols-3 gap-6 items-center">
+    <div class="md:col-span-2 order-1 md:order-none">
+      <h3 class="text-2xl font-bold text-white">Ready to book your mobile detail?</h3>
+      <p class="text-[var(--sub)] mt-1">Call/text for fastest response, or submit your instant quote.</p>
+      <div class="mt-4 flex gap-3">
+        <a href="tel:+17087379781" class="btn btn-primary edge h-13 text-base w-full md:w-auto">📞 (708) 737-9781</a>
+      </div>
+    </div>
+    <!-- Simple request form -->
+    <form id="leadForm" class="grid gap-3 order-3 md:order-none md:row-span-2 md:self-center md:justify-self-center md:w-full md:max-w-sm">
+      <div class="grid gap-3">
+        <input id="name" class="h-11 rounded-xl px-3" placeholder="Name" autocomplete="name" required />
+        <input 
+          type="text"
+          id="phone"
+          name="phone"
+          placeholder="708-555-1234"
+          required
+          class="h-11 rounded-xl px-3"
+        />
+        <input id="vehicle" class="h-11 rounded-xl px-3" placeholder="Vehicle model (e.g., 2020 Honda Civic)" autocomplete="off" required />
+        <input id="address" class="h-11 rounded-xl px-3" placeholder="Service address" autocomplete="street-address" required />
+        <input id="zip" class="h-11 rounded-xl px-3" placeholder="ZIP (e.g., 60477)" inputmode="numeric" pattern="\d{5}" autocomplete="postal-code" required/>
+        <input id="discount" class="h-11 rounded-xl px-3" placeholder="Discount code (optional)" autocomplete="off" />
+        <p id="discountMsg" class="text-xs"></p>
+        <div class="text-sm text-[var(--ink)]">Estimated Total: <strong id="quoteBox">$0</strong></div>
+        <button id="submitBtn" type="button" class="btn btn-accent h-13 edge disabled:opacity-50">✅ Send Booking Request</button>
+        <p id="formStatus" class="text-xs"></p>
+        <p id="zipMsg" class="text-xs text-[var(--sub)]">Enter ZIP to check coverage.</p>
+      </div>
+    </form>
+    <div class="md:col-span-2 order-2 md:order-none rounded-2xl panel edge overflow-hidden" style="height: clamp(200px, 50vh, 320px);">
+      <div id="contactMap" class="w-full h-full"></div>
+    </div>
+  </div>
+</section>
+
+<footer class="border-t border-white/10 bg-[rgba(11,13,18,.6)] glass">
+  <div class="max-w-6xl mx-auto px-4 py-6 text-sm text-[var(--sub)] flex flex-wrap items-center gap-3 justify-between">
+    <div>© <span id="year"></span> Elite Auto Detailing</div>
+    <div class="flex items-center gap-4">
+      <a href="#" class="hover:text-white">Terms</a>
+      <a href="#" class="hover:text-white">Privacy</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Mobile sticky CTA -->
+<div class="sticky-cta md:hidden bg-[rgba(11,13,18,.6)] glass border-t border-white/10">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="tel:+17087379781" class="font-semibold text-white">📞 Call</a>
+    <div class="flex items-center gap-2">
+      <span class="text-2xl" style="color:var(--primary)">💧</span>
+      <div class="leading-tight">
+        <div class="text-[10px] uppercase tracking-wide text-[var(--sub)]">Your Live Quote</div>
+        <div id="mobileQuote" class="font-semibold text-white">$0</div>
+      </div>
+      <a href="#quote" class="btn btn-primary edge ml-2">Adjust</a>
+    </div>
+  </div>
+</div>
+
+<!-- Desktop floating live quote -->
+<div id="floatQuoteWrap" class="hidden md:block fixed bottom-4 right-4 z-40 float-quote">
+  <div class="rounded-xl edge flex items-center gap-4 px-6 py-4"
+    style="background:rgba(11,13,18,0.6); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); box-shadow:0 16px 40px rgba(82,113,255,.15)">
+    <span class="text-2xl" style="color:var(--primary)">💧</span>
+    <div class="relative translate-y-0.5">
+      <div class="text-xs text-[var(--sub)]">Your Live Quote</div>
+      <div id="floatingQuote" class="font-bold leading-none text-lg text-white">$0</div>
+    </div>
+    <a href="#quote" class="btn btn-primary ml-2 edge">Adjust</a>
+  </div>
+</div>
+
+<!-- Service Breakdown Bottom Sheet -->
+<div id="bdOverlay" class="sheet-overlay"></div>
+<div id="bdSheet" class="sheet">
+  <div class="handle"></div>
+  <div class="p-4 md:p-6">
+    <div class="flex items-start justify-between">
+      <div>
+        <div class="bd-title text-white">Service breakdown</div>
+        <div class="text-xs text-[var(--sub)]" id="bdSubtitle">Interactive summary of your selections</div>
+      </div>
+      <div class="sheet-actions">
+        <button id="bdClose" type="button" class="btn btn-ghost edge text-sm">Close</button>
+        <a href="#contact" id="bdBook" class="btn btn-primary edge text-sm">Book this package</a>
+      </div>
+    </div>
+
+    <div id="bdList" class="mt-3"></div>
+
+    <div class="mt-4 flex items-center justify-between">
+      <div class="text-sm text-[var(--sub)]" id="bdNotes"></div>
+      <div class="bd-total text-white" id="bdTotal">$0</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- STARFIELD BACKGROUND ---------- */
+(function(){
+  if (window.matchMedia && window.matchMedia('(max-width: 640px)').matches) { return; }
+  const c = document.getElementById('stars'); const ctx = c.getContext('2d');
+  function size(){ c.width = innerWidth; c.height = innerHeight; }
+  size(); addEventListener('resize', size);
+  const stars = Array.from({length: 140}).map(()=>({x:Math.random()*c.width,y:Math.random()*c.height,z:Math.random()*1+0.2,s:Math.random()*1.6+0.2}));
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    for(const st of stars){
+      ctx.fillStyle = `rgba(255,255,255,${0.25+st.z*0.6})`;
+      ctx.beginPath(); ctx.arc(st.x, st.y, st.s, 0, Math.PI*2); ctx.fill();
+      st.y += st.z * 0.25; if(st.y>c.height) { st.y = -5; st.x = Math.random()*c.width; }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ---------- SCROLL PROGRESS BAR ---------- */
+(function(){
+  const bar = document.getElementById('scrollbar');
+  function onScroll(){
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    const pct = (h.scrollTop / max) * 100;
+    bar.style.width = pct + '%';
+  }
+  addEventListener('scroll', onScroll, {passive:true}); onScroll();
+})();
+
+/* ---------- SERVICE MAP (Tinley Park + 25mi + 200 pins) ---------- */
+(function(){
+  const el = document.getElementById('serviceMap');
+  if(!el || typeof L === 'undefined') return;
+  const brand = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#5271FF';
+  const center = [41.573, -87.803]; // Tinley Park
+  const map = L.map(el, { zoomControl:false, attributionControl:false, dragging:false, scrollWheelZoom:false, touchZoom:false, doubleClickZoom:false, boxZoom:false, keyboard:false }).setView(center, 11);
+  L.tileLayer(
+    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+      maxZoom: 19,
+      detectRetina: true,
+      attribution: '&copy; OpenStreetMap contributors'
+    }
+  ).addTo(map);
+  const radiusMeters = 17 * 1609.34; // 20 miles (slightly smaller radius)
+  const circle = L.circle(center, { radius: radiusMeters, color: brand, weight: 2, fillColor: brand, fillOpacity: 0.12 }).addTo(map);
+  const mDegLat = 111320;
+  const mDegLon = 111320 * Math.cos(center[0] * Math.PI / 180);
+  function randomPoint(){
+    const t = Math.random() * Math.PI * 2; const r = Math.sqrt(Math.random()) * radiusMeters;
+    const dx = r * Math.cos(t), dy = r * Math.sin(t);
+    return [ center[0] + (dy / mDegLat), center[1] + (dx / mDegLon) ];
+  }
+  for(let i=0;i<200;i++){
+    L.circleMarker(randomPoint(), { radius: 3.5, color: brand, fillColor: brand, fillOpacity: .95, weight: 1 }).addTo(map);
+  }
+  map.fitBounds(circle.getBounds().pad(0.08));
+})();
+
+/* ---------- MAGNET BUTTONS ---------- */
+document.querySelectorAll('.magnet').forEach(btn=>{
+  const wrap = btn.closest('.magnet-wrap') || btn.parentElement;
+  wrap.addEventListener('mousemove', e=>{
+    const r = btn.getBoundingClientRect();
+    const x = e.clientX - (r.left + r.width/2);
+    const y = e.clientY - (r.top + r.height/2);
+    btn.style.transform = `translate(${x*0.08}px, ${y*0.08}px)`;
+  });
+  wrap.addEventListener('mouseleave', ()=> btn.style.transform = 'translate(0,0)');
+});
+
+/* ---------- WEEKLY URGENCY ---------- */
+(function(){
+  const el = document.getElementById('slotsLeft'); if(!el) return;
+  const now = new Date();
+  const day = now.getDay();              // 0=Sun .. 6=Sat
+  const hourBucket = Math.floor(now.getHours()/6); // 0-3
+  // Create a single index through the week (0..27)
+  const idx = day * 4 + hourBucket;
+  // Map early week to 3, midweek to 2, weekend to 1
+  const slots = idx >= 22 ? 1 : (idx >= 10 ? 2 : 3);
+  el.textContent = slots + " left";
+})();
+
+/* ---------- QUOTE BUILDER ---------- */
+const basePrices = {}; // base pay removed
+const extrasList = [
+  { key: "pet", label: "Pet Hair Removal", price: 25 },
+  { key: "odor", label: "Odor Treatment", price: 35 },
+  { key: "engine", label: "Engine Bay", price: 30 },
+  { key: "hardwax", label: "Hard Wax", price: 100 },
+];
+// 25-mile service area around Tinley Park, IL
+const SERVICE_ZIPS = new Set([
+  "60477","60487","60462","60467","60448","60423","60451","60491",
+  "60463","60464","60465","60418","60445","60478","60429","60428",
+  "60443","60471","60422","60430","60411","60417","60475","60461",
+  "60803","60482","60455","60457","60458","60459","60638","60406",
+  "60827","60805","60439","60480","60527","60561","60435","60436",
+  "60432","60446","60440","60490","60404","60544","60585","60453",
+  "60456","60409","60419","60473","60425","60426","60476","60438",
+  "60449","60466","60484","60472","60415","60525","60521","60523",
+  "60558","60401","60408","60410","60416","60421","60428","60433",
+  "60434","60441","60442","60443","60445","60447","60452","60457",
+  "60458","60459","60460","60461","60462","60463","60464","60465",
+  "60466","60467","60468","60469","60472","60473","60474","60475",
+  "60476","60477","60478","60480","60481","60482","60484","60487",
+  "60490"
+]);
+function currency(n){
+  return n.toLocaleString(undefined, {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  });
+}
+function inServiceArea(zip){ return SERVICE_ZIPS.has(String(zip).trim()); }
+
+let carSize = null;
+let exterior = false, interior = false, deepExterior = false, deepInterior = false;
+const extras = {};
+const baseText = document.getElementById('baseText');
+const totalText = document.getElementById('totalText');
+const quoteBox = document.getElementById('quoteBox');
+const floatingQuote = document.getElementById('floatingQuote');
+// Floating quote: reveal only after user uses the quoter
+const floatQuoteWrap = document.getElementById('floatQuoteWrap');
+let _fqShown = false;
+let _userInteractedWithQuoter = false;
+function showFloatingQuoteOnce(){
+  if (_fqShown || !floatQuoteWrap) return;
+  floatQuoteWrap.classList.add('show');
+  _fqShown = true;
+}
+let discountValue = 0;
+
+function recalc(){
+  // Ranged pricing per selection
+  const PRICE = {
+    exterior:    {min:80,  max:110},
+    interior:    {min:110, max:150},
+    both:        {min:150, max:200},
+    deepExterior:{min:130, max:170},
+    deepInterior:{min:170, max:220},
+    deepBoth:    {min:250, max:350}
+  };
+
+  let min = 0, max = 0;
+
+  // Vehicle size no longer affects price (base removed)
+  if(carSize){ /* no base pay */ }
+
+  // Core services with deep pairing treated as deep full
+  if(deepExterior && deepInterior){
+    min += PRICE.deepBoth.min; max += PRICE.deepBoth.max;
+  } else if(deepExterior){
+    min += PRICE.deepExterior.min; max += PRICE.deepExterior.max;
+  } else if(deepInterior){
+    min += PRICE.deepInterior.min; max += PRICE.deepInterior.max;
+  } else if(exterior && interior){
+    min += PRICE.both.min; max += PRICE.both.max;
+  } else if(exterior && !interior){
+    min += PRICE.exterior.min; max += PRICE.exterior.max;
+  } else if(interior && !exterior){
+    min += PRICE.interior.min; max += PRICE.interior.max;
+  }
+
+  // Extras (fixed add-ons)
+  for(const x of extrasList){ if(extras[x.key]){ min += x.price; max += x.price; } }
+
+  // apply discount equally across range
+  if(discountValue > 0){
+    min = Math.max(0, min - discountValue);
+    max = Math.max(0, max - discountValue);
+  }
+
+  const rangeText = (min === max) ? currency(min) : `${currency(min)}–${currency(max)}`;
+
+  if(baseText) baseText.textContent = carSize ? `Selected: ${carSize}` : 'Choose a vehicle size';
+  if(totalText) totalText.textContent = rangeText;
+  if(quoteBox) quoteBox.textContent = rangeText;
+  if(floatingQuote) floatingQuote.textContent = rangeText;
+  const mobileQuote = document.getElementById('mobileQuote');
+  if(mobileQuote) mobileQuote.textContent = rangeText;
+  const bdT = document.getElementById('bdTotal'); if(bdT && document.getElementById('bdSheet')?.classList.contains('open')) bdT.textContent = rangeText;
+
+  // subtle bump animation to confirm change
+  function bump(el){ if(!el) return; el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+  bump(totalText);
+  bump(document.getElementById('floatingQuote'));
+  bump(document.getElementById('mobileQuote'));
+
+  // Show floating quote if user has interacted
+  if (_userInteractedWithQuoter) { showFloatingQuoteOnce(); }
+}
+
+function bundle(size, ext, int, eng, extrasArr){
+  // carSize = size;
+  // default regular service selections
+  exterior = !!ext; interior = !!int;
+
+  // clear deep flags
+  deepExterior = false; deepInterior = false;
+
+  // parse special deep sentinels from extrasArr
+  const arr = Array.isArray(extrasArr) ? extrasArr : [];
+  const wantDeepBoth = arr.includes('__deepBoth__');
+  const wantDeepExterior = arr.includes('__deepExterior__');
+  const wantDeepInterior = arr.includes('__deepInterior__');
+
+  if (wantDeepBoth) { deepExterior = true; deepInterior = true; exterior = false; interior = false; }
+  else {
+    if (wantDeepExterior) { deepExterior = true; exterior = false; }
+    if (wantDeepInterior) { deepInterior = true; interior = false; }
+  }
+
+  // reset extras, only apply real extras that exist in extrasList
+  for (const x of extrasList) { extras[x.key] = false; }
+  arr.forEach(k => { if (extrasList.some(x => x.key === k)) extras[k] = true; });
+
+  // set vehicle size visual
+  // const sizeWrap = document.getElementById('sizeButtons');
+  // if(sizeWrap){
+  //   sizeWrap.querySelectorAll('button').forEach(b=>{b.style.background='transparent'; b.style.color='#fff'; b.style.borderColor='rgba(255,255,255,.2)';});
+  //   const btn = Array.from(sizeWrap.querySelectorAll('button')).find(b=>b.dataset.size===size);
+  //   if(btn){ btn.style.background='var(--primary)'; btn.style.color='#fff'; btn.style.borderColor='transparent'; }
+  // }
+
+  // sync services + extras visual state
+  syncServiceButtons();
+  document.querySelectorAll('#extras button').forEach(b=>{
+    const key = b.dataset.key;
+    b.classList.toggle('active', extras[key]===true);
+  });
+
+  recalc();
+  // ensure the breakdown button state reflects current selections
+  if (typeof updateBreakdownButtonVisibility === 'function') updateBreakdownButtonVisibility();
+  if(exterior || interior || deepExterior || deepInterior){ popBreakdown(); }
+
+  const quote = document.getElementById('quote');
+  if(quote){ quote.scrollIntoView({behavior:'smooth', block:'start'}); }
+}
+
+// --- One-time setup & helpers (top-level) ---
+
+// Size buttons: set carSize and recalc
+(function(){
+  const sizeWrap = document.getElementById('sizeButtons');
+  if(!sizeWrap) return;
+  sizeWrap.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      carSize = btn.dataset.size;
+      sizeWrap.querySelectorAll('button').forEach(b=>{
+        b.style.background='transparent'; b.style.color='#fff'; b.style.borderColor='rgba(255,255,255,.2)';
+      });
+      btn.style.background='var(--primary)'; btn.style.color='#fff'; btn.style.borderColor='transparent';
+      _userInteractedWithQuoter = true;
+      showFloatingQuoteOnce();
+      recalc();
+      updateBreakdownButtonVisibility();
+    });
+  });
+})();
+
+// Services segmented buttons (Exterior / Interior / Deep)
+function syncServiceButtons(){
+  const wrap = document.getElementById('serviceButtons'); if(!wrap) return;
+  wrap.querySelectorAll('button').forEach(btn=>{
+    const k = btn.dataset.svc;
+    const active = (
+      (k==='exterior'     && exterior) ||
+      (k==='interior'     && interior) ||
+      (k==='deepExterior' && deepExterior) ||
+      (k==='deepInterior' && deepInterior)
+    );
+    btn.classList.toggle('active', active);
+  });
+}
+
+// Briefly animate the purple breakdown button to draw attention
+function popBreakdown(){
+  const b = document.getElementById('viewBreakdown');
+  if(!b) return;
+  b.classList.remove('pop');
+  void b.offsetWidth;
+  b.classList.add('pop');
+}
+
+// Show/hide breakdown button depending on selections
+function updateBreakdownButtonVisibility() {
+  const bdBtn = document.getElementById('viewBreakdown');
+  if (!bdBtn) return;
+  if (exterior || interior || deepExterior || deepInterior) {
+    bdBtn.classList.remove('hidden');
+  } else {
+    bdBtn.classList.add('hidden');
+  }
+}
+
+// Wire service buttons once
+(function(){
+  const svcWrap = document.getElementById('serviceButtons');
+  if(!svcWrap) return;
+  svcWrap.querySelectorAll('button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const k = btn.dataset.svc;
+      if(k==='deepExterior'){
+        deepExterior = !deepExterior;
+        if(deepExterior){ exterior = false; }
+      } else if(k==='deepInterior'){
+        deepInterior = !deepInterior;
+        if(deepInterior){ interior = false; }
+      } else if(k==='exterior'){
+        exterior = !exterior;
+        if(exterior){ deepExterior = false; }
+      } else if(k==='interior'){
+        interior = !interior;
+        if(interior){ deepInterior = false; }
+      }
+      _userInteractedWithQuoter = true;
+      showFloatingQuoteOnce();
+      syncServiceButtons();
+      recalc();
+      updateBreakdownButtonVisibility();
+      if(exterior || interior || deepExterior || deepInterior){ popBreakdown(); }
+    });
+  });
+})();
+
+// Build extras buttons once (guard against duplicates)
+(function(){
+  const extrasWrap = document.getElementById('extras');
+  if(!extrasWrap) return;
+  if (extrasWrap.dataset.built === '1') return;
+  extrasList.forEach(x => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.dataset.key = x.key;
+    b.className = 'extra-btn edge';
+    b.innerHTML = `<span>${x.label}</span><span class="opacity-80">+${currency(x.price)}</span>`;
+    b.addEventListener('click', () => {
+      _userInteractedWithQuoter = true;
+      showFloatingQuoteOnce();
+      extras[x.key] = !extras[x.key];
+      b.classList.toggle('active', extras[x.key]===true);
+      recalc();
+    });
+    extrasWrap.appendChild(b);
+    b.classList.toggle('active', !!extras[x.key]);
+  });
+  extrasWrap.dataset.built = '1';
+})();
+
+
+// Discount code handling (optional)
+(function(){
+  const dInput = document.getElementById('discount');
+  const dMsg = document.getElementById('discountMsg');
+  function apply(){
+    const v = (dInput?.value || '').trim();
+    if(!v){ discountValue = 0; if(dMsg){ dMsg.textContent=''; dMsg.style.color=''; } recalc(); return; }
+    if(/^shine15$/i.test(v)){
+      discountValue = 15; if(dMsg){ dMsg.textContent = 'Code applied: -$15'; dMsg.style.color = 'var(--ok)'; }
+    } else {
+      discountValue = 0; if(dMsg){ dMsg.textContent = 'Invalid code'; dMsg.style.color = 'var(--danger)'; }
+    }
+    recalc();
+  }
+  if(dInput){ dInput.addEventListener('input', apply); dInput.addEventListener('change', apply); }
+})();
+
+/* ---------- BEFORE/AFTER ---------- */
+(function setupBeforeAfter(){
+  const container = document.getElementById('ba');
+  const handle = document.getElementById('handle');
+  const divider = document.getElementById('divider');
+  const clean = document.getElementById('cleanLayer');
+  if(!container || !handle || !divider || !clean) return;
+  let lastRatio = 0.5; // remember split position (0..1)
+
+  const moveTo = (clientX) => {
+    const r = container.getBoundingClientRect();
+    const clamped = Math.min(Math.max(clientX, r.left), r.right);
+    const x = clamped - r.left; // pixel position within container
+    handle.style.left = x + 'px';
+    divider.style.left = x + 'px';
+    const rightInset = (r.width - x);
+    clean.style.clipPath = `inset(0 ${rightInset}px 0 0)`;
+    // store ratio for responsive resize handling
+    lastRatio = r.width > 0 ? (x / r.width) : lastRatio;
+  };
+
+  const startDrag = (clientX) => { moveTo(clientX); dragging = true; };
+  let dragging = false;
+
+  const onMouseDown = (e)=>{ e.preventDefault(); startDrag(e.clientX); };
+  const onMouseMove = (e)=>{ if(dragging) moveTo(e.clientX); };
+  const onMouseUp = ()=>{ dragging = false; };
+
+  [handle, divider, container].forEach(el=> el.addEventListener('mousedown', onMouseDown));
+  addEventListener('mousemove', onMouseMove);
+  addEventListener('mouseup', onMouseUp);
+
+  // Touch
+  const onTouchStart = (e)=>{ startDrag(e.touches[0].clientX); };
+  const onTouchMove = (e)=>{ if(dragging) moveTo(e.touches[0].clientX); };
+  const onTouchEnd = ()=>{ dragging = false; };
+  [handle, divider, container].forEach(el=> el.addEventListener('touchstart', onTouchStart, {passive:true}));
+  addEventListener('touchmove', onTouchMove, {passive:true});
+  addEventListener('touchend', onTouchEnd);
+
+  // Click to jump
+  container.addEventListener('click', (e)=> moveTo(e.clientX));
+
+  // Set initial position to dead center in pixels for perfect alignment
+  const r0 = container.getBoundingClientRect();
+  moveTo(r0.left + r0.width / 2);
+  addEventListener('resize', ()=>{
+    const r = container.getBoundingClientRect();
+    moveTo(r.left + r.width * lastRatio);
+  });
+})();
+
+// Explicitly set Before/After images for the slider
+(function ensureBeforeAfterImages() {
+    // For generality, support .ba-slider containers if present, else fallback to #ba
+    const beforeAfterContainers = document.querySelectorAll('.ba-slider');
+    if (beforeAfterContainers.length > 0) {
+        beforeAfterContainers.forEach(container => {
+            const beforeImg = container.querySelector('img:first-child');
+            const afterImg = container.querySelector('img:last-child');
+            if (beforeImg) beforeImg.src = "Dirty1200.jpeg";
+            if (afterImg) afterImg.src = "Clean1200.jpeg";
+        });
+    } else {
+        // Fallback: set specific IDs for this site's markup
+        const before = document.getElementById('beforeLayer');
+        const after = document.getElementById('cleanLayer');
+        if (before) before.src = "Clean1200.jpeg";
+        if (after) after.src = "Dirty1200.jpeg";
+    }
+})();
+/* ---------- COUPON COPY + CONFETTI ---------- */
+document.getElementById('copyCoupon').addEventListener('click', ()=>{
+  const code = document.getElementById('coupon').textContent.trim();
+  const dInput = document.getElementById('discount');
+
+  // Fill discount input in the contact form and trigger existing listeners to recalc totals
+  if (dInput) {
+    dInput.value = code;
+    dInput.dispatchEvent(new Event('input', { bubbles: true }));
+    dInput.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  // Celebrate & give quick feedback
+  burstConfetti();
+  const b = document.getElementById('copyCoupon');
+  if (b) { b.textContent = 'Applied'; setTimeout(()=> b.textContent = 'Apply', 1500); }
+});
+function burstConfetti(){
+  const TOTAL = 170; // more pieces for full-width effect
+  for(let i=0;i<TOTAL;i++){
+    const s = document.createElement('span');
+    s.className = 'confetti';
+    const size = 6 + Math.random()*6;
+    s.style.width = size + 'px';
+    s.style.height = (size * 0.6) + 'px';
+    // spawn across entire width of the viewport along the top
+    s.style.left = Math.random() * window.innerWidth + 'px';
+    s.style.background = Math.random() < 0.5 ? 'var(--primary)' : 'var(--accent)';
+    s.style.opacity = '0.95';
+    // random horizontal drift and rotation
+    s.style.setProperty('--dx', (Math.random()*240 - 120) + 'px');
+    s.style.setProperty('--rot', (Math.random()*1440 - 720) + 'deg');
+    // random duration and delay for a natural cascade
+    const dur = 3 + Math.random()*2.5;     // 3–5.5s
+    const delay = Math.random()*0.6;       // 0–0.6s
+    s.style.animation = `confettiFall ${dur}s linear ${delay}s forwards`;
+    document.body.appendChild(s);
+    s.addEventListener('animationend', ()=> s.remove());
+  }
+}
+
+/* ---------- BOOKING ENABLE / VALIDATION ---------- */
+// --- Booking via Telegram ---------------------------------------------
+// This section collects data from the contact form + live quoter snapshot
+// and sends a formatted booking request to your Telegram bot.
+// To change the destination, set TELEGRAM_CHAT_ID or add ?tg_chat_id=YOUR_ID
+// to the page URL. Ensure you've messaged your bot at least once in Telegram.
+// ---- Telegram Bot submission config ----
+const TELEGRAM_BOT_TOKEN = '7953566875:AAGhDPVvyyEdH3yyu8DeFezKgEMDsDNC_-A';
+const TELEGRAM_CHAT_ID   = '6699962258'; // e.g. 123456789 (DM) or -1001234567890 (supergroup)
+
+function resolveChatId(){
+  // 1) hardcoded const, 2) URL param ?tg_chat_id=..., 3) localStorage
+  const urlId = new URLSearchParams(location.search).get('tg_chat_id');
+  const stored = localStorage.getItem('tg_chat_id');
+  const id = (TELEGRAM_CHAT_ID && String(TELEGRAM_CHAT_ID).trim()) || (urlId && String(urlId).trim()) || (stored && String(stored).trim()) || '';
+  if (id) localStorage.setItem('tg_chat_id', id);
+  return id;
+}
+// Extract the bot's own numeric id from the token
+function tokenBotId(){
+  try{ return TELEGRAM_BOT_TOKEN.split(':')[0]; }catch(e){ return ''; }
+}
+// Try to discover a valid chat_id by calling getUpdates (works if you've sent /start to the bot at least once)
+async function discoverChatIdViaUpdates(){
+  try{
+    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates`;
+    const res = await fetch(url, { method:'GET' });
+    if(!res.ok) return null;
+    const j = await res.json();
+    if(!j.ok || !Array.isArray(j.result)) return null;
+    // Look for the most recent message/update with a chat id we can use (ignore the bot's own id)
+    for(let i = j.result.length - 1; i >= 0; i--){
+      const upd = j.result[i];
+      const chat = upd.message?.chat || upd.channel_post?.chat || upd.my_chat_member?.chat || null;
+      const cid = chat?.id ? String(chat.id) : '';
+      if(cid && cid !== tokenBotId()){
+        localStorage.setItem('tg_chat_id', cid);
+        return cid;
+      }
+    }
+    return null;
+  }catch(e){ return null; }
+}
+
+// Basic HTML escape for safe Telegram HTML formatting
+function esc(s){
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// Build a nicely formatted Telegram message using the current form + quote snapshot
+function buildTelegramMessage(){
+  const snap = gatherQuoteSnapshot();
+  const name = document.getElementById('name')?.value || '';
+  const phone = phoneInput.value.trim();
+  const vehicle = document.getElementById('vehicle')?.value || '';
+  const address = document.getElementById('address')?.value || '';
+  const zip = document.getElementById('zip')?.value || '';
+  const discountCode = document.getElementById('discount')?.value || '';
+
+  const lines = [
+    `<b>New Booking Request 🚗</b>`,
+
+    `👤 Name: ${esc(name)}`,
+    `📞 Phone: ${esc(phone)}`,
+    `🚗 Vehicle: ${esc(vehicle)}`,
+    `📍 Address: ${esc(address)}`,
+    `✉️ ZIP: ${esc(zip)}`,
+
+    discountCode ? `💯 Discount Code: ${esc(discountCode)}` : null,
+    `<b>Requested Services 🧼</b>`,
+    `Vehicle Size: ${esc(snap.vehicleSize)}`,
+    `Services: ${esc((snap.services.join(', ') || 'None'))}`,
+    `Extras: ${esc((snap.extras.join(', ') || 'None'))}`,
+    `Estimated Total: ${esc('$'+snap.price.min)} – ${esc('$'+snap.price.max)}`,
+    `Coupon Applied: ${esc(snap.coupon)}`,
+    ``,
+  ].filter(Boolean);
+
+  // Telegram has a 4096 char limit; truncate if needed
+  let text = lines.join('\n');
+  if (text.length > 4000){
+    text = text.slice(0, 4000) + '\n…(truncated)';
+  }
+  return text;
+}
+
+// Telegram GET requires URL-encoding and we want compact line breaks
+function encodeTelegramText(s){
+  // Telegram GET requires URL-encoding and we want compact line breaks
+  return encodeURIComponent(String(s).replace(/\n/g,'\n'));
+}
+
+// Send lead payload to external webhook (n8n flow)
+async function sendLeadWebhook(payload){
+  const url = 'https://moniusai3.app.n8n.cloud/webhook-test/8b58acd4-f426-4852-8cd9-934f256e0c45';
+  try{
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    return res.ok;
+  }catch(e){
+    console.warn('Webhook send failed', e);
+    return false;
+  }
+}
+
+// Resilient Telegram sender: POST first, fallback to CORS-free GET image beacon with diagnostics
+async function sendTelegramMessage(chatId, text){
+  const tgURL = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+  // First try a standard POST (works if CORS is allowed in your context)
+  try{
+    const res = await fetch(tgURL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: text,
+        parse_mode: 'HTML',
+        disable_web_page_preview: true
+      })
+    });
+    let data = null;
+    try { data = await res.json(); } catch(_) {}
+
+    if (res.ok && data && data.ok === true){
+      return { ok:true };
+    } else {
+      // Bubble up Telegram's error if available (e.g., 400: chat not found)
+      const desc = (data && data.description) ? data.description : `HTTP ${res.status}`;
+      return { ok:false, code: res.status, description: desc, from:'post' };
+    }
+  }catch(err){
+    // Network error on POST - continue to beacon fallback
+  }
+
+  // Fallback: CORS-free GET via Image beacon (no response we can read)
+  // Keep the URL under ~1800 chars to be safe
+  const base = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+  const params = `?chat_id=${encodeURIComponent(chatId)}&parse_mode=HTML&disable_web_page_preview=1&text=${encodeTelegramText(text).slice(0,1700)}`;
+  const hint = await new Promise((resolve)=>{
+    const img = new Image();
+    const timer = setTimeout(()=>{ resolve('timeout'); }, 3500);
+    img.onload = ()=>{ clearTimeout(timer); resolve('beacon-ok'); };
+    img.onerror = ()=>{ clearTimeout(timer); resolve('beacon-error'); };
+    img.src = base + params; // fire-and-forget
+  });
+  // If the image loaded, we assume Telegram accepted it
+  if (hint === 'beacon-ok'){ return { ok:true, from:'beacon' }; }
+  return { ok:false, description:'Beacon send failed', from:'beacon' };
+}
+
+// Compute the current quote range (min/max and friendly text) using current UI state
+function getCurrentQuoteRange(){
+  const PRICE = {
+    exterior:    {min:80,  max:110},
+    interior:    {min:110, max:150},
+    both:        {min:150, max:200},
+    deepExterior:{min:130, max:170},
+    deepInterior:{min:170, max:220},
+    deepBoth:    {min:250, max:350}
+  };
+  let min = 0, max = 0;
+
+  if (deepExterior && deepInterior){
+    min += PRICE.deepBoth.min; max += PRICE.deepBoth.max;
+  } else if (deepExterior){
+    min += PRICE.deepExterior.min; max += PRICE.deepExterior.max;
+  } else if (deepInterior){
+    min += PRICE.deepInterior.min; max += PRICE.deepInterior.max;
+  } else if (exterior && interior){
+    min += PRICE.both.min; max += PRICE.both.max;
+  } else if (exterior && !interior){
+    min += PRICE.exterior.min; max += PRICE.exterior.max;
+  } else if (interior && !exterior){
+    min += PRICE.interior.min; max += PRICE.interior.max;
+  }
+
+  // Extras (fixed add-ons)
+  for(const x of extrasList){ if(extras[x.key]){ min += x.price; max += x.price; } }
+
+  // apply discount equally across range
+  if (typeof discountValue !== 'undefined' && discountValue > 0){
+    min = Math.max(0, min - discountValue);
+    max = Math.max(0, max - discountValue);
+  }
+
+  const rangeText = (min === max)
+    ? min.toLocaleString(undefined,{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0})
+    : `${min.toLocaleString(undefined,{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0})}–${max.toLocaleString(undefined,{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0})}`;
+
+  return { min, max, text: rangeText };
+}
+
+// Gather a clean snapshot of the current selections to send with the form
+function gatherQuoteSnapshot(){
+  const services = [];
+  if (exterior) services.push('Exterior');
+  if (interior) services.push('Interior');
+  if (deepExterior) services.push('Deep Exterior');
+  if (deepInterior) services.push('Deep Interior');
+
+  const extrasPicked = extrasList
+    .filter(x => extras[x.key] === true)
+    .map(x => x.label);
+
+  return {
+    vehicleSize: carSize || 'Not selected',
+    services,
+    extras: extrasPicked,
+    price: getCurrentQuoteRange(), // {min,max,text}
+    coupon: (typeof discountValue !== 'undefined' && discountValue > 0) ? `SHINE15 (-$${discountValue})` : 'None',
+    timestamp: new Date().toISOString(),
+    page: location.href
+  };
+}
+
+(function(){
+  const submit = document.getElementById('submitBtn');
+  const zip = document.getElementById('zip');
+  const zipMsg = document.getElementById('zipMsg');
+  const ids = ['name','phone','vehicle','address','zip'];
+  const inputs = ids.map(id=>document.getElementById(id)).filter(Boolean);
+
+  // Prevent native form submission (Enter key, etc)
+  const form = document.getElementById('leadForm');
+  if (form){
+    form.addEventListener('submit', (e)=> e.preventDefault());
+  }
+
+  function check(){
+    const ok = inputs.every(i=>!!i.value) && inServiceArea(zip.value);
+    if(submit) submit.disabled = !ok;
+    if(zipMsg){
+      if(!zip.value){ zipMsg.textContent = 'Enter ZIP to check coverage.'; zipMsg.className='text-xs text-[var(--sub)]'; }
+      else if(inServiceArea(zip.value)){ zipMsg.textContent = "You're in our service area!"; zipMsg.className='text-xs'; zipMsg.style.color='var(--ok)'; }
+      else { zipMsg.textContent = 'Currently outside our demo area. Ask to add your ZIP.'; zipMsg.className='text-xs'; zipMsg.style.color='var(--danger)'; }
+    }
+  }
+  inputs.forEach(i=> i.addEventListener('input', check));
+
+  // Clear status on input (quality-of-life)
+  if (document.getElementById('formStatus')) inputs.forEach(i => i.addEventListener('input', () => { document.getElementById('formStatus').textContent = ''; }));
+
+  if (submit) submit.addEventListener('click', async (e) => {
+    e.preventDefault();
+
+    const status = document.getElementById('formStatus');
+    function setStatus(msg, ok){
+      if (!status) return;
+      status.textContent = msg;
+      status.style.color = ok ? 'var(--ok)' : 'var(--danger)';
+    }
+
+    // Basic validation reuse
+    const okAll = inputs.every(i => !!i.value) && inServiceArea(zip.value);
+    if (!okAll){
+      setStatus('Please complete all fields and ensure your ZIP is in our service area.', false);
+      return;
+    }
+
+    // Snapshot current selections and price
+    const snap = gatherQuoteSnapshot();
+
+    // Prepare Telegram message
+    const messageText = buildTelegramMessage();
+
+    // Build payload for external webhook (n8n)
+    const leadPayload = {
+      name: document.getElementById('name')?.value || '',
+      phone: (typeof phoneInput !== 'undefined' && phoneInput && phoneInput.value) ? phoneInput.value.trim() : '',
+      vehicle: document.getElementById('vehicle')?.value || '',
+      address: document.getElementById('address')?.value || '',
+      zip: zip.value || '',
+      discountCode: document.getElementById('discount')?.value || '',
+      quoteSnapshot: snap,
+      source: 'website-contact-form'
+    };
+
+    // UI: sending state
+    submit.disabled = true;
+    const oldText = submit.textContent;
+    submit.textContent = 'Sending…';
+    setStatus('', true);
+
+    try{
+      let chatId = resolveChatId();
+      // Guard: if the configured chat id equals the bot's own id, it's invalid
+      const botId = tokenBotId();
+      if (chatId === botId) chatId = '';
+      if (!chatId){
+        const botId = tokenBotId();
+        const misMatch = (String(TELEGRAM_CHAT_ID||'').trim() === botId);
+        const hint = misMatch
+          ? 'Config issue: chat_id equals your bot id. Open Telegram, send /start to your bot from your account, then set your actual chat_id (not the bot id).'
+          : 'Setup needed: open Telegram, send /start to your bot (or add it to a group), then reload this page. You can also add ?tg_chat_id=YOUR_ID to the URL once.';
+        setStatus(hint, false);
+        submit.disabled = false;
+        submit.textContent = oldText;
+        return;
+      }
+      // Send to webhook and Telegram in parallel
+      const [webhookOk, sendRes] = await Promise.all([
+        sendLeadWebhook(leadPayload),
+        sendTelegramMessage(chatId, messageText)
+      ]);
+
+      if (sendRes.ok){
+        if (!webhookOk){
+          console.warn('Lead webhook did not return OK, but Telegram send succeeded.');
+        }
+        burstConfetti();
+        submit.textContent = 'Request sent 🎉';
+        submit.classList.remove('btn-accent');
+        submit.classList.add('btn-primary');
+        submit.style.color = '#ffffff';
+        setStatus('Thanks! We received your request and will text you to confirm a time.', true);
+        // Clear form fields and reset UI after successful send
+        if (form) form.reset();
+        // Reset optional discount state + message
+        if (typeof discountValue !== 'undefined') { discountValue = 0; }
+        const dMsgEl = document.getElementById('discountMsg');
+        if (dMsgEl) { dMsgEl.textContent = ''; dMsgEl.style.color = ''; }
+        // Reset service selections and extras
+        exterior = false; interior = false; deepExterior = false; deepInterior = false;
+        for (const x of extrasList) { extras[x.key] = false; }
+        syncServiceButtons();
+        const extrasWrap = document.getElementById('extras');
+        if (extrasWrap) { extrasWrap.querySelectorAll('button').forEach(b => b.classList.remove('active')); }
+        recalc();
+        updateBreakdownButtonVisibility();
+      } else {
+        const detail = sendRes.description ? ` (${sendRes.description})` : '';
+        throw new Error('Telegram send failed' + detail);
+      }
+    } catch(err){
+      console.error('Submit error', err);
+      const msg = (err && err.message) ? `Sorry—there was a problem sending your request: ${err.message}` : 'Sorry—there was a problem sending your request.';
+      setStatus(msg, false);
+      submit.disabled = false;
+      submit.textContent = oldText;
+      submit.classList.add('btn-accent');
+    }
+  });
+  check();
+
+  // Contact Map + Address Geocode (Nominatim)
+  const mapEl = document.getElementById('contactMap');
+  if (mapEl && typeof L !== 'undefined') {
+    const brand = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#5271FF';
+    const tp = [41.573, -87.803];
+    const cmap = L.map(mapEl, { zoomControl: false, attributionControl: true, dragging:false, scrollWheelZoom:false, touchZoom:false, doubleClickZoom:false, boxZoom:false, keyboard:false }).setView(tp, 11);
+    L.tileLayer(
+      'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+      {
+        maxZoom: 19,
+        detectRetina: true,
+        attribution: '&copy; OpenStreetMap contributors'
+      }
+    ).addTo(cmap);
+    let pin = L.circleMarker(tp, { radius: 6, color: brand, fillColor: brand, fillOpacity: 0.95, weight: 2 }).addTo(cmap);
+
+    async function geocode(addr){
+      if(!addr) return;
+      try{
+        const url = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(addr + ' Tinley Park IL');
+        const res = await fetch(url, { headers: { 'Accept':'application/json' } });
+        const data = await res.json();
+        if(data && data[0]){
+          const lat = parseFloat(data[0].lat), lon = parseFloat(data[0].lon);
+          pin.setLatLng([lat, lon]);
+          cmap.setView([lat, lon], 15, { animate: true });
+        }
+      }catch(e){ console.warn('Geocode error', e); }
+    }
+
+    const addrInput = document.getElementById('address');
+    if(addrInput){
+      let t; addrInput.addEventListener('input', ()=>{ clearTimeout(t); t = setTimeout(()=> geocode(addrInput.value), 500); });
+      addrInput.addEventListener('change', ()=> geocode(addrInput.value));
+    }
+  }
+})();
+
+/* ---------- INIT ---------- */
+document.getElementById('year').textContent = new Date().getFullYear();
+syncServiceButtons();
+recalc();
+updateBreakdownButtonVisibility();
+
+// --------- PHONE INPUT FORMATTING & VALIDATION ---------
+function digitsOnly(str) {
+  return str.replace(/\D/g, "");
+}
+
+function formatPhone(value) {
+  const digits = digitsOnly(value).substring(0, 10);
+  if (digits.length < 4) return digits;
+  if (digits.length < 7) return digits.slice(0,3) + "-" + digits.slice(3);
+  return digits.slice(0,3) + "-" + digits.slice(3,6) + "-" + digits.slice(6);
+}
+
+function isValidPhone(value) {
+  return digitsOnly(value).length === 10;
+}
+
+// attach validation/formatting
+const phoneInput = document.querySelector("#phone");
+const phoneMsg = document.querySelector("#phoneMsg");
+const submitBtn = document.querySelector("button[type='submit'], #submitBtn");
+
+if (phoneInput && phoneMsg && submitBtn) {
+  phoneInput.addEventListener("input", () => {
+    phoneInput.value = formatPhone(phoneInput.value);
+
+    if (isValidPhone(phoneInput.value)) {
+      phoneMsg.textContent = "Looks good.";
+      phoneMsg.classList.remove("text-red-500");
+      phoneMsg.classList.add("text-green-500");
+      submitBtn.disabled = false;
+    } else {
+      phoneMsg.textContent = "Enter a 10-digit number (XXX-XXX-XXXX).";
+      phoneMsg.classList.remove("text-green-500");
+      phoneMsg.classList.add("text-red-500");
+      submitBtn.disabled = true;
+    }
+  });
+}
+</script>
+
+<script>
+/* ---------- WEEKLY WEATHER (viewer location) ---------- */
+(function(){
+  const grid = document.getElementById('wxGrid');
+  const placeEl = document.getElementById('wxPlace');
+  const unitBtn = document.getElementById('wxUnit');
+  if(!grid || !placeEl || !unitBtn) return;
+
+  let state = { unit:'F', tz: 'America/Chicago', lat:null, lon:null, place:null, data:null };
+
+  // Enforce all date formatting to use Chicago time
+  (function enforceChicagoTZ(){
+    const TZ = 'America/Chicago';
+    const origToLocaleString = Date.prototype.toLocaleString;
+    const origToLocaleDateString = Date.prototype.toLocaleDateString;
+    const origToLocaleTimeString = Date.prototype.toLocaleTimeString;
+    function withTZ(method){
+      return function(locale, options){
+        const opts = Object.assign({}, options || {}, { timeZone: TZ });
+        return method.call(this, locale || undefined, opts);
+      };
+    }
+    Date.prototype.toLocaleString = withTZ(origToLocaleString);
+    Date.prototype.toLocaleDateString = withTZ(origToLocaleDateString);
+    Date.prototype.toLocaleTimeString = withTZ(origToLocaleTimeString);
+  })();
+
+  const WMO = {
+    0: ['Clear','☀️'], 1:['Mainly clear','🌤️'], 2:['Partly cloudy','⛅'], 3:['Overcast','☁️'],
+    45:['Fog','🌫️'], 48:['Rime fog','🌫️'], 51:['Light drizzle','🌦️'], 53:['Drizzle','🌦️'], 55:['Heavy drizzle','🌧️'],
+    56:['Freezing drizzle','🌧️'], 57:['Frz. drizzle','🌧️'], 61:['Light rain','🌦️'], 63:['Rain','🌧️'], 65:['Heavy rain','🌧️'],
+    66:['Freezing rain','🌧️'], 67:['Freezing rain','🌧️'], 71:['Light snow','🌨️'], 73:['Snow','🌨️'], 75:['Heavy snow','❄️'],
+    77:['Snow grains','🌨️'], 80:['Rain showers','🌦️'], 81:['Shower','🌧️'], 82:['Heavy shower','🌧️'], 85:['Snow shw','🌨️'], 86:['Heavy snow shw','❄️'],
+    95:['Thunderstorm','⛈️'], 96:['Tstorm w/ hail','⛈️'], 99:['Severe tstorm','⛈️']
+  };
+
+  function kToF(c){ return c * 9/5 + 32; }
+  function fmtTemp(c){ return state.unit==='F' ? Math.round(kToF(c*1)) + '°' : Math.round(c) + '°'; }
+  function mph(ms){ return state.unit==='F' ? Math.round(ms*2.23694) + ' mph' : Math.round(ms*3.6) + ' km/h'; }
+  function dayLabel(iso){ const d = new Date(iso); return d.toLocaleDateString(undefined,{weekday:'short'}); }
+
+      function render(){
+        if(!state.data) return;
+        grid.innerHTML = '';
+        const { daily } = state.data;
+        const todayIso = (new Date()).toISOString().slice(0,10);
+        for(let i=0;i<daily.time.length;i++){
+          const code = daily.weathercode[i];
+          const [desc, icon] = WMO[code] || ['Weather','🌡️'];
+          const hiC = daily.temperature_2m_max[i];
+          const loC = daily.temperature_2m_min[i];
+          const pr = daily.precipitation_sum[i];
+          // Only highlight if rain is exactly 0 mm
+          const greatDay = pr === 0;
+          const dateStr = new Date(daily.time[i]).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+          const weekdayStr = dayLabel(daily.time[i]);
+          const isToday = daily.time[i] === todayIso;
+          const dateHTML = isToday
+            ? `<div class="date text-base font-bold mb-1" style="color:var(--accent);">${dateStr}</div>`
+            : `<div class="date text-base font-bold text-white mb-1">${dateStr}</div>`;
+          const card = document.createElement('div');
+          card.className = 'wx-card rounded-xl p-3 border edge ' + (greatDay ? 'bg-white/10 border-white/20 glow' : 'panel');
+
+          let descText = WMO[code] ? WMO[code][0] : desc;
+          if (descText && descText.length > 26) descText = descText.slice(0, 26) + '…';
+
+          card.innerHTML = `
+            <div class="flex flex-col items-start">
+              ${dateHTML}
+              <div class="text-sm text-[var(--sub)]">${weekdayStr}</div>
+            </div>
+            <div class="icon text-white font-bold leading-none">${icon}</div>
+            <div class="temps mt-1 text-white">${fmtTemp(hiC)}<span class="opacity-70">/${fmtTemp(loC)}</span></div>
+            <div class="desc">${descText}</div>
+          `;
+          grid.appendChild(card);
+        }
+      }
+
+  unitBtn.addEventListener('click', ()=>{ state.unit = state.unit==='F'?'C':'F'; unitBtn.textContent = '°' + state.unit; render(); });
+
+  async function fetchForecast(lat, lon){
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode,windspeed_10m_max&timezone=${encodeURIComponent(state.tz)}`;
+    const res = await fetch(url);
+    if(!res.ok) throw new Error('Weather fetch failed');
+    state.data = await res.json();
+    render();
+  }
+
+  async function reverseGeocode(lat, lon){
+    try{
+      const r = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+      if(r.ok){ const j = await r.json(); return j.address.city || j.address.town || j.address.village || j.address.hamlet || j.display_name || 'Your area'; }
+    }catch(e){}
+    return 'Your area';
+  }
+
+  async function locate(){
+    // 1) Precise (with permission)
+    const precise = new Promise((resolve)=>{
+      if(!navigator.geolocation) return resolve(null);
+      navigator.geolocation.getCurrentPosition(
+        pos=> resolve({lat:pos.coords.latitude, lon:pos.coords.longitude}),
+        ()=> resolve(null),
+        { enableHighAccuracy:false, timeout:8000, maximumAge:600000 }
+      );
+    });
+    // 2) IP fallback
+    const ipFallback = fetch('https://ipapi.co/json/').then(r=> r.ok ? r.json() : null).then(j=> j? {lat:j.latitude, lon:j.longitude, city:j.city}: null).catch(()=>null);
+
+    const got = (await precise) || (await ipFallback);
+    if(!got) throw new Error('Location unavailable');
+    state.lat = got.lat; state.lon = got.lon; state.place = got.city || null;
+    if(!state.place) state.place = await reverseGeocode(state.lat, state.lon);
+    placeEl.textContent = state.place;
+    await fetchForecast(state.lat, state.lon);
+  }
+
+  locate().catch(()=>{ placeEl.textContent = 'Location unavailable'; grid.innerHTML = '<div class="text-sm text-[var(--sub)]">Unable to access your location. Try enabling location services in your browser.</div>'; });
+})();
+</script>
+
+<script>
+  // Service Breakdown Bottom Sheet Logic
+  const bdOverlay = document.getElementById("bdOverlay");
+  const bdSheet = document.getElementById("bdSheet");
+  const bdClose = document.getElementById("bdClose");
+  const bdBook = document.getElementById("bdBook");
+  const bdList = document.getElementById("bdList");
+  const bdTotal = document.getElementById("bdTotal");
+  const bdNotes = document.getElementById("bdNotes");
+  const bdSubtitle = document.getElementById("bdSubtitle");
+
+  // Included items for Exterior service
+  const EXTERIOR_INCLUDED = [
+    'Foam Hand Wash',
+    'Microfiber Drying',
+    'In & Out Windows Cleaned',
+    'Tire & Rims Detailed',
+    'Tire Shine Applied',
+    'Clay Bar',
+    'Applied Ceramic Spray',
+    'Applied Wax Spray'
+  ];
+
+  // Included items for Interior Detail
+  const INTERIOR_INCLUDED = [
+    'Vacuum Entire Interior (Cabin, Trunk, Under Seats, Compartments)',
+    'Detail (Cup Holders, Vents, Door Jambs, Dash)',
+    'In & Out Windows Cleaned',
+    'Full Shine Application',
+    'Remove Small Stains (If Applicable)',
+    'Deodorize',
+    'Leather Conditioner\n(If Applicable)',
+    'Cleaned Carpets & Mats'
+  ];
+
+  // Trigger elements (adjust selectors as needed)
+  const bdTriggers = document.querySelectorAll(".bd-trigger, #viewBreakdown, #totalBtn, #totalText");
+
+  function openSheet() {
+    buildBreakdownFromState();
+    bdOverlay.classList.add('open');
+    bdSheet.classList.add('open');
+  }
+
+  function closeSheet() {
+    bdOverlay.classList.remove("open");
+    bdSheet.classList.remove("open");
+  }
+
+  bdTriggers.forEach(el => {
+    el.addEventListener("click", openSheet);
+  });
+
+  // Ensure direct IDs are also wired (in case NodeList was empty at parse time)
+  document.getElementById('viewBreakdown')?.addEventListener('click', openSheet);
+  document.getElementById('totalBtn')?.addEventListener('click', openSheet);
+  document.getElementById('totalText')?.addEventListener('click', openSheet);
+
+  bdClose.addEventListener("click", closeSheet);
+  bdOverlay.addEventListener("click", closeSheet);
+  bdBook.addEventListener("click", closeSheet);
+
+  // Live breakdown builder from current quoter state
+  function buildBreakdownFromState(){
+    if(!bdList) return;
+    bdList.innerHTML = '';
+
+    // 1) Services (only Exterior requested for detailed includes)
+    const hasExterior = (typeof exterior !== 'undefined') && !!exterior;
+    const hasAnyDeep = (typeof deepExterior !== 'undefined' && deepExterior) || (typeof deepInterior !== 'undefined' && deepInterior);
+    const hasInterior = (typeof interior !== 'undefined') && !!interior;
+
+    let anyRows = false;
+
+    if(hasExterior){
+      const itemsHTML = EXTERIOR_INCLUDED.map(it=>`<div>• ${it}</div>`).join('');
+      const row = document.createElement('div');
+      row.className = 'bd-row';
+      row.innerHTML = `
+        <div class="bd-left">
+          <div class="bd-icon">🚗</div>
+          <div>
+            <div class="text-white font-semibold">Exterior Detail</div>
+            <div class="bd-items">${itemsHTML}</div>
+          </div>
+        </div>
+        <div class="text-sm text-white/80 whitespace-nowrap">Included</div>
+      `;
+      bdList.appendChild(row);
+      anyRows = true;
+    }
+
+    // Interior Detail row (new)
+    if(hasInterior){
+      const itemsHTMLi = INTERIOR_INCLUDED.map(it=>`<div>• ${it}</div>`).join('');
+      const rowI = document.createElement('div');
+      rowI.className = 'bd-row';
+      rowI.innerHTML = `
+        <div class="bd-left">
+          <div class="bd-icon">🧽</div>
+          <div>
+            <div class="text-white font-semibold">Interior Detail</div>
+            <div class="bd-items">${itemsHTMLi}</div>
+          </div>
+        </div>
+        <div class="text-sm text-white/80 whitespace-nowrap">Included</div>
+      `;
+      bdList.appendChild(rowI);
+      anyRows = true;
+    }
+
+    // Deep variants
+    // Deep Exterior: include all Exterior items + note about dirtier cars & more thorough cleaning
+    if (typeof deepExterior !== 'undefined' && deepExterior) {
+      const note = `<div class="text-[var(--sub)] italic mb-1">Includes everything in <span class="text-white">Exterior Detail</span>. Recommended for dirtier cars and a more thorough cleaning.</div>`;
+      const itemsHTMLDeepEx = note + EXTERIOR_INCLUDED.map(it=>`<div>• ${it}</div>`).join('');
+      const rowDeepEx = document.createElement('div');
+      rowDeepEx.className = 'bd-row';
+      rowDeepEx.innerHTML = `
+        <div class="bd-left">
+          <div class="bd-icon">✨</div>
+          <div>
+            <div class="text-white font-semibold">Deep Exterior Detail</div>
+            <div class="bd-items">${itemsHTMLDeepEx}</div>
+          </div>
+        </div>
+        <div class="text-sm text-white/80 whitespace-nowrap">Included</div>
+      `;
+      bdList.appendChild(rowDeepEx);
+      anyRows = true;
+    }
+
+    // Deep Interior: include all Interior items + note about dirtier cars & more thorough cleaning
+    if (typeof deepInterior !== 'undefined' && deepInterior) {
+      const noteI = `<div class="text-[var(--sub)] italic mb-1">Includes everything in <span class="text-white">Interior Detail</span>. Recommended for dirtier cars and a more thorough cleaning.</div>`;
+      const itemsHTMLDeepIn = noteI + INTERIOR_INCLUDED.map(it=>`<div>• ${it}</div>`).join('');
+      const rowDeepIn = document.createElement('div');
+      rowDeepIn.className = 'bd-row';
+      rowDeepIn.innerHTML = `
+        <div class="bd-left">
+          <div class="bd-icon">✨</div>
+          <div>
+            <div class="text-white font-semibold">Deep Interior Detail</div>
+            <div class="bd-items">${itemsHTMLDeepIn}</div>
+          </div>
+        </div>
+        <div class="text-sm text-white/80 whitespace-nowrap">Included</div>
+      `;
+      bdList.appendChild(rowDeepIn);
+      anyRows = true;
+    }
+
+    // 2) Extras (selected ones with prices)
+    if(typeof extrasList !== 'undefined' && Array.isArray(extrasList)){
+      extrasList.forEach(x=>{
+        const isOn = extras && extras[x.key] === true;
+        if(isOn){
+          const row = document.createElement('div');
+          row.className = 'bd-row';
+
+          // assign icons by name
+          let icon = "✨";
+          if (x.label.includes("Pet Hair")) icon = "🐾";
+          if (x.label.includes("Odor")) icon = "🌬️";
+          if (x.label.includes("Engine")) icon = "🔧";
+          if (x.label.includes("Wax")) icon = "🛡️";
+
+          row.innerHTML = `
+            <div class="bd-left">
+              <div class="bd-icon bg-purple-600">${icon}</div>
+              <div class="text-white font-semibold">${x.label}</div>
+            </div>
+            <div class="text-sm text-white/90 whitespace-nowrap">+${(typeof currency==='function')? currency(x.price) : ('$'+x.price)}</div>
+          `;
+          bdList.appendChild(row);
+          anyRows = true;
+        }
+      });
+    }
+
+    if(!anyRows){
+      bdList.innerHTML = '<div class="text-sm text-[var(--sub)]">No services selected yet. Choose options in the builder to see the breakdown.</div>';
+    }
+
+    // 3) Subtitle and notes
+    if(bdSubtitle){ bdSubtitle.textContent = (typeof carSize !== 'undefined' && carSize) ? `${carSize} • Live quote details` : 'Live quote details'; }
+
+    const notes = [];
+    if(typeof discountValue !== 'undefined' && discountValue>0) notes.push(`Discount applied: -$${discountValue}`);
+    if(typeof carSize === 'undefined' || !carSize) notes.push('Tip: select a vehicle size');
+    if(bdNotes) bdNotes.textContent = notes.join(' • ');
+
+    // 4) Total from current UI
+    if(bdTotal){
+      const totalEl = document.getElementById('totalText');
+      bdTotal.textContent = totalEl ? totalEl.textContent : '$0';
+    }
+  }
+</script>
+</script>
+</script>
+<script>
+/* ---------- SCROLL REVEAL (IntersectionObserver) ---------- */
+(function(){
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const els = Array.from(document.querySelectorAll(
+    '.panel.edge, .tilt, #results img, .wx-card, #services .grid > div, #quote #builderCard, #quote .panel.edge, #faq details, footer'
+  ));
+
+  // Add baseline reveal state + gentle stagger
+  els.forEach((el,i)=>{ el.classList.add('reveal'); el.dataset.delay = String((i % 3) + 1); });
+
+  const io = new IntersectionObserver((entries, obs)=>{
+    entries.forEach(ent=>{
+      if(ent.isIntersecting){ ent.target.classList.add('in'); obs.unobserve(ent.target); }
+    });
+  }, { threshold: .12 });
+
+  els.forEach(el=> io.observe(el));
+})();
+</script>
+<script>
+/* ---------- CLICK RIPPLE (attach to hero primary buttons) ---------- */
+(function(){
+  const btns = document.querySelectorAll('#home .btn-primary');
+  btns.forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      const r = btn.getBoundingClientRect();
+      const x = e.clientX - r.left, y = e.clientY - r.top;
+      btn.style.setProperty('--ripple-x', x + 'px');
+      btn.style.setProperty('--ripple-y', y + 'px');
+      btn.classList.remove('ripple'); void btn.offsetWidth; btn.classList.add('ripple');
+      btn.addEventListener('animationend', ()=> btn.classList.remove('ripple'), { once:true });
+    });
+  });
+})();
+</script>
+</body>
+</html>
