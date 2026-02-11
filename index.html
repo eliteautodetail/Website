@@ -3,16 +3,20 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Elite Auto Detailing • Mobile Detailing | Instant Quote & On-Site Service</title>
-<meta name="description" content="Premium Mobile Car Detailing That Comes To You. Exterior & Interior Packages, Ceramic Spray, Odor Treatment, Pet Hair Removal, Headlight Restore. Get An Instant Quote And Book In Minutes." />
+<title>Mobile Auto Detailing in Tinley Park, IL | Elite Auto Detailing</title>
+<meta name="description" content="Elite Auto Detailing provides mobile auto detailing in Tinley Park, IL and nearby areas. Instant quotes, interior/exterior packages, and ceramic coating. Call or request your quote in minutes." />
 <!-- SEO: indexing + language + theme -->
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <meta name="theme-color" content="#0B0D12" />
 <meta http-equiv="content-language" content="en-US" />
+<meta name="format-detection" content="telephone=yes" />
+<meta name="geo.region" content="US-IL" />
+<meta name="geo.placename" content="Tinley Park" />
 
 <!-- Open Graph refinements -->
+<meta property="og:site_name" content="Elite Auto Detailing" />
 <meta property="og:locale" content="en_US" />
-<meta property="og:url" content="https://example.com/" />
+<meta property="og:url" content="/" />
 <meta property="og:image:alt" content="Elite Auto Detailing – Mobile detailing results" />
 <meta name="twitter:site" content="@eliteautodetailing" />
 <meta name="twitter:title" content="Elite Auto Detailing — Mobile Detailing that Comes to You" />
@@ -22,7 +26,7 @@
 <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
 <link rel="preconnect" href="https://unpkg.com" crossorigin>
 <link rel="dns-prefetch" href="https://tile.openstreetmap.org">
-<link rel="canonical" href="https://example.com/" />
+<link rel="canonical" href="/" />
 <!-- Favicon / App Icons -->
 <link rel="icon" type="image/svg+xml" href="Tab Logo.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="Tab Logo.svg">
@@ -32,7 +36,10 @@
 <meta property="og:description" content="Factory-Quality Results On Your Driveway. Instant Quote, Same-Day Slots, Licensed & Insured." />
 <meta property="og:type" content="website" />
 <meta property="og:image" content="logo.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="logo.png" />
 
 <!-- Tailwind (CDN) -->
 <script src="https://cdn.tailwindcss.com"></script>
@@ -44,13 +51,13 @@
   :root{
     --primary:#5271FF;  /* brand blue */
     --accent:#C267FF;   /* brand purple */
-    --bg:#0B0D12;       /* deep charcoal */
+    --bg:#0B0D12;       /* dark charcoal */
     --panel:#0F1117;    /* card surface */
     --ink:#E6E8EF;      /* light text */
     --sub:#9aa3b2;      /* secondary text */
     --ok:#16a34a; --warn:#f59e0b; --danger:#ef4444;
   }
-  body{background: radial-gradient(1000px 600px at 20% -10%, rgba(82,113,255,.22), transparent 60%), radial-gradient(900px 700px at 120% -30%, rgba(194,103,255,.18), transparent 60%), var(--bg); color:var(--ink)}
+  body{background: radial-gradient(1000px 600px at 20% -10%, rgba(82,113,255,.22), transparent 60%), radial-gradient(900px 700px at 120% -30%, rgba(194,103,255,.18), transparent 60%), var(--bg); color:var(--ink); overflow-x:hidden}
   .glass{backdrop-filter: blur(12px)}
   .panel{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.08)); border:1px solid rgba(255,255,255,.06)}
   .btn{display:inline-grid; place-items:center; border-radius:14px; padding:.9rem 1.1rem; font-weight:800; letter-spacing:.2px; transition:filter .08s ease, transform .08s ease, box-shadow .08s ease}
@@ -123,7 +130,7 @@
   .ba-container{position:relative; height:clamp(220px, 50vw, 480px); touch-action:none; line-height:0}
   .ba-handle{position:absolute; top:50%; transform:translate(-50%,-50%); width:44px; height:44px; border-radius:9999px; background:#111827; color:#fff; display:grid; place-items:center; border:1px solid rgba(255,255,255,.2); box-shadow:0 10px 20px rgba(0,0,0,.45); cursor:ew-resize; z-index:10}
   .ba-divider{position:absolute; top:0; bottom:0; width:2px; background:linear-gradient(180deg, #fff, transparent); z-index:9}
-  .ba-container > img{ display:block; width:100%; height: 110%; object-fit:cover }
+  .ba-container > img{ display:block; width:100%; height:100%; object-fit:cover }
   @media (max-width: 640px){
     .ba-handle{ width:56px; height:56px; }
     body{ padding-bottom: 72px; } /* ensure content isn't hidden behind mobile sticky CTA */
@@ -186,6 +193,8 @@
 .segbtn{ padding:.8rem 1rem; border-radius:12px; border:1px solid rgba(255,255,255,.2); background:transparent; color:#e6e8ef; font-weight:600; font-size:1rem; min-height:48px }
 #sizeButtons button{ font-weight:600; font-size:1rem; padding:.8rem 1rem; min-height:48px }
  .segbtn.active{ background:var(--primary); color:#fff; border-color:transparent; box-shadow:0 8px 24px rgba(82,113,255,.35) }
+ .coating-option{ transition: background .15s ease, border-color .15s ease, box-shadow .15s ease }
+ .coating-option.active{ background:var(--primary); border-color:transparent; box-shadow:0 8px 24px rgba(82,113,255,.35) }
  .extras-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap:8px; }
  .extra-btn{ display:flex; align-items:center; justify-content:space-between; padding:.6rem .75rem; border-radius:12px; border:1px solid rgba(255,255,255,.2); background:transparent; color:#e6e8ef; min-height:48px }
  .extra-btn.active{ background:linear-gradient(135deg,var(--accent),#db86ff); color:#0b0d12; border-color:transparent }
@@ -199,7 +208,7 @@
   .edge{border:1px solid rgba(255,255,255,.08); box-shadow:inset 0 0 0 1px rgba(255,255,255,.02), 0 0 0 1px rgba(255,255,255,.02), 0 12px 40px rgba(0,0,0,.45)}
   .glow{ box-shadow: 0 0 0 1px rgba(82,113,255,.25), 0 0 40px rgba(82,113,255,.25) }
   input[type], button, a{outline-offset:3px}
-  input, select { background:#0b0d12; border:1px solid rgba(255,255,255,.12); color:var(--ink) }
+  input, select, textarea { background:#0b0d12; border:1px solid rgba(255,255,255,.12); color:var(--ink) }
   /* --- Confetti: full-width top fall --- */
   .confetti{ position:fixed; top:-12px; border-radius:2px; will-change:transform, opacity; pointer-events:none; z-index:30; }
   @keyframes confettiFall{
@@ -223,6 +232,32 @@
     #builderCard span.rounded-lg.text-xs {
       margin-top: -30px;
     }
+  }
+  /* --- Extra-small device hardening --- */
+  @media (max-width: 480px){
+    #home h1{ font-size: clamp(1.85rem, 8vw, 2.45rem); line-height: 1.08; }
+    #home p{ font-size: .98rem; }
+    #home .btn-primary.edge.w-3\/4.md\:hidden{ width:100%; }
+    section h2{ font-size: clamp(1.6rem, 7vw, 2rem); line-height:1.15; }
+
+    /* Keep tiny screens from text/button overflow */
+    .btn{ width:100%; }
+    .chip{ max-width:100%; white-space:normal; }
+
+    /* Quoter size buttons: prevent cramped 3-column layout on narrow screens */
+    #quote #sizeButtons{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+    #quote #sizeButtons button:last-child{ grid-column: 1 / -1; }
+
+    /* Ceramic package headers wrap cleanly on very narrow screens */
+    #ceramic .coating-option > div:first-child{
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 6px;
+    }
+  }
+
+  @media (max-height: 700px){
+    #home{ min-height:auto; padding-block: 1.5rem; }
   }
   /* --- Service Breakdown Bottom Sheet --- */
   .sheet-overlay{position:fixed; inset:0; background:rgba(0,0,0,.5); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); opacity:0; pointer-events:none; transition:opacity .3s ease; z-index:60}
@@ -426,8 +461,8 @@ header.sticky ~ section#home { margin-top: 4px !important; }
   "@context": "https://schema.org",
   "@type": "AutomotiveBusiness",
   "name": "Elite Auto Detailing",
-  "image": "https://example.com/logo.png",
-  "url": "https://example.com/",
+  "image": "/logo.png",
+  "url": "/",
   "telephone": "+1-708-737-9781",
   "priceRange": "$",
   "description": "Mobile auto detailing: exterior & interior packages, ceramic spray, odor treatment, pet hair removal. Instant quote and on‑site service in the Tinley Park area.",
@@ -450,6 +485,20 @@ header.sticky ~ section#home { margin-top: 4px !important; }
   }],
   "sameAs": []
 }
+</script>
+
+<!-- Structured Data: Website -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Elite Auto Detailing",
+  "url": "/",
+  "inLanguage": "en-US"
+}
+</script>
+
+<script>
 // Always scroll to top on page load/refresh
 window.addEventListener('beforeunload', () => { window.scrollTo(0, 0); });
 window.addEventListener('load', () => { window.scrollTo(0, 0); });
@@ -512,6 +561,7 @@ window.addEventListener('load', () => { window.scrollTo(0, 0); });
     <nav class="hidden md:flex items-center gap-6 text-sm text-[var(--sub)]">
       <a href="#services" class="hover:text-white">Services</a>
       <a href="#quote" class="hover:text-white">Instant Quote</a>
+      <a href="#ceramic" class="hover:text-white">Ceramic Coating</a>
       <a href="#results" class="hover:text-white">Results</a>
       <a href="#faq" class="hover:text-white">FAQ</a>
       <a href="#contact" class="hover:text-white">Contact</a>
@@ -534,17 +584,17 @@ window.addEventListener('load', () => { window.scrollTo(0, 0); });
         <span class="chip border-white/10">🛡️ Licensed & Insured</span>
       </div>
       <h1 class="mt-4 text-4xl md:text-6xl font-black leading-tight text-white">Studio-Quality Detailing On Your Driveway</h1>
-      <p class="mt-3 text-lg text-[var(--sub)]">Instant pricing. Same-day slots. Swirl-safe methods and top-tier products.</p>
+      <p class="mt-3 text-lg text-[var(--sub)]">Instant pricing in minutes. Same-day slots available. Swirl-safe methods and top-tier products.</p>
       <div class="mt-7 flex flex-wrap gap-3">
         <!-- Mobile: swap so See Packages is primary, Get Instant Quote is ghost -->
         <a href="#services" class="btn btn-primary edge w-3/4 md:hidden">💵 See Packages</a>
 
         <!-- Desktop (md+): original order/styles preserved -->
-        <span class="magnet-wrap hidden md:inline-block"><a href="#quote" class="btn btn-primary edge magnet w-full md:w-auto">💵 Get Instant Quote</a></span>
+        <span class="magnet-wrap hidden md:inline-block"><a href="#quote" class="btn btn-primary edge magnet w-full md:w-auto">💵 Get My Free Quote</a></span>
         <a href="#services" class="btn btn-ghost edge hidden md:inline-grid md:w-auto">See Packages</a>
       </div>
       <div class="mt-5 flex items-center gap-3 text-sm text-[var(--sub)]">
-        <span class="chip border-white/10">⭐ 5.0 (56 reviews)</span>
+        <span class="chip border-white/10">⭐ 4.9 (28 reviews)</span>
         <span class="chip border-white/10">⏱️ 2–3 hr typical</span>
         <span class="chip border-white/10">🌿 Eco-friendly</span>
       </div>
@@ -561,14 +611,11 @@ window.addEventListener('load', () => { window.scrollTo(0, 0); });
           <div class="text-sm text-[var(--sub)]">This Week’s Slots</div>
           <div class="text-2xl font-extrabold text-white" id="slotsLeft">3 left</div>
         </div>
-        <div class="rounded-xl bg-white/5 border border-white/10 p-3 flex items-center justify-between">
-          <div>
-            <div class="font-semibold text-white">New Customer Offer</div>
-            <div class="text-sm text-[var(--sub)]">Use code <strong id="coupon">SHINE15</strong> for $15 off</div>
-          </div>
-          <button id="copyCoupon" class="btn btn-ghost text-sm edge">Apply</button>
+        <div class="rounded-xl bg-white/5 border border-white/10 p-3">
+          <div class="font-semibold text-white">Mobile service. Professional results.</div>
+          <div class="text-sm text-[var(--sub)]">We prioritize serious owners and quality-first maintenance clients.</div>
         </div>
-        <a href="#quote" class="btn btn-accent edge">✨ Reserve a slot</a>
+        <a href="#quote" class="btn btn-accent edge">✨ Reserve A Slot</a>
         <div class="text-xs text-[var(--sub)]">No payment required to request. We confirm by text.</div>
       </div>
     </div>
@@ -584,31 +631,27 @@ window.addEventListener('load', () => { window.scrollTo(0, 0); });
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="rounded-2xl panel edge p-5 tilt">
         <div class="text-lg font-semibold text-white">Full Detail</div>
-        <div class="mt-1 text-sm text-[var(--sub)]">Includes interior & exterior detail.</div>
-        <div class="mt-8 text-white"><strong>From $150–$200</strong></div>
-        <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('Sedan',true,true,false,[])">Configure</button>
+        <div class="mt-1 text-sm text-[var(--sub)]">Interior Reset + Exterior Enhancement</div>
+        <div class="mt-8 text-white"><strong>$300–$375</strong></div>
+        <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('Sedan','fullDetail',[])">Configure</button>
       </div>
       <div class="rounded-2xl panel edge p-5 tilt">
-        <div class="text-lg font-semibold text-white">Deep Full Detail</div>
-        <div class="mt-1 text-sm text-[var(--sub)]">Full deep clean: exterior decontamination & interior reset.</div>
-        <div class="mt-3 text-white"><strong> From $250–$350</strong></div>
-        <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('SUV',false,false,false,['__deepBoth__'])">Configure</button>
+        <div class="text-lg font-semibold text-white">Interior Reset</div>
+        <div class="mt-1 text-sm text-[var(--sub)]">Deep vacuum, wipe-down, stain treatment</div>
+        <div class="mt-8 text-white"><strong>$225–$275</strong></div>
+        <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('Sedan','interiorReset',[])">Configure</button>
       </div>
       <div class="rounded-2xl panel edge p-5 tilt">
-        <div class="text-lg font-semibold text-white">Furry Friend Package</div>
-        <p class="mt-1 text-sm text-[var(--sub)]">Perfect for pet lovers</p>
-        <ul class="mt-8 text-white text-sm list-disc list-inside space-y-1">
-        </ul>
-        <div class="mt-4 text-white"><strong>From $135-$175</strong></div>
-        <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('Truck',false,true,false,['pet'])">Configure</button>
+        <div class="text-lg font-semibold text-white">Exterior Enhancement</div>
+        <div class="mt-1 text-sm text-[var(--sub)]">Safe wash, wheels/tires, paint protection</div>
+        <div class="mt-8 text-white"><strong>$200–$250</strong></div>
+        <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('SUV','exteriorEnhancement',[])">Configure</button>
       </div>
       <div class="rounded-2xl panel edge p-5 tilt">
-        <div class="text-lg font-semibold text-white">Showoff Package</div>
-        <div class="mt-1 text-sm text-[var(--sub)]">For those who like to show whose the real boss in the neighborhood.</div>
-        <ul class="mt-3 text-white text-sm list-disc list-inside space-y-1">
-        </ul>
-        <div class="mt-4 text-white"><strong>From $180–$210</strong></div>
-        <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('Sedan',true,false,false,['hardwax'])">Configure</button>
+        <div class="text-lg font-semibold text-white">Maintenance Detail</div>
+        <div class="mt-1 text-sm text-[var(--sub)]">Repeat clients on a 4–6 week schedule</div>
+        <div class="mt-8 text-white"><strong>$175–$195</strong></div>
+        <button class="mt-3 btn btn-ghost edge w-full" onclick="bundle('Sedan','maintenanceDetail',[])">Configure</button>
       </div>
     </div>
 </section>
@@ -620,7 +663,7 @@ window.addEventListener('load', () => { window.scrollTo(0, 0); });
     <p class="text-[var(--sub)]">Pricing updates as you choose options.</p>
   </header>
 
-  <div class="grid md:grid-cols-2 gap-6">
+  <div class="grid md:grid-cols-2 gap-6 items-start">
     <!-- Builder -->
     <div id="builderCard" class="rounded-2xl edge p-7 md:p-8 shadow-soft glass bg-[rgba(11,13,18,.6)] border border-white/10">
       <div class="flex items-center justify-between">
@@ -632,7 +675,23 @@ window.addEventListener('load', () => { window.scrollTo(0, 0); });
       </div>
 
       <div class="mt-4 grid gap-4">
-        <div>
+       <div>
+         <label class="mb-2 block font-medium text-white">Vehicles in quote</label>
+         <div class="seg">
+           <button type="button" id="addVehicleBtn" class="segbtn edge shadow-soft bg-transparent text-white">+ Add Vehicle</button>
+           <button type="button" id="removeVehicleBtn" class="segbtn edge shadow-soft bg-transparent text-white">- Remove Vehicle</button>
+         </div>
+         <div class="mt-2 text-sm text-[var(--sub)]">
+           Count: <span id="vehicleCountValue" class="text-white font-semibold">1 vehicle</span>
+         </div>
+       </div>
+
+       <div id="vehicleEditorSection" class="hidden">
+         <label class="mb-2 block font-medium text-white">Customize vehicle</label>
+         <div id="vehicleEditorButtons" class="seg"></div>
+       </div>
+
+       <div>
           <label class="mb-2 block font-medium text-white">Vehicle size</label>
           <div class="grid grid-cols-3 gap-2" id="sizeButtons">
             <button data-size="Sedan" class="px-3 py-2 rounded-xl border text-sm edge shadow-soft bg-transparent text-white">Sedan</button>
@@ -644,10 +703,10 @@ window.addEventListener('load', () => { window.scrollTo(0, 0); });
        <div>
   <label class="mb-2 block font-medium text-white">Services</label>
   <div id="serviceButtons" class="seg">
-    <button type="button" data-svc="exterior" class="segbtn edge shadow-soft bg-transparent text-white">Exterior</button>
-    <button type="button" data-svc="interior" class="segbtn edge shadow-soft bg-transparent text-white">Interior</button>
-    <button type="button" data-svc="deepExterior" class="segbtn edge shadow-soft bg-transparent text-white">Deep Exterior</button>
-    <button type="button" data-svc="deepInterior" class="segbtn edge shadow-soft bg-transparent text-white">Deep Interior</button>
+    <button type="button" data-svc="exteriorEnhancement" class="segbtn edge shadow-soft bg-transparent text-white">Exterior Enhancement</button>
+    <button type="button" data-svc="interiorReset" class="segbtn edge shadow-soft bg-transparent text-white">Interior Reset</button>
+    <button type="button" data-svc="maintenanceDetail" class="segbtn edge shadow-soft bg-transparent text-white">Maintenance Detail</button>
+    <button type="button" data-svc="fullDetail" class="segbtn edge shadow-soft bg-transparent text-white">Full Detail</button>
   </div>
  </div>
 
@@ -667,12 +726,13 @@ window.addEventListener('load', () => { window.scrollTo(0, 0); });
         </div>
 
         <a href="#contact" class="btn btn-primary h-14 edge w-full md:w-auto">📅 Book this package</a>
+        <p class="text-xs text-[var(--sub)]">Minimum booking is $225 per vehicle (except Maintenance Detail).</p>
         <p class="text-xs text-[var(--sub)]">No charge until confirmed. Price may adjust for oversized/extra-soiled vehicles.</p>
       </div>
     </div>
 
     <!-- Before/After + trust -->
-    <div class="grid gap-6">
+    <div class="grid gap-6 content-start self-start">
       <div class="rounded-2xl panel edge overflow-hidden select-none">
         <div class="px-4 pt-4 pb-4"><h3 class="text-xl font-semibold text-white">Swipe to see the difference</h3></div>
         <div id="ba" class="ba-container w-full mb-0">
@@ -706,7 +766,7 @@ window.addEventListener('load', () => { window.scrollTo(0, 0); });
 <!-- Results / Testimonials -->
 <section id="results" class="max-w-6xl mx-auto px-4 py-10">
   <header class="mb-6">
-    <h2 class="text-3xl md:text-4xl font-black text-white">Recent results</h2>
+    <h2 class="text-3xl md:text-4xl font-black text-white">Recent Results</h2>
     <p class="text-[var(--sub)]">A few snapshots from recent jobs.</p>
   </header>
 
@@ -718,13 +778,13 @@ window.addEventListener('load', () => { window.scrollTo(0, 0); });
       <img src="Car 2.jpeg" alt="Interior detail result – stain removal and shine" class="object-cover w-full h-full" loading="lazy" decoding="async" />
     </div>
     <div class="rounded-2xl aspect-video panel edge tilt overflow-hidden flex items-center justify-center bg-black">
-      <img src="Car 3.jpeg" alt="Deep exterior decontamination and wax finish" class="object-cover w-full h-full" loading="lazy" decoding="async" />
+      <img src="Car 3.jpeg" alt="Exterior enhancement and wax finish" class="object-cover w-full h-full" loading="lazy" decoding="async" />
     </div>
   </div>
 
   <div class="rounded-2xl panel edge overflow-hidden mt-8">
     <div class="p-4 flex items-center gap-2"><span class="text-yellow-400">⭐</span>
-      <p class="font-semibold text-white">Real customers, real results</p>
+      <p class="font-semibold text-white">Real Customers, Real Results</p>
     </div>
     <div class="marquee pb-4 px-4">
       <div class="marquee-track">
@@ -762,6 +822,103 @@ window.addEventListener('load', () => { window.scrollTo(0, 0); });
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- Ceramic Coating -->
+<section id="ceramic" class="max-w-6xl mx-auto px-4 py-10">
+  <header class="mb-6">
+    <h2 class="text-3xl md:text-4xl font-black text-white">Ceramic Coating</h2>
+    <p class="text-[var(--sub)]">Deep gloss and long-term protection.</p>
+    <div class="mt-3 flex flex-wrap gap-2 text-sm">
+      <span class="chip border-white/10">Most requested upgrade</span>
+      <span class="chip border-white/10">Paint-corrected finish</span>
+      <span class="chip border-white/10">Mobile service available</span>
+    </div>
+  </header>
+
+  <div class="grid lg:grid-cols-3 gap-4">
+    <!-- Left: What it is -->
+    <div class="rounded-2xl panel edge p-5 tilt shine reveal" data-delay="1">
+      <div class="text-lg font-semibold text-white">What you get</div>
+      <p class="mt-2 text-sm text-[var(--sub)]">Professional coating for gloss, protection, and easier upkeep.</p>
+      <div class="mt-4 grid gap-2 text-sm">
+        <div class="flex gap-2"><span class="chip border-white/10">✨ More gloss</span><span class="chip border-white/10">🧼 Easier washes</span></div>
+        <div class="flex gap-2"><span class="chip border-white/10">☀️ UV resistance</span><span class="chip border-white/10">🧪 Chemical resistance</span></div>
+      </div>
+      <div class="mt-4 rounded-xl bg-white/5 border border-white/10 p-3">
+        <div class="font-semibold text-white">What’s Included In Our Ceramic Prep</div>
+        <div class="text-sm text-[var(--sub)] mt-2">Your ceramic service is built around proper paint preparation so the coating bonds correctly and looks its best.</div>
+        <ul class="mt-3 grid gap-2 text-sm text-[var(--sub)] list-disc pl-5">
+          <li><span class="text-white font-semibold">Exterior wash</span> (thorough wash + wheels/tires cleaned)</li>
+          <li><span class="text-white font-semibold">Iron removal</span> to pull embedded brake dust/contamination</li>
+          <li><span class="text-white font-semibold">Clay bar treatment</span> to smooth the paint and remove bonded debris</li>
+          <li><span class="text-white font-semibold">Paint correction</span> to remove swirls/haze and restore gloss (level depends on condition)</li>
+        </ul>
+        <div class="mt-3 text-xs text-[var(--sub)]">If the vehicle needs heavy correction, we’ll confirm the scope and pricing before starting.</div>
+      </div>
+    </div>
+
+    <!-- Middle: Packages -->
+    <div class="rounded-2xl panel edge p-5 tilt shine reveal" data-delay="2">
+      <div class="flex items-center justify-between">
+        <div class="text-lg font-semibold text-white">Coating Packages</div>
+        <span class="chip border-white/10">Custom Quote</span>
+      </div>
+      <p class="mt-2 text-sm text-[var(--sub)]">Choose your protection level.</p>
+      <div id="coatingPackages" class="mt-4 grid gap-3 [grid-auto-rows:1fr]">
+        <button type="button" data-coating="1y" class="coating-option rounded-xl bg-white/5 border border-white/10 p-3 text-left h-full">
+          <div class="flex items-center justify-between">
+            <div class="font-semibold text-white">1-Year Protection</div>
+            <span class="chip border-white/10">Entry</span>
+          </div>
+          <div class="mt-2 text-lg font-bold text-white">$650–$1100</div>
+          <div class="text-sm text-[var(--sub)] mt-1">Great starter option.</div>
+        </button>
+
+        <button type="button" data-coating="3y" class="coating-option active rounded-xl bg-white/5 border border-white/10 p-3 text-left h-full">
+          <div class="flex items-center justify-between">
+            <div class="font-semibold text-white">3-Year Protection</div>
+            <span class="chip border-white/10">Most Popular</span>
+          </div>
+          <div class="mt-2 text-lg font-bold text-white">$1000–$1800</div>
+          <div class="text-sm text-[var(--sub)] mt-1">Best value for most owners.</div>
+        </button>
+
+        <button type="button" data-coating="5y" class="coating-option rounded-xl bg-white/5 border border-white/10 p-3 text-left h-full">
+          <div class="flex items-center justify-between">
+            <div class="font-semibold text-white">5+ Year Protection</div>
+            <span class="chip border-white/10">Premium</span>
+          </div>
+          <div class="mt-2 text-lg font-bold text-white">$1600–$3200</div>
+          <div class="text-sm text-[var(--sub)] mt-1">Maximum long-term durability.</div>
+        </button>
+      </div>
+
+      <div class="mt-4 rounded-xl bg-white/5 border border-white/10 p-3">
+        <div class="text-xs text-[var(--sub)]">Final price depends on size and paint condition.</div>
+      </div>
+    </div>
+
+    <!-- Right: CTA -->
+    <div class="rounded-2xl panel edge p-5 tilt shine reveal" data-delay="3">
+      <div class="text-lg font-semibold text-white">Request a Ceramic Quote</div>
+      <p class="mt-2 text-sm text-[var(--sub)]">Send your details and get a quick quote.</p>
+
+      <div class="mt-3 rounded-xl bg-white/5 border border-white/10 p-3 text-sm">
+        <div class="text-white font-semibold">Limited ceramic slots weekly</div>
+        <div class="text-[var(--sub)] mt-1">Most requests Answered same day.</div>
+      </div>
+
+      <div class="mt-4 grid gap-3">
+        <a href="tel:+17087379781" class="btn btn-primary edge w-full">📞 Call for Ceramic Pricing</a>
+        <a href="#contact" id="ceramicQuoteBtn" class="btn btn-accent edge w-full">📝 Get My Ceramic Quote</a>
+        <a href="#quote" class="btn btn-ghost edge w-full">Build Detailing Quote First</a>
+      </div>
+
+      <div class="mt-3 text-xs text-[var(--sub)]">No payment required to request pricing.</div>
+
     </div>
   </div>
 </section>
@@ -811,8 +968,12 @@ window.addEventListener('load', () => { window.scrollTo(0, 0); });
 <section id="contact" class="max-w-6xl mx-auto px-4 py-3 mb-10 md:mb-12">
   <div class="rounded-2xl panel edge p-6 grid md:grid-cols-3 gap-6 items-center">
     <div class="md:col-span-2 order-1 md:order-none">
-      <h3 class="text-2xl font-bold text-white">Ready to book your mobile detail?</h3>
+      <h3 class="text-2xl font-bold text-white">Ready To Book Your Mobile Detail?</h3>
       <p class="text-[var(--sub)] mt-1">Call/text for fastest response, or submit your instant quote.</p>
+      <div class="mt-3 flex flex-wrap gap-2 text-xs">
+        <span class="chip border-white/10">Typically Replies Fast</span>
+        <span class="chip border-white/10">No Upfront Payment To Request</span>
+      </div>
       <div class="mt-4 flex gap-3">
         <a href="tel:+17087379781" class="btn btn-primary edge h-13 text-base w-full md:w-auto">📞 (708) 737-9781</a>
       </div>
@@ -826,14 +987,16 @@ window.addEventListener('load', () => { window.scrollTo(0, 0); });
           id="phone"
           name="phone"
           placeholder="708-555-1234"
+          inputmode="numeric"
+          maxlength="12"
           required
           class="h-11 rounded-xl px-3"
         />
-        <input id="vehicle" class="h-11 rounded-xl px-3" placeholder="Vehicle model (e.g., 2020 Honda Civic)" autocomplete="off" required />
+        <input id="email" type="email" class="h-11 rounded-xl px-3" placeholder="Email" autocomplete="email" required />
+        <div id="vehicleModelsWrap" class="grid gap-3"></div>
         <input id="address" class="h-11 rounded-xl px-3" placeholder="Service address" autocomplete="street-address" required />
         <input id="zip" class="h-11 rounded-xl px-3" placeholder="ZIP (e.g., 60477)" inputmode="numeric" pattern="\d{5}" autocomplete="postal-code" required/>
-        <input id="discount" class="h-11 rounded-xl px-3" placeholder="Discount code (optional)" autocomplete="off" />
-        <p id="discountMsg" class="text-xs"></p>
+        <textarea id="notes" class="rounded-xl px-3 py-2 min-h-20 edge bg-transparent text-[var(--ink)] placeholder:text-[var(--sub)]" placeholder="Notes (parking, gate code, condition concerns, scheduling preferences)"></textarea>
         <div class="text-sm text-[var(--ink)]">Estimated Total: <strong id="quoteBox">$0</strong></div>
         <button id="submitBtn" type="button" class="btn btn-accent h-13 edge disabled:opacity-50">✅ Send Booking Request</button>
         <p id="formStatus" class="text-xs"></p>
@@ -999,10 +1162,10 @@ document.querySelectorAll('.magnet').forEach(btn=>{
 /* ---------- QUOTE BUILDER ---------- */
 const basePrices = {}; // base pay removed
 const extrasList = [
-  { key: "pet", label: "Pet Hair Removal", price: 25 },
-  { key: "odor", label: "Odor Treatment", price: 35 },
-  { key: "engine", label: "Engine Bay", price: 30 },
-  { key: "hardwax", label: "Hard Wax", price: 100 },
+  { key: "pet", label: "Pet Hair Removal", price: 40 },
+  { key: "odor", label: "Odor Treatment", price: 60 },
+  { key: "engine", label: "Engine Bay", price: 55 },
+  { key: "hardwax", label: "Hard Wax Upgrade", price: 135 },
 ];
 // 25-mile service area around Tinley Park, IL
 const SERVICE_ZIPS = new Set([
@@ -1032,9 +1195,13 @@ function currency(n){
 function inServiceArea(zip){ return SERVICE_ZIPS.has(String(zip).trim()); }
 
 let carSize = null;
-let exterior = false, interior = false, deepExterior = false, deepInterior = false;
+let vehicleCount = 1;
+let selectedService = null;
 const extras = {};
-const baseText = document.getElementById('baseText');
+let activeVehicleIndex = 0;
+let vehicleConfigs = [];
+let inquiryType = 'detail';
+let selectedCeramicPackage = '3-Year Protection';
 const totalText = document.getElementById('totalText');
 const quoteBox = document.getElementById('quoteBox');
 const floatingQuote = document.getElementById('floatingQuote');
@@ -1047,51 +1214,155 @@ function showFloatingQuoteOnce(){
   floatQuoteWrap.classList.add('show');
   _fqShown = true;
 }
-let discountValue = 0;
+
+const SERVICE_RANGES = {
+  fullDetail: { label: 'Full Detail', min: 300, max: 375 },
+  interiorReset: { label: 'Interior Reset', min: 225, max: 275 },
+  exteriorEnhancement: { label: 'Exterior Enhancement', min: 200, max: 250 },
+  maintenanceDetail: { label: 'Maintenance Detail', min: 175, max: 195 }
+};
+const MIN_BOOKING = 225;
+const MAX_VEHICLES = 4;
+
+function emptyVehicleConfig(){
+  const extrasMap = {};
+  for (const x of extrasList) extrasMap[x.key] = false;
+  return { carSize: null, selectedService: null, extras: extrasMap };
+}
+
+function ensureVehicleConfigs(){
+  while(vehicleConfigs.length < vehicleCount) vehicleConfigs.push(emptyVehicleConfig());
+  if(vehicleConfigs.length > vehicleCount) vehicleConfigs = vehicleConfigs.slice(0, vehicleCount);
+  if(activeVehicleIndex >= vehicleCount) activeVehicleIndex = vehicleCount - 1;
+}
+
+function getActiveVehicleConfig(){
+  ensureVehicleConfigs();
+  return vehicleConfigs[activeVehicleIndex];
+}
+
+function saveActiveVehicleConfig(){
+  const cfg = getActiveVehicleConfig();
+  cfg.carSize = carSize;
+  cfg.selectedService = selectedService;
+  for (const x of extrasList) cfg.extras[x.key] = !!extras[x.key];
+}
+
+function syncSizeButtons(){
+  const sizeWrap = document.getElementById('sizeButtons');
+  if(!sizeWrap) return;
+  sizeWrap.querySelectorAll('button').forEach(btn=>{
+    const isActive = btn.dataset.size === carSize;
+    btn.style.background = isActive ? 'var(--primary)' : 'transparent';
+    btn.style.color = '#fff';
+    btn.style.borderColor = isActive ? 'transparent' : 'rgba(255,255,255,.2)';
+  });
+}
+
+function syncServiceButtons(){
+  const wrap = document.getElementById('serviceButtons'); if(!wrap) return;
+  wrap.querySelectorAll('button').forEach(btn=>{
+    btn.classList.toggle('active', btn.dataset.svc === selectedService);
+  });
+}
+
+function syncExtrasButtons(){
+  document.querySelectorAll('#extras button').forEach(btn=>{
+    const key = btn.dataset.key;
+    btn.classList.toggle('active', extras[key] === true);
+  });
+}
+
+function syncVehicleEditorButtons(){
+  const wrap = document.getElementById('vehicleEditorButtons');
+  if(!wrap) return;
+  wrap.querySelectorAll('button').forEach(btn=>{
+    btn.classList.toggle('active', Number(btn.dataset.vehicleIndex) === activeVehicleIndex);
+  });
+}
+
+function renderVehicleEditorButtons(){
+  const section = document.getElementById('vehicleEditorSection');
+  if(section){
+    section.classList.toggle('hidden', vehicleCount <= 1);
+  }
+  const wrap = document.getElementById('vehicleEditorButtons');
+  if(!wrap) return;
+  wrap.innerHTML = '';
+  for(let i = 0; i < vehicleCount; i++){
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.dataset.vehicleIndex = String(i);
+    btn.className = 'segbtn edge shadow-soft bg-transparent text-white';
+    btn.textContent = `Vehicle ${i + 1}`;
+    btn.addEventListener('click', ()=>{
+      saveActiveVehicleConfig();
+      activeVehicleIndex = i;
+      loadActiveVehicleConfig();
+      syncVehicleEditorButtons();
+      recalc();
+      updateBreakdownButtonVisibility();
+    });
+    wrap.appendChild(btn);
+  }
+  syncVehicleEditorButtons();
+}
+
+function loadActiveVehicleConfig(){
+  const cfg = getActiveVehicleConfig();
+  carSize = cfg.carSize || null;
+  selectedService = cfg.selectedService || null;
+  for (const x of extrasList) extras[x.key] = !!cfg.extras[x.key];
+  syncSizeButtons();
+  syncServiceButtons();
+  syncExtrasButtons();
+}
+
+function vehicleRange(cfg){
+  let min = 0, max = 0;
+  if(cfg.selectedService && SERVICE_RANGES[cfg.selectedService]){
+    min += SERVICE_RANGES[cfg.selectedService].min;
+    max += SERVICE_RANGES[cfg.selectedService].max;
+  } else {
+    return { min: 0, max: 0, hasService: false };
+  }
+  for(const x of extrasList){ if(cfg.extras[x.key]){ min += x.price; max += x.price; } }
+  if (cfg.selectedService !== 'maintenanceDetail') {
+    min = Math.max(MIN_BOOKING, min);
+    max = Math.max(MIN_BOOKING, max);
+  }
+  return { min, max, hasService: true };
+}
+
+function aggregateRange(){
+  ensureVehicleConfigs();
+  let min = 0, max = 0, configuredVehicles = 0;
+  for(let i = 0; i < vehicleCount; i++){
+    const vr = vehicleRange(vehicleConfigs[i]);
+    if(vr.hasService){
+      configuredVehicles += 1;
+      min += vr.min;
+      max += vr.max;
+    }
+  }
+  return { min, max, hasAnyService: configuredVehicles > 0, configuredVehicles };
+}
+
+function allVehiclesHaveService(){
+  ensureVehicleConfigs();
+  for(let i = 0; i < vehicleCount; i++){
+    if(!vehicleConfigs[i].selectedService) return false;
+  }
+  return true;
+}
 
 function recalc(){
-  // Ranged pricing per selection
-  const PRICE = {
-    exterior:    {min:80,  max:110},
-    interior:    {min:110, max:150},
-    both:        {min:150, max:200},
-    deepExterior:{min:130, max:170},
-    deepInterior:{min:170, max:220},
-    deepBoth:    {min:250, max:350}
-  };
+  saveActiveVehicleConfig();
+  const totals = aggregateRange();
+  const rangeText = (!totals.hasAnyService)
+    ? '$0'
+    : ((totals.min === totals.max) ? currency(totals.min) : `${currency(totals.min)}–${currency(totals.max)}`);
 
-  let min = 0, max = 0;
-
-  // Vehicle size no longer affects price (base removed)
-  if(carSize){ /* no base pay */ }
-
-  // Core services with deep pairing treated as deep full
-  if(deepExterior && deepInterior){
-    min += PRICE.deepBoth.min; max += PRICE.deepBoth.max;
-  } else if(deepExterior){
-    min += PRICE.deepExterior.min; max += PRICE.deepExterior.max;
-  } else if(deepInterior){
-    min += PRICE.deepInterior.min; max += PRICE.deepInterior.max;
-  } else if(exterior && interior){
-    min += PRICE.both.min; max += PRICE.both.max;
-  } else if(exterior && !interior){
-    min += PRICE.exterior.min; max += PRICE.exterior.max;
-  } else if(interior && !exterior){
-    min += PRICE.interior.min; max += PRICE.interior.max;
-  }
-
-  // Extras (fixed add-ons)
-  for(const x of extrasList){ if(extras[x.key]){ min += x.price; max += x.price; } }
-
-  // apply discount equally across range
-  if(discountValue > 0){
-    min = Math.max(0, min - discountValue);
-    max = Math.max(0, max - discountValue);
-  }
-
-  const rangeText = (min === max) ? currency(min) : `${currency(min)}–${currency(max)}`;
-
-  if(baseText) baseText.textContent = carSize ? `Selected: ${carSize}` : 'Choose a vehicle size';
   if(totalText) totalText.textContent = rangeText;
   if(quoteBox) quoteBox.textContent = rangeText;
   if(floatingQuote) floatingQuote.textContent = rangeText;
@@ -1107,51 +1378,34 @@ function recalc(){
 
   // Show floating quote if user has interacted
   if (_userInteractedWithQuoter) { showFloatingQuoteOnce(); }
+  window.dispatchEvent(new Event('quote-updated'));
 }
 
-function bundle(size, ext, int, eng, extrasArr){
-  // carSize = size;
-  // default regular service selections
-  exterior = !!ext; interior = !!int;
+function bundle(size, serviceKey, extrasArr){
+  inquiryType = 'detail';
+  vehicleCount = 1;
+  activeVehicleIndex = 0;
+  ensureVehicleConfigs();
+  if (size) carSize = size;
+  selectedService = serviceKey || null;
+  _userInteractedWithQuoter = true;
+  showFloatingQuoteOnce();
 
-  // clear deep flags
-  deepExterior = false; deepInterior = false;
+  syncSizeButtons();
+  syncVehicleCountButtons();
+  renderVehicleEditorButtons();
 
-  // parse special deep sentinels from extrasArr
-  const arr = Array.isArray(extrasArr) ? extrasArr : [];
-  const wantDeepBoth = arr.includes('__deepBoth__');
-  const wantDeepExterior = arr.includes('__deepExterior__');
-  const wantDeepInterior = arr.includes('__deepInterior__');
-
-  if (wantDeepBoth) { deepExterior = true; deepInterior = true; exterior = false; interior = false; }
-  else {
-    if (wantDeepExterior) { deepExterior = true; exterior = false; }
-    if (wantDeepInterior) { deepInterior = true; interior = false; }
-  }
-
-  // reset extras, only apply real extras that exist in extrasList
   for (const x of extrasList) { extras[x.key] = false; }
+  const arr = Array.isArray(extrasArr) ? extrasArr : [];
   arr.forEach(k => { if (extrasList.some(x => x.key === k)) extras[k] = true; });
+  saveActiveVehicleConfig();
 
-  // set vehicle size visual
-  // const sizeWrap = document.getElementById('sizeButtons');
-  // if(sizeWrap){
-  //   sizeWrap.querySelectorAll('button').forEach(b=>{b.style.background='transparent'; b.style.color='#fff'; b.style.borderColor='rgba(255,255,255,.2)';});
-  //   const btn = Array.from(sizeWrap.querySelectorAll('button')).find(b=>b.dataset.size===size);
-  //   if(btn){ btn.style.background='var(--primary)'; btn.style.color='#fff'; btn.style.borderColor='transparent'; }
-  // }
-
-  // sync services + extras visual state
   syncServiceButtons();
-  document.querySelectorAll('#extras button').forEach(b=>{
-    const key = b.dataset.key;
-    b.classList.toggle('active', extras[key]===true);
-  });
+  syncExtrasButtons();
 
   recalc();
-  // ensure the breakdown button state reflects current selections
   if (typeof updateBreakdownButtonVisibility === 'function') updateBreakdownButtonVisibility();
-  if(exterior || interior || deepExterior || deepInterior){ popBreakdown(); }
+  if(selectedService){ popBreakdown(); }
 
   const quote = document.getElementById('quote');
   if(quote){ quote.scrollIntoView({behavior:'smooth', block:'start'}); }
@@ -1159,17 +1413,15 @@ function bundle(size, ext, int, eng, extrasArr){
 
 // --- One-time setup & helpers (top-level) ---
 
-// Size buttons: set carSize and recalc
+// Size buttons: set active vehicle size and recalc
 (function(){
   const sizeWrap = document.getElementById('sizeButtons');
   if(!sizeWrap) return;
   sizeWrap.querySelectorAll('button').forEach(btn => {
     btn.addEventListener('click', () => {
       carSize = btn.dataset.size;
-      sizeWrap.querySelectorAll('button').forEach(b=>{
-        b.style.background='transparent'; b.style.color='#fff'; b.style.borderColor='rgba(255,255,255,.2)';
-      });
-      btn.style.background='var(--primary)'; btn.style.color='#fff'; btn.style.borderColor='transparent';
+      getActiveVehicleConfig().carSize = carSize;
+      syncSizeButtons();
       _userInteractedWithQuoter = true;
       showFloatingQuoteOnce();
       recalc();
@@ -1178,20 +1430,62 @@ function bundle(size, ext, int, eng, extrasArr){
   });
 })();
 
-// Services segmented buttons (Exterior / Interior / Deep)
-function syncServiceButtons(){
-  const wrap = document.getElementById('serviceButtons'); if(!wrap) return;
-  wrap.querySelectorAll('button').forEach(btn=>{
-    const k = btn.dataset.svc;
-    const active = (
-      (k==='exterior'     && exterior) ||
-      (k==='interior'     && interior) ||
-      (k==='deepExterior' && deepExterior) ||
-      (k==='deepInterior' && deepInterior)
-    );
-    btn.classList.toggle('active', active);
-  });
+function syncVehicleCountButtons(){
+  const addBtn = document.getElementById('addVehicleBtn');
+  const removeBtn = document.getElementById('removeVehicleBtn');
+  const countEl = document.getElementById('vehicleCountValue');
+  if(countEl){
+    countEl.textContent = `${vehicleCount} vehicle${vehicleCount > 1 ? 's' : ''}`;
+  }
+  if(addBtn){
+    addBtn.disabled = vehicleCount >= MAX_VEHICLES;
+    addBtn.classList.toggle('opacity-60', addBtn.disabled);
+  }
+  if(removeBtn){
+    removeBtn.disabled = vehicleCount <= 1;
+    removeBtn.classList.toggle('opacity-60', removeBtn.disabled);
+  }
 }
+
+// Vehicle count controls: add/remove and recalc
+(function(){
+  const addBtn = document.getElementById('addVehicleBtn');
+  const removeBtn = document.getElementById('removeVehicleBtn');
+
+  addBtn?.addEventListener('click', () => {
+    if(vehicleCount >= MAX_VEHICLES) return;
+    saveActiveVehicleConfig();
+    vehicleCount = Math.min(MAX_VEHICLES, vehicleCount + 1);
+    activeVehicleIndex = vehicleCount - 1;
+    ensureVehicleConfigs();
+    _userInteractedWithQuoter = true;
+    showFloatingQuoteOnce();
+    syncVehicleCountButtons();
+    renderVehicleEditorButtons();
+    loadActiveVehicleConfig();
+    recalc();
+    updateBreakdownButtonVisibility();
+  });
+
+  removeBtn?.addEventListener('click', () => {
+    if(vehicleCount <= 1) return;
+    saveActiveVehicleConfig();
+    vehicleCount = Math.max(1, vehicleCount - 1);
+    if(activeVehicleIndex >= vehicleCount) activeVehicleIndex = vehicleCount - 1;
+    ensureVehicleConfigs();
+    _userInteractedWithQuoter = true;
+    showFloatingQuoteOnce();
+    syncVehicleCountButtons();
+    renderVehicleEditorButtons();
+    loadActiveVehicleConfig();
+    recalc();
+    updateBreakdownButtonVisibility();
+  });
+
+  syncVehicleCountButtons();
+  ensureVehicleConfigs();
+  renderVehicleEditorButtons();
+})();
 
 // Briefly animate the purple breakdown button to draw attention
 function popBreakdown(){
@@ -1206,7 +1500,9 @@ function popBreakdown(){
 function updateBreakdownButtonVisibility() {
   const bdBtn = document.getElementById('viewBreakdown');
   if (!bdBtn) return;
-  if (exterior || interior || deepExterior || deepInterior) {
+  saveActiveVehicleConfig();
+  const hasAnyService = vehicleConfigs.slice(0, vehicleCount).some(cfg => !!cfg.selectedService);
+  if (hasAnyService) {
     bdBtn.classList.remove('hidden');
   } else {
     bdBtn.classList.add('hidden');
@@ -1219,26 +1515,16 @@ function updateBreakdownButtonVisibility() {
   if(!svcWrap) return;
   svcWrap.querySelectorAll('button').forEach(btn=>{
     btn.addEventListener('click', ()=>{
+      inquiryType = 'detail';
       const k = btn.dataset.svc;
-      if(k==='deepExterior'){
-        deepExterior = !deepExterior;
-        if(deepExterior){ exterior = false; }
-      } else if(k==='deepInterior'){
-        deepInterior = !deepInterior;
-        if(deepInterior){ interior = false; }
-      } else if(k==='exterior'){
-        exterior = !exterior;
-        if(exterior){ deepExterior = false; }
-      } else if(k==='interior'){
-        interior = !interior;
-        if(interior){ deepInterior = false; }
-      }
+      selectedService = (selectedService === k) ? null : k;
+      getActiveVehicleConfig().selectedService = selectedService;
       _userInteractedWithQuoter = true;
       showFloatingQuoteOnce();
       syncServiceButtons();
       recalc();
       updateBreakdownButtonVisibility();
-      if(exterior || interior || deepExterior || deepInterior){ popBreakdown(); }
+      if(selectedService){ popBreakdown(); }
     });
   });
 })();
@@ -1258,6 +1544,7 @@ function updateBreakdownButtonVisibility() {
       _userInteractedWithQuoter = true;
       showFloatingQuoteOnce();
       extras[x.key] = !extras[x.key];
+      getActiveVehicleConfig().extras[x.key] = extras[x.key];
       b.classList.toggle('active', extras[x.key]===true);
       recalc();
     });
@@ -1265,24 +1552,7 @@ function updateBreakdownButtonVisibility() {
     b.classList.toggle('active', !!extras[x.key]);
   });
   extrasWrap.dataset.built = '1';
-})();
-
-
-// Discount code handling (optional)
-(function(){
-  const dInput = document.getElementById('discount');
-  const dMsg = document.getElementById('discountMsg');
-  function apply(){
-    const v = (dInput?.value || '').trim();
-    if(!v){ discountValue = 0; if(dMsg){ dMsg.textContent=''; dMsg.style.color=''; } recalc(); return; }
-    if(/^shine15$/i.test(v)){
-      discountValue = 15; if(dMsg){ dMsg.textContent = 'Code applied: -$15'; dMsg.style.color = 'var(--ok)'; }
-    } else {
-      discountValue = 0; if(dMsg){ dMsg.textContent = 'Invalid code'; dMsg.style.color = 'var(--danger)'; }
-    }
-    recalc();
-  }
-  if(dInput){ dInput.addEventListener('input', apply); dInput.addEventListener('change', apply); }
+  loadActiveVehicleConfig();
 })();
 
 /* ---------- BEFORE/AFTER ---------- */
@@ -1356,23 +1626,7 @@ function updateBreakdownButtonVisibility() {
         if (after) after.src = "Dirty1200.jpeg";
     }
 })();
-/* ---------- COUPON COPY + CONFETTI ---------- */
-document.getElementById('copyCoupon').addEventListener('click', ()=>{
-  const code = document.getElementById('coupon').textContent.trim();
-  const dInput = document.getElementById('discount');
-
-  // Fill discount input in the contact form and trigger existing listeners to recalc totals
-  if (dInput) {
-    dInput.value = code;
-    dInput.dispatchEvent(new Event('input', { bubbles: true }));
-    dInput.dispatchEvent(new Event('change', { bubbles: true }));
-  }
-
-  // Celebrate & give quick feedback
-  burstConfetti();
-  const b = document.getElementById('copyCoupon');
-  if (b) { b.textContent = 'Applied'; setTimeout(()=> b.textContent = 'Apply', 1500); }
-});
+/* ---------- SUCCESS CONFETTI ---------- */
 function burstConfetti(){
   const TOTAL = 170; // more pieces for full-width effect
   for(let i=0;i<TOTAL;i++){
@@ -1449,31 +1703,43 @@ function esc(s){
 // Build a nicely formatted Telegram message using the current form + quote snapshot
 function buildTelegramMessage(){
   const snap = gatherQuoteSnapshot();
+  const isCeramicInquiry = inquiryType === 'ceramic';
+  const attr = getAttributionData();
+  const src = [attr.utm_source, attr.utm_medium, attr.utm_campaign].filter(Boolean).join(' / ') || 'Direct';
   const name = document.getElementById('name')?.value || '';
-  const phone = phoneInput.value.trim();
-  const vehicle = document.getElementById('vehicle')?.value || '';
-  const address = document.getElementById('address')?.value || '';
-  const zip = document.getElementById('zip')?.value || '';
-  const discountCode = document.getElementById('discount')?.value || '';
+  const phone = (phoneInput?.value || '').trim();
+  const vehicleModels = (typeof window.getVehicleModels === 'function') ? window.getVehicleModels() : [];
+  const email = document.getElementById('email')?.value || '';
+  const notes = document.getElementById('notes')?.value || '';
 
-  const lines = [
-    `<b>New Booking Request 🚗</b>`,
+  const vehicleSummaries = snap.vehicles.map(v =>
+    `• Vehicle ${v.index}: ${esc(v.size)} | ${esc(v.service || 'Not selected')} | Extras: ${esc(v.extras.join(', ') || 'None')} | ${esc(v.priceText)}`
+  );
 
-    `👤 Name: ${esc(name)}`,
-    `📞 Phone: ${esc(phone)}`,
-    `🚗 Vehicle: ${esc(vehicle)}`,
-    `📍 Address: ${esc(address)}`,
-    `✉️ ZIP: ${esc(zip)}`,
-
-    discountCode ? `💯 Discount Code: ${esc(discountCode)}` : null,
-    `<b>Requested Services 🧼</b>`,
-    `Vehicle Size: ${esc(snap.vehicleSize)}`,
-    `Services: ${esc((snap.services.join(', ') || 'None'))}`,
-    `Extras: ${esc((snap.extras.join(', ') || 'None'))}`,
-    `Estimated Total: ${esc('$'+snap.price.min)} – ${esc('$'+snap.price.max)}`,
-    `Coupon Applied: ${esc(snap.coupon)}`,
-    ``,
-  ].filter(Boolean);
+  const lines = isCeramicInquiry
+    ? [
+      `<b>New Ceramic Coating Inquiry ✨</b>`,
+      `👤 Name: ${esc(name)}`,
+      `📞 Phone: ${esc(phone)}`,
+      `📧 Email: ${esc(email)}`,
+      `🚗 Vehicle model(s): ${esc(vehicleModels.join(' | ') || 'Not provided')}`,
+      `🛡️ Coating Package: ${esc(selectedCeramicPackage || 'Not selected')}`,
+      `🔗 Source: ${esc(src)}`,
+      notes ? `📝 Notes: ${esc(notes)}` : null
+    ].filter(Boolean)
+    : [
+      `<b>New Booking Request 🚗</b>`,
+      `👤 Name: ${esc(name)}`,
+      `📞 Phone: ${esc(phone)}`,
+      `📧 Email: ${esc(email)}`,
+      `🚗 Vehicle model(s): ${esc(vehicleModels.join(' | ') || 'Not provided')}`,
+      `🚙 Vehicles in quote: ${esc(snap.vehicleCount)}`,
+      `<b>Quote by vehicle</b>`,
+      ...vehicleSummaries,
+      `💵 Estimated Price Range: ${esc(snap.price.text)}`,
+      `🔗 Source: ${esc(src)}`,
+      notes ? `📝 Notes: ${esc(notes)}` : null
+    ].filter(Boolean);
 
   // Telegram has a 4096 char limit; truncate if needed
   let text = lines.join('\n');
@@ -1487,6 +1753,21 @@ function buildTelegramMessage(){
 function encodeTelegramText(s){
   // Telegram GET requires URL-encoding and we want compact line breaks
   return encodeURIComponent(String(s).replace(/\n/g,'\n'));
+}
+
+function getAttributionData(){
+  const sp = new URLSearchParams(location.search);
+  return {
+    landingPage: location.href,
+    referrer: document.referrer || 'direct',
+    utm_source: sp.get('utm_source') || '',
+    utm_medium: sp.get('utm_medium') || '',
+    utm_campaign: sp.get('utm_campaign') || '',
+    utm_term: sp.get('utm_term') || '',
+    utm_content: sp.get('utm_content') || '',
+    gclid: sp.get('gclid') || '',
+    fbclid: sp.get('fbclid') || ''
+  };
 }
 
 // Send lead payload to external webhook (n8n flow)
@@ -1552,64 +1833,48 @@ async function sendTelegramMessage(chatId, text){
 
 // Compute the current quote range (min/max and friendly text) using current UI state
 function getCurrentQuoteRange(){
-  const PRICE = {
-    exterior:    {min:80,  max:110},
-    interior:    {min:110, max:150},
-    both:        {min:150, max:200},
-    deepExterior:{min:130, max:170},
-    deepInterior:{min:170, max:220},
-    deepBoth:    {min:250, max:350}
-  };
-  let min = 0, max = 0;
+  const totals = aggregateRange();
+  const rangeText = (!totals.hasAnyService)
+    ? '$0'
+    : (totals.min === totals.max)
+    ? totals.min.toLocaleString(undefined,{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0})
+    : `${totals.min.toLocaleString(undefined,{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0})}–${totals.max.toLocaleString(undefined,{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0})}`;
 
-  if (deepExterior && deepInterior){
-    min += PRICE.deepBoth.min; max += PRICE.deepBoth.max;
-  } else if (deepExterior){
-    min += PRICE.deepExterior.min; max += PRICE.deepExterior.max;
-  } else if (deepInterior){
-    min += PRICE.deepInterior.min; max += PRICE.deepInterior.max;
-  } else if (exterior && interior){
-    min += PRICE.both.min; max += PRICE.both.max;
-  } else if (exterior && !interior){
-    min += PRICE.exterior.min; max += PRICE.exterior.max;
-  } else if (interior && !exterior){
-    min += PRICE.interior.min; max += PRICE.interior.max;
-  }
-
-  // Extras (fixed add-ons)
-  for(const x of extrasList){ if(extras[x.key]){ min += x.price; max += x.price; } }
-
-  // apply discount equally across range
-  if (typeof discountValue !== 'undefined' && discountValue > 0){
-    min = Math.max(0, min - discountValue);
-    max = Math.max(0, max - discountValue);
-  }
-
-  const rangeText = (min === max)
-    ? min.toLocaleString(undefined,{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0})
-    : `${min.toLocaleString(undefined,{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0})}–${max.toLocaleString(undefined,{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0})}`;
-
-  return { min, max, text: rangeText };
+  return { min: totals.min, max: totals.max, text: rangeText };
 }
 
 // Gather a clean snapshot of the current selections to send with the form
 function gatherQuoteSnapshot(){
-  const services = [];
-  if (exterior) services.push('Exterior');
-  if (interior) services.push('Interior');
-  if (deepExterior) services.push('Deep Exterior');
-  if (deepInterior) services.push('Deep Interior');
-
-  const extrasPicked = extrasList
-    .filter(x => extras[x.key] === true)
-    .map(x => x.label);
+  saveActiveVehicleConfig();
+  ensureVehicleConfigs();
+  const vehicles = vehicleConfigs.slice(0, vehicleCount).map((cfg, i) => {
+    const vr = vehicleRange(cfg);
+    const serviceName = cfg.selectedService && SERVICE_RANGES[cfg.selectedService]
+      ? SERVICE_RANGES[cfg.selectedService].label
+      : null;
+    const extrasPicked = extrasList
+      .filter(x => cfg.extras[x.key] === true)
+      .map(x => x.label);
+    const priceText = !vr.hasService
+      ? '$0'
+      : (vr.min === vr.max ? currency(vr.min) : `${currency(vr.min)}–${currency(vr.max)}`);
+    return {
+      index: i + 1,
+      size: cfg.carSize || 'Not selected',
+      service: serviceName,
+      extras: extrasPicked,
+      price: { min: vr.min, max: vr.max },
+      priceText
+    };
+  });
 
   return {
     vehicleSize: carSize || 'Not selected',
-    services,
-    extras: extrasPicked,
+    vehicleCount: Math.max(1, Number(vehicleCount) || 1),
+    service: vehicles[0]?.service || null,
+    extras: vehicles[0]?.extras || [],
+    vehicles,
     price: getCurrentQuoteRange(), // {min,max,text}
-    coupon: (typeof discountValue !== 'undefined' && discountValue > 0) ? `SHINE15 (-$${discountValue})` : 'None',
     timestamp: new Date().toISOString(),
     page: location.href
   };
@@ -1618,9 +1883,105 @@ function gatherQuoteSnapshot(){
 (function(){
   const submit = document.getElementById('submitBtn');
   const zip = document.getElementById('zip');
+  const phone = document.getElementById('phone');
   const zipMsg = document.getElementById('zipMsg');
-  const ids = ['name','phone','vehicle','address','zip'];
+  const ids = ['name','phone','email','address','zip'];
   const inputs = ids.map(id=>document.getElementById(id)).filter(Boolean);
+  const vehicleModelsWrap = document.getElementById('vehicleModelsWrap');
+  let submittedAttempt = false;
+
+  function renderVehicleModelFields(){
+    if(!vehicleModelsWrap) return;
+    const existingValues = Array.from(vehicleModelsWrap.querySelectorAll('input[data-vehicle-model]')).map(i => i.value);
+    const total = Math.max(1, Number(vehicleCount) || 1);
+    vehicleModelsWrap.innerHTML = '';
+    for(let i = 0; i < total; i++){
+      const input = document.createElement('input');
+      input.id = `vehicleModel${i + 1}`;
+      input.dataset.vehicleModel = '1';
+      input.className = 'h-11 rounded-xl px-3';
+      input.autocomplete = 'off';
+      input.required = true;
+      input.placeholder = total > 1
+        ? `Vehicle ${i + 1} model (e.g., 2020 BMW M3)`
+        : 'Vehicle model (e.g., 2020 BMW M3)';
+      input.value = existingValues[i] || '';
+      input.addEventListener('input', check);
+      vehicleModelsWrap.appendChild(input);
+    }
+  }
+
+  function getVehicleModelInputs(){
+    if(!vehicleModelsWrap) return [];
+    return Array.from(vehicleModelsWrap.querySelectorAll('input[data-vehicle-model]'));
+  }
+
+  function getVehicleModelsLocal(){
+    return getVehicleModelInputs().map(i => i.value.trim()).filter(Boolean);
+  }
+
+  function areVehicleModelsValid(){
+    const models = getVehicleModelsLocal();
+    return models.length === Math.max(1, Number(vehicleCount) || 1);
+  }
+
+  function markFieldError(el, isError){
+    if(!el) return;
+    if(isError){
+      el.style.borderColor = 'var(--danger)';
+      el.style.boxShadow = '0 0 0 2px rgba(239,68,68,.35)';
+    } else {
+      el.style.borderColor = '';
+      el.style.boxShadow = '';
+    }
+  }
+
+  function markGroupError(el, isError){
+    if(!el) return;
+    if(isError){
+      el.style.outline = '2px solid rgba(239,68,68,.7)';
+      el.style.outlineOffset = '2px';
+      el.style.borderRadius = '12px';
+    } else {
+      el.style.outline = '';
+      el.style.outlineOffset = '';
+      el.style.borderRadius = '';
+    }
+  }
+
+  function validateForm(showErrors){
+    const requiredFilled = inputs.every(i => !!i.value);
+    const phoneOk = isValidPhone(phone?.value || '');
+    const zipOk = inServiceArea(zip.value);
+    const modelsOk = areVehicleModelsValid();
+    const modeOk = (inquiryType === 'ceramic') ? !!selectedCeramicPackage : allVehiclesHaveService();
+    const ok = requiredFilled && zipOk && phoneOk && modeOk && modelsOk;
+
+    const modelInputs = getVehicleModelInputs();
+    const serviceWrap = document.getElementById('serviceButtons');
+    const coatingWrap = document.getElementById('coatingPackages');
+
+    if(showErrors){
+      inputs.forEach(i=>{
+        const isPhone = i.id === 'phone';
+        const isZip = i.id === 'zip';
+        const missing = !i.value;
+        const invalid = missing || (isPhone && !phoneOk) || (isZip && !zipOk);
+        markFieldError(i, invalid);
+      });
+      modelInputs.forEach(i => markFieldError(i, !i.value.trim()));
+      markGroupError(serviceWrap, inquiryType !== 'ceramic' && !allVehiclesHaveService());
+      markGroupError(coatingWrap, inquiryType === 'ceramic' && !selectedCeramicPackage);
+    } else {
+      inputs.forEach(i => markFieldError(i, false));
+      modelInputs.forEach(i => markFieldError(i, false));
+      markGroupError(serviceWrap, false);
+      markGroupError(coatingWrap, false);
+    }
+    return ok;
+  }
+
+  window.getVehicleModels = getVehicleModelsLocal;
 
   // Prevent native form submission (Enter key, etc)
   const form = document.getElementById('leadForm');
@@ -1629,8 +1990,9 @@ function gatherQuoteSnapshot(){
   }
 
   function check(){
-    const ok = inputs.every(i=>!!i.value) && inServiceArea(zip.value);
-    if(submit) submit.disabled = !ok;
+    saveActiveVehicleConfig();
+    validateForm(submittedAttempt);
+    if(submit) submit.disabled = false;
     if(zipMsg){
       if(!zip.value){ zipMsg.textContent = 'Enter ZIP to check coverage.'; zipMsg.className='text-xs text-[var(--sub)]'; }
       else if(inServiceArea(zip.value)){ zipMsg.textContent = "You're in our service area!"; zipMsg.className='text-xs'; zipMsg.style.color='var(--ok)'; }
@@ -1638,6 +2000,8 @@ function gatherQuoteSnapshot(){
     }
   }
   inputs.forEach(i=> i.addEventListener('input', check));
+  document.getElementById('serviceButtons')?.addEventListener('click', check);
+  window.addEventListener('quote-updated', () => { renderVehicleModelFields(); check(); });
 
   // Clear status on input (quality-of-life)
   if (document.getElementById('formStatus')) inputs.forEach(i => i.addEventListener('input', () => { document.getElementById('formStatus').textContent = ''; }));
@@ -1653,9 +2017,11 @@ function gatherQuoteSnapshot(){
     }
 
     // Basic validation reuse
-    const okAll = inputs.every(i => !!i.value) && inServiceArea(zip.value);
+    submittedAttempt = true;
+    saveActiveVehicleConfig();
+    const okAll = validateForm(true);
     if (!okAll){
-      setStatus('Please complete all fields and ensure your ZIP is in our service area.', false);
+      setStatus('Please complete all fields, enter a valid 10-digit phone number, add each vehicle model, and ensure your ZIP is in our service area.', false);
       return;
     }
 
@@ -1666,15 +2032,21 @@ function gatherQuoteSnapshot(){
     const messageText = buildTelegramMessage();
 
     // Build payload for external webhook (n8n)
+    const attribution = getAttributionData();
     const leadPayload = {
       name: document.getElementById('name')?.value || '',
       phone: (typeof phoneInput !== 'undefined' && phoneInput && phoneInput.value) ? phoneInput.value.trim() : '',
-      vehicle: document.getElementById('vehicle')?.value || '',
+      email: document.getElementById('email')?.value || '',
+      vehicle: getVehicleModelsLocal().join(' | '),
+      vehicleModels: getVehicleModelsLocal(),
+      inquiryType: inquiryType,
+      ceramicPackage: (inquiryType === 'ceramic') ? selectedCeramicPackage : null,
       address: document.getElementById('address')?.value || '',
       zip: zip.value || '',
-      discountCode: document.getElementById('discount')?.value || '',
+      notes: document.getElementById('notes')?.value || '',
       quoteSnapshot: snap,
-      source: 'website-contact-form'
+      attribution,
+      source: (inquiryType === 'ceramic') ? 'website-ceramic-inquiry' : 'website-contact-form'
     };
 
     // UI: sending state
@@ -1717,18 +2089,24 @@ function gatherQuoteSnapshot(){
         setStatus('Thanks! We received your request and will text you to confirm a time.', true);
         // Clear form fields and reset UI after successful send
         if (form) form.reset();
-        // Reset optional discount state + message
-        if (typeof discountValue !== 'undefined') { discountValue = 0; }
-        const dMsgEl = document.getElementById('discountMsg');
-        if (dMsgEl) { dMsgEl.textContent = ''; dMsgEl.style.color = ''; }
+        submittedAttempt = false;
         // Reset service selections and extras
-        exterior = false; interior = false; deepExterior = false; deepInterior = false;
+        selectedService = null;
+        carSize = null;
+        vehicleCount = 1;
+        inquiryType = 'detail';
         for (const x of extrasList) { extras[x.key] = false; }
+        activeVehicleIndex = 0;
+        vehicleConfigs = [emptyVehicleConfig()];
         syncServiceButtons();
+        syncVehicleCountButtons();
+        renderVehicleEditorButtons();
+        loadActiveVehicleConfig();
         const extrasWrap = document.getElementById('extras');
         if (extrasWrap) { extrasWrap.querySelectorAll('button').forEach(b => b.classList.remove('active')); }
         recalc();
         updateBreakdownButtonVisibility();
+        validateForm(false);
       } else {
         const detail = sendRes.description ? ` (${sendRes.description})` : '';
         throw new Error('Telegram send failed' + detail);
@@ -1742,6 +2120,7 @@ function gatherQuoteSnapshot(){
       submit.classList.add('btn-accent');
     }
   });
+  renderVehicleModelFields();
   check();
 
   // Contact Map + Address Geocode (Nominatim)
@@ -1749,7 +2128,7 @@ function gatherQuoteSnapshot(){
   if (mapEl && typeof L !== 'undefined') {
     const brand = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#5271FF';
     const tp = [41.573, -87.803];
-    const cmap = L.map(mapEl, { zoomControl: false, attributionControl: true, dragging:false, scrollWheelZoom:false, touchZoom:false, doubleClickZoom:false, boxZoom:false, keyboard:false }).setView(tp, 11);
+    const cmap = L.map(mapEl, { zoomControl: false, attributionControl: false, dragging:false, scrollWheelZoom:false, touchZoom:false, doubleClickZoom:false, boxZoom:false, keyboard:false }).setView(tp, 11);
     L.tileLayer(
       'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
       {
@@ -1788,6 +2167,32 @@ syncServiceButtons();
 recalc();
 updateBreakdownButtonVisibility();
 
+// ---------- CERAMIC PACKAGE SELECT ----------
+(function(){
+  const options = Array.from(document.querySelectorAll('.coating-option'));
+  const ceramicQuoteBtn = document.getElementById('ceramicQuoteBtn');
+  if(!options.length) return;
+  const active = options.find(o => o.classList.contains('active'));
+  if(active){
+    selectedCeramicPackage = active.querySelector('.font-semibold')?.textContent?.trim() || selectedCeramicPackage;
+  }
+  options.forEach(opt=>{
+    opt.addEventListener('click', ()=>{
+      options.forEach(o=> o.classList.remove('active'));
+      opt.classList.add('active');
+      inquiryType = 'ceramic';
+      selectedCeramicPackage = opt.querySelector('.font-semibold')?.textContent?.trim() || selectedCeramicPackage;
+      window.dispatchEvent(new Event('quote-updated'));
+    });
+  });
+  ceramicQuoteBtn?.addEventListener('click', ()=>{
+    inquiryType = 'ceramic';
+    const current = options.find(o => o.classList.contains('active'));
+    selectedCeramicPackage = current?.querySelector('.font-semibold')?.textContent?.trim() || selectedCeramicPackage;
+    window.dispatchEvent(new Event('quote-updated'));
+  });
+})();
+
 // --------- PHONE INPUT FORMATTING & VALIDATION ---------
 function digitsOnly(str) {
   return str.replace(/\D/g, "");
@@ -1806,24 +2211,12 @@ function isValidPhone(value) {
 
 // attach validation/formatting
 const phoneInput = document.querySelector("#phone");
-const phoneMsg = document.querySelector("#phoneMsg");
 const submitBtn = document.querySelector("button[type='submit'], #submitBtn");
 
-if (phoneInput && phoneMsg && submitBtn) {
+if (phoneInput && submitBtn) {
   phoneInput.addEventListener("input", () => {
     phoneInput.value = formatPhone(phoneInput.value);
-
-    if (isValidPhone(phoneInput.value)) {
-      phoneMsg.textContent = "Looks good.";
-      phoneMsg.classList.remove("text-red-500");
-      phoneMsg.classList.add("text-green-500");
-      submitBtn.disabled = false;
-    } else {
-      phoneMsg.textContent = "Enter a 10-digit number (XXX-XXX-XXXX).";
-      phoneMsg.classList.remove("text-green-500");
-      phoneMsg.classList.add("text-red-500");
-      submitBtn.disabled = true;
-    }
+    phoneInput.setCustomValidity(isValidPhone(phoneInput.value) ? "" : "Enter a 10-digit phone number.");
   });
 }
 </script>
@@ -1968,7 +2361,7 @@ if (phoneInput && phoneMsg && submitBtn) {
     'In & Out Windows Cleaned',
     'Tire & Rims Detailed',
     'Tire Shine Applied',
-    'Clay Bar',
+    'Clay Bar Treatment',
     'Applied Ceramic Spray',
     'Applied Wax Spray'
   ];
@@ -2015,119 +2408,109 @@ if (phoneInput && phoneMsg && submitBtn) {
   // Live breakdown builder from current quoter state
   function buildBreakdownFromState(){
     if(!bdList) return;
+    saveActiveVehicleConfig();
+    ensureVehicleConfigs();
     bdList.innerHTML = '';
 
-    // 1) Services (only Exterior requested for detailed includes)
-    const hasExterior = (typeof exterior !== 'undefined') && !!exterior;
-    const hasAnyDeep = (typeof deepExterior !== 'undefined' && deepExterior) || (typeof deepInterior !== 'undefined' && deepInterior);
-    const hasInterior = (typeof interior !== 'undefined') && !!interior;
-
     let anyRows = false;
+    for(let i = 0; i < vehicleCount; i++){
+      const cfg = vehicleConfigs[i];
+      const isFull = cfg.selectedService === 'fullDetail';
+      const isExterior = cfg.selectedService === 'exteriorEnhancement';
+      const isInterior = cfg.selectedService === 'interiorReset';
+      const isMaintenance = cfg.selectedService === 'maintenanceDetail';
 
-    if(hasExterior){
-      const itemsHTML = EXTERIOR_INCLUDED.map(it=>`<div>• ${it}</div>`).join('');
-      const row = document.createElement('div');
-      row.className = 'bd-row';
-      row.innerHTML = `
-        <div class="bd-left">
-          <div class="bd-icon">🚗</div>
-          <div>
-            <div class="text-white font-semibold">Exterior Detail</div>
-            <div class="bd-items">${itemsHTML}</div>
-          </div>
-        </div>
-        <div class="text-sm text-white/80 whitespace-nowrap">Included</div>
-      `;
-      bdList.appendChild(row);
-      anyRows = true;
-    }
+      const header = document.createElement('div');
+      header.className = 'mt-4 mb-2 text-sm font-semibold text-[var(--sub)]';
+      header.textContent = `Vehicle ${i + 1} • ${cfg.carSize || 'Size not selected'}`;
+      bdList.appendChild(header);
 
-    // Interior Detail row (new)
-    if(hasInterior){
-      const itemsHTMLi = INTERIOR_INCLUDED.map(it=>`<div>• ${it}</div>`).join('');
-      const rowI = document.createElement('div');
-      rowI.className = 'bd-row';
-      rowI.innerHTML = `
-        <div class="bd-left">
-          <div class="bd-icon">🧽</div>
-          <div>
-            <div class="text-white font-semibold">Interior Detail</div>
-            <div class="bd-items">${itemsHTMLi}</div>
-          </div>
-        </div>
-        <div class="text-sm text-white/80 whitespace-nowrap">Included</div>
-      `;
-      bdList.appendChild(rowI);
-      anyRows = true;
-    }
-
-    // Deep variants
-    // Deep Exterior: include all Exterior items + note about dirtier cars & more thorough cleaning
-    if (typeof deepExterior !== 'undefined' && deepExterior) {
-      const note = `<div class="text-[var(--sub)] italic mb-1">Includes everything in <span class="text-white">Exterior Detail</span>. Recommended for dirtier cars and a more thorough cleaning.</div>`;
-      const itemsHTMLDeepEx = note + EXTERIOR_INCLUDED.map(it=>`<div>• ${it}</div>`).join('');
-      const rowDeepEx = document.createElement('div');
-      rowDeepEx.className = 'bd-row';
-      rowDeepEx.innerHTML = `
-        <div class="bd-left">
-          <div class="bd-icon">✨</div>
-          <div>
-            <div class="text-white font-semibold">Deep Exterior Detail</div>
-            <div class="bd-items">${itemsHTMLDeepEx}</div>
-          </div>
-        </div>
-        <div class="text-sm text-white/80 whitespace-nowrap">Included</div>
-      `;
-      bdList.appendChild(rowDeepEx);
-      anyRows = true;
-    }
-
-    // Deep Interior: include all Interior items + note about dirtier cars & more thorough cleaning
-    if (typeof deepInterior !== 'undefined' && deepInterior) {
-      const noteI = `<div class="text-[var(--sub)] italic mb-1">Includes everything in <span class="text-white">Interior Detail</span>. Recommended for dirtier cars and a more thorough cleaning.</div>`;
-      const itemsHTMLDeepIn = noteI + INTERIOR_INCLUDED.map(it=>`<div>• ${it}</div>`).join('');
-      const rowDeepIn = document.createElement('div');
-      rowDeepIn.className = 'bd-row';
-      rowDeepIn.innerHTML = `
-        <div class="bd-left">
-          <div class="bd-icon">✨</div>
-          <div>
-            <div class="text-white font-semibold">Deep Interior Detail</div>
-            <div class="bd-items">${itemsHTMLDeepIn}</div>
-          </div>
-        </div>
-        <div class="text-sm text-white/80 whitespace-nowrap">Included</div>
-      `;
-      bdList.appendChild(rowDeepIn);
-      anyRows = true;
-    }
-
-    // 2) Extras (selected ones with prices)
-    if(typeof extrasList !== 'undefined' && Array.isArray(extrasList)){
-      extrasList.forEach(x=>{
-        const isOn = extras && extras[x.key] === true;
-        if(isOn){
-          const row = document.createElement('div');
-          row.className = 'bd-row';
-
-          // assign icons by name
-          let icon = "✨";
-          if (x.label.includes("Pet Hair")) icon = "🐾";
-          if (x.label.includes("Odor")) icon = "🌬️";
-          if (x.label.includes("Engine")) icon = "🔧";
-          if (x.label.includes("Wax")) icon = "🛡️";
-
-          row.innerHTML = `
-            <div class="bd-left">
-              <div class="bd-icon bg-purple-600">${icon}</div>
-              <div class="text-white font-semibold">${x.label}</div>
+      if(isExterior || isFull){
+        const itemsHTML = EXTERIOR_INCLUDED.map(it=>`<div>• ${it}</div>`).join('');
+        const row = document.createElement('div');
+        row.className = 'bd-row';
+        row.innerHTML = `
+          <div class="bd-left">
+            <div class="bd-icon">🚗</div>
+            <div>
+              <div class="text-white font-semibold">Exterior Enhancement</div>
+              <div class="bd-items">${itemsHTML}</div>
             </div>
-            <div class="text-sm text-white/90 whitespace-nowrap">+${(typeof currency==='function')? currency(x.price) : ('$'+x.price)}</div>
-          `;
-          bdList.appendChild(row);
-          anyRows = true;
-        }
-      });
+          </div>
+          <div class="text-sm text-white/80 whitespace-nowrap">Included</div>
+        `;
+        bdList.appendChild(row);
+        anyRows = true;
+      }
+
+      if(isInterior || isFull){
+        const itemsHTMLi = INTERIOR_INCLUDED.map(it=>`<div>• ${it}</div>`).join('');
+        const rowI = document.createElement('div');
+        rowI.className = 'bd-row';
+        rowI.innerHTML = `
+          <div class="bd-left">
+            <div class="bd-icon">🧽</div>
+            <div>
+              <div class="text-white font-semibold">Interior Reset</div>
+              <div class="bd-items">${itemsHTMLi}</div>
+            </div>
+          </div>
+          <div class="text-sm text-white/80 whitespace-nowrap">Included</div>
+        `;
+        bdList.appendChild(rowI);
+        anyRows = true;
+      }
+
+      if(isMaintenance){
+        const rowM = document.createElement('div');
+        rowM.className = 'bd-row';
+        rowM.innerHTML = `
+          <div class="bd-left">
+            <div class="bd-icon">🔁</div>
+            <div>
+              <div class="text-white font-semibold">Maintenance Detail</div>
+              <div class="bd-items">Built for repeat clients on a 4–6 week cadence to preserve finish quality and keep upkeep efficient.</div>
+            </div>
+          </div>
+          <div class="text-sm text-white/80 whitespace-nowrap">Included</div>
+        `;
+        bdList.appendChild(rowM);
+        anyRows = true;
+      }
+
+      if(typeof extrasList !== 'undefined' && Array.isArray(extrasList)){
+        extrasList.forEach(x=>{
+          const isOn = cfg.extras && cfg.extras[x.key] === true;
+          if(isOn){
+            const row = document.createElement('div');
+            row.className = 'bd-row';
+
+            let icon = "✨";
+            if (x.label.includes("Pet Hair")) icon = "🐾";
+            if (x.label.includes("Odor")) icon = "🌬️";
+            if (x.label.includes("Engine")) icon = "🔧";
+            if (x.label.includes("Wax")) icon = "🛡️";
+
+            row.innerHTML = `
+              <div class="bd-left">
+                <div class="bd-icon bg-purple-600">${icon}</div>
+                <div class="text-white font-semibold">${x.label}</div>
+              </div>
+              <div class="text-sm text-white/90 whitespace-nowrap">+${(typeof currency==='function')? currency(x.price) : ('$'+x.price)}</div>
+            `;
+            bdList.appendChild(row);
+            anyRows = true;
+          }
+        });
+      }
+
+      if(cfg.selectedService){
+        const vr = vehicleRange(cfg);
+        const subtotal = document.createElement('div');
+        subtotal.className = 'mt-1 mb-3 text-sm text-white/90';
+        subtotal.textContent = `Vehicle ${i + 1} subtotal: ${vr.min === vr.max ? currency(vr.min) : `${currency(vr.min)}–${currency(vr.max)}`}`;
+        bdList.appendChild(subtotal);
+      }
     }
 
     if(!anyRows){
@@ -2135,11 +2518,15 @@ if (phoneInput && phoneMsg && submitBtn) {
     }
 
     // 3) Subtitle and notes
-    if(bdSubtitle){ bdSubtitle.textContent = (typeof carSize !== 'undefined' && carSize) ? `${carSize} • Live quote details` : 'Live quote details'; }
+    if(bdSubtitle){
+      const countText = `${Math.max(1, Number(vehicleCount) || 1)} vehicle${Math.max(1, Number(vehicleCount) || 1) > 1 ? 's' : ''}`;
+      bdSubtitle.textContent = `${countText} • Live quote details`;
+    }
 
     const notes = [];
-    if(typeof discountValue !== 'undefined' && discountValue>0) notes.push(`Discount applied: -$${discountValue}`);
-    if(typeof carSize === 'undefined' || !carSize) notes.push('Tip: select a vehicle size');
+    const hasMissingSize = vehicleConfigs.slice(0, vehicleCount).some(cfg => !cfg.carSize);
+    if(hasMissingSize) notes.push('Tip: select a vehicle size for each vehicle');
+    if(Math.max(1, Number(vehicleCount) || 1) > 1) notes.push(`Quote includes ${Math.max(1, Number(vehicleCount) || 1)} vehicles`);
     if(bdNotes) bdNotes.textContent = notes.join(' • ');
 
     // 4) Total from current UI
