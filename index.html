@@ -1110,7 +1110,8 @@ window.addEventListener('load', () => { window.scrollTo(0, 0); });
   if(!el || typeof L === 'undefined') return;
   const brand = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#5271FF';
   const center = [41.573, -87.803]; // Tinley Park
-  const map = L.map(el, { zoomControl:false, attributionControl:false, dragging:false, scrollWheelZoom:false, touchZoom:false, doubleClickZoom:false, boxZoom:false, keyboard:false }).setView(center, 11);
+  const map = L.map(el, { preferCanvas:true, zoomControl:false, attributionControl:false, dragging:false, scrollWheelZoom:false, touchZoom:false, doubleClickZoom:false, boxZoom:false, keyboard:false }).setView(center, 11);
+  const markerRenderer = L.canvas({ padding: 0.5 });
   L.tileLayer(
     'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
@@ -1128,8 +1129,8 @@ window.addEventListener('load', () => { window.scrollTo(0, 0); });
     const dx = r * Math.cos(t), dy = r * Math.sin(t);
     return [ center[0] + (dy / mDegLat), center[1] + (dx / mDegLon) ];
   }
-  for(let i=0;i<200;i++){
-    L.circleMarker(randomPoint(), { radius: 3.5, color: brand, fillColor: brand, fillOpacity: .95, weight: 1 }).addTo(map);
+  for(let i=0;i<140;i++){
+    L.circleMarker(randomPoint(), { renderer: markerRenderer, radius: 3.5, color: brand, fillColor: brand, fillOpacity: .95, weight: 1 }).addTo(map);
   }
   map.fitBounds(circle.getBounds().pad(0.08));
 })();
@@ -1975,9 +1976,13 @@ function gatherQuoteSnapshot(){
   renderVehicleModelFields();
   check();
 
-  // Contact Map + Address Geocode (Nominatim)
-  const mapEl = document.getElementById('contactMap');
-  if (mapEl && typeof L !== 'undefined') {
+  // Contact Map + Address Geocode (Nominatim) - lazy init for smoother load
+  let contactMapStarted = false;
+  async function initContactMap(){
+    if (contactMapStarted) return;
+    contactMapStarted = true;
+    const mapEl = document.getElementById('contactMap');
+    if (!mapEl || typeof L === 'undefined') return;
     const brand = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#5271FF';
     const tp = [41.573, -87.803];
     const cmap = L.map(mapEl, { zoomControl: false, attributionControl: false, dragging:false, scrollWheelZoom:false, touchZoom:false, doubleClickZoom:false, boxZoom:false, keyboard:false }).setView(tp, 11);
@@ -2010,6 +2015,19 @@ function gatherQuoteSnapshot(){
       let t; addrInput.addEventListener('input', ()=>{ clearTimeout(t); t = setTimeout(()=> geocode(addrInput.value), 500); });
       addrInput.addEventListener('change', ()=> geocode(addrInput.value));
     }
+  }
+
+  const contactSection = document.getElementById('contact');
+  if (!contactSection || !('IntersectionObserver' in window)) {
+    initContactMap();
+  } else {
+    const io = new IntersectionObserver((entries, obs) => {
+      if (entries.some(e => e.isIntersecting)) {
+        obs.disconnect();
+        initContactMap();
+      }
+    }, { rootMargin: '300px 0px' });
+    io.observe(contactSection);
   }
 })();
 
