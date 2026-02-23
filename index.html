@@ -1193,6 +1193,8 @@ function currency(n){
   });
 }
 function inServiceArea(zip){ return SERVICE_ZIPS.has(String(zip).trim()); }
+function normalizeZip(zip){ return String(zip || '').replace(/\D/g, '').slice(0, 5); }
+function isValidZip(zip){ return normalizeZip(zip).length === 5; }
 
 let carSize = null;
 let vehicleCount = 1;
@@ -1652,184 +1654,44 @@ function burstConfetti(){
 }
 
 /* ---------- BOOKING ENABLE / VALIDATION ---------- */
-// --- Booking via Telegram ---------------------------------------------
-// This section collects data from the contact form + live quoter snapshot
-// and sends a formatted booking request to your Telegram bot.
-// To change the destination, set TELEGRAM_CHAT_ID or add ?tg_chat_id=YOUR_ID
-// to the page URL. Ensure you've messaged your bot at least once in Telegram.
-// ---- Telegram Bot submission config ----
-const TELEGRAM_BOT_TOKEN = '7953566875:AAGhDPVvyyEdH3yyu8DeFezKgEMDsDNC_-A';
-const TELEGRAM_CHAT_ID   = '6699962258'; // e.g. 123456789 (DM) or -1001234567890 (supergroup)
+// --- Secure Lead Endpoint (Cloudflare Worker) ---
+// TODO: replace these 2 values
+const LEAD_WORKER_URL = "https://eadformbot.eliteautodetail99.workers.dev";
+const LEAD_SECRET = "elite_leads_9f3a7c_2026"; // must match Worker secret env.LEAD_SECRET
 
-function resolveChatId(){
-  // 1) hardcoded const, 2) URL param ?tg_chat_id=..., 3) localStorage
-  const urlId = new URLSearchParams(location.search).get('tg_chat_id');
-  const stored = localStorage.getItem('tg_chat_id');
-  const id = (TELEGRAM_CHAT_ID && String(TELEGRAM_CHAT_ID).trim()) || (urlId && String(urlId).trim()) || (stored && String(stored).trim()) || '';
-  if (id) localStorage.setItem('tg_chat_id', id);
-  return id;
-}
-// Extract the bot's own numeric id from the token
-function tokenBotId(){
-  try{ return TELEGRAM_BOT_TOKEN.split(':')[0]; }catch(e){ return ''; }
-}
-// Try to discover a valid chat_id by calling getUpdates (works if you've sent /start to the bot at least once)
-async function discoverChatIdViaUpdates(){
-  try{
-    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates`;
-    const res = await fetch(url, { method:'GET' });
-    if(!res.ok) return null;
-    const j = await res.json();
-    if(!j.ok || !Array.isArray(j.result)) return null;
-    // Look for the most recent message/update with a chat id we can use (ignore the bot's own id)
-    for(let i = j.result.length - 1; i >= 0; i--){
-      const upd = j.result[i];
-      const chat = upd.message?.chat || upd.channel_post?.chat || upd.my_chat_member?.chat || null;
-      const cid = chat?.id ? String(chat.id) : '';
-      if(cid && cid !== tokenBotId()){
-        localStorage.setItem('tg_chat_id', cid);
-        return cid;
-      }
-    }
-    return null;
-  }catch(e){ return null; }
-}
-
-// Basic HTML escape for safe Telegram HTML formatting
-function esc(s){
-  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-// Build a nicely formatted Telegram message using the current form + quote snapshot
-function buildTelegramMessage(){
-  const snap = gatherQuoteSnapshot();
-  const isCeramicInquiry = inquiryType === 'ceramic';
-  const attr = getAttributionData();
-  const src = [attr.utm_source, attr.utm_medium, attr.utm_campaign].filter(Boolean).join(' / ') || 'Direct';
-  const name = document.getElementById('name')?.value || '';
-  const phone = (phoneInput?.value || '').trim();
-  const vehicleModels = (typeof window.getVehicleModels === 'function') ? window.getVehicleModels() : [];
-  const email = document.getElementById('email')?.value || '';
-  const notes = document.getElementById('notes')?.value || '';
-
-  const vehicleSummaries = snap.vehicles.map(v =>
-    `• Vehicle ${v.index}: ${esc(v.size)} | ${esc(v.service || 'Not selected')} | Extras: ${esc(v.extras.join(', ') || 'None')} | ${esc(v.priceText)}`
-  );
-
-  const lines = isCeramicInquiry
-    ? [
-      `<b>New Ceramic Coating Inquiry ✨</b>`,
-      `👤 Name: ${esc(name)}`,
-      `📞 Phone: ${esc(phone)}`,
-      `📧 Email: ${esc(email)}`,
-      `🚗 Vehicle model(s): ${esc(vehicleModels.join(' | ') || 'Not provided')}`,
-      `🛡️ Coating Package: ${esc(selectedCeramicPackage || 'Not selected')}`,
-      `🔗 Source: ${esc(src)}`,
-      notes ? `📝 Notes: ${esc(notes)}` : null
-    ].filter(Boolean)
-    : [
-      `<b>New Booking Request 🚗</b>`,
-      `👤 Name: ${esc(name)}`,
-      `📞 Phone: ${esc(phone)}`,
-      `📧 Email: ${esc(email)}`,
-      `🚗 Vehicle model(s): ${esc(vehicleModels.join(' | ') || 'Not provided')}`,
-      `🚙 Vehicles in quote: ${esc(snap.vehicleCount)}`,
-      `<b>Quote by vehicle</b>`,
-      ...vehicleSummaries,
-      `💵 Estimated Price Range: ${esc(snap.price.text)}`,
-      `🔗 Source: ${esc(src)}`,
-      notes ? `📝 Notes: ${esc(notes)}` : null
-    ].filter(Boolean);
-
-  // Telegram has a 4096 char limit; truncate if needed
-  let text = lines.join('\n');
-  if (text.length > 4000){
-    text = text.slice(0, 4000) + '\n…(truncated)';
-  }
-  return text;
-}
-
-// Telegram GET requires URL-encoding and we want compact line breaks
-function encodeTelegramText(s){
-  // Telegram GET requires URL-encoding and we want compact line breaks
-  return encodeURIComponent(String(s).replace(/\n/g,'\n'));
+async function sendLeadToWorker(payload){
+  const res = await fetch(LEAD_WORKER_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Lead-Secret": LEAD_SECRET,
+    },
+    body: JSON.stringify(payload),
+  });
+  return res.ok;
 }
 
 function getAttributionData(){
-  const sp = new URLSearchParams(location.search);
-  return {
-    landingPage: location.href,
-    referrer: document.referrer || 'direct',
-    utm_source: sp.get('utm_source') || '',
-    utm_medium: sp.get('utm_medium') || '',
-    utm_campaign: sp.get('utm_campaign') || '',
-    utm_term: sp.get('utm_term') || '',
-    utm_content: sp.get('utm_content') || '',
-    gclid: sp.get('gclid') || '',
-    fbclid: sp.get('fbclid') || ''
-  };
-}
+  const params = new URLSearchParams(location.search);
+  const keys = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid','fbclid','msclkid'];
+  const data = {};
 
-// Send lead payload to external webhook (n8n flow)
-async function sendLeadWebhook(payload){
-  const url = 'https://moniusai3.app.n8n.cloud/webhook-test/8b58acd4-f426-4852-8cd9-934f256e0c45';
-  try{
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    return res.ok;
-  }catch(e){
-    console.warn('Webhook send failed', e);
-    return false;
-  }
-}
-
-// Resilient Telegram sender: POST first, fallback to CORS-free GET image beacon with diagnostics
-async function sendTelegramMessage(chatId, text){
-  const tgURL = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-  // First try a standard POST (works if CORS is allowed in your context)
-  try{
-    const res = await fetch(tgURL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: text,
-        parse_mode: 'HTML',
-        disable_web_page_preview: true
-      })
-    });
-    let data = null;
-    try { data = await res.json(); } catch(_) {}
-
-    if (res.ok && data && data.ok === true){
-      return { ok:true };
-    } else {
-      // Bubble up Telegram's error if available (e.g., 400: chat not found)
-      const desc = (data && data.description) ? data.description : `HTTP ${res.status}`;
-      return { ok:false, code: res.status, description: desc, from:'post' };
+  for (const key of keys){
+    const fromQuery = params.get(key);
+    if (fromQuery){
+      data[key] = fromQuery;
+      try { localStorage.setItem(`attr_${key}`, fromQuery); } catch(_) {}
+      continue;
     }
-  }catch(err){
-    // Network error on POST - continue to beacon fallback
+    try {
+      const stored = localStorage.getItem(`attr_${key}`);
+      if (stored) data[key] = stored;
+    } catch(_) {}
   }
 
-  // Fallback: CORS-free GET via Image beacon (no response we can read)
-  // Keep the URL under ~1800 chars to be safe
-  const base = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-  const params = `?chat_id=${encodeURIComponent(chatId)}&parse_mode=HTML&disable_web_page_preview=1&text=${encodeTelegramText(text).slice(0,1700)}`;
-  const hint = await new Promise((resolve)=>{
-    const img = new Image();
-    const timer = setTimeout(()=>{ resolve('timeout'); }, 3500);
-    img.onload = ()=>{ clearTimeout(timer); resolve('beacon-ok'); };
-    img.onerror = ()=>{ clearTimeout(timer); resolve('beacon-error'); };
-    img.src = base + params; // fire-and-forget
-  });
-  // If the image loaded, we assume Telegram accepted it
-  if (hint === 'beacon-ok'){ return { ok:true, from:'beacon' }; }
-  return { ok:false, description:'Beacon send failed', from:'beacon' };
+  return data;
 }
+
 
 // Compute the current quote range (min/max and friendly text) using current UI state
 function getCurrentQuoteRange(){
@@ -1875,8 +1737,7 @@ function gatherQuoteSnapshot(){
     extras: vehicles[0]?.extras || [],
     vehicles,
     price: getCurrentQuoteRange(), // {min,max,text}
-    timestamp: new Date().toISOString(),
-    page: location.href
+    timestamp: new Date().toISOString()
   };
 }
 
@@ -1949,13 +1810,21 @@ function gatherQuoteSnapshot(){
     }
   }
 
-  function validateForm(showErrors){
-    const requiredFilled = inputs.every(i => !!i.value);
+  function getValidationState(){
+    const requiredMissing = inputs
+      .filter(i => !String(i.value || '').trim())
+      .map(i => i.id);
     const phoneOk = isValidPhone(phone?.value || '');
-    const zipOk = inServiceArea(zip.value);
+    const zipFormatOk = isValidZip(zip?.value || '');
+    const zipInsideArea = inServiceArea(normalizeZip(zip?.value || ''));
     const modelsOk = areVehicleModelsValid();
     const modeOk = (inquiryType === 'ceramic') ? !!selectedCeramicPackage : allVehiclesHaveService();
-    const ok = requiredFilled && zipOk && phoneOk && modeOk && modelsOk;
+    const ok = requiredMissing.length === 0 && phoneOk && zipFormatOk && modeOk && modelsOk;
+    return { ok, requiredMissing, phoneOk, zipFormatOk, zipInsideArea, modelsOk, modeOk };
+  }
+
+  function validateForm(showErrors){
+    const state = getValidationState();
 
     const modelInputs = getVehicleModelInputs();
     const serviceWrap = document.getElementById('serviceButtons');
@@ -1965,8 +1834,8 @@ function gatherQuoteSnapshot(){
       inputs.forEach(i=>{
         const isPhone = i.id === 'phone';
         const isZip = i.id === 'zip';
-        const missing = !i.value;
-        const invalid = missing || (isPhone && !phoneOk) || (isZip && !zipOk);
+        const missing = !String(i.value || '').trim();
+        const invalid = missing || (isPhone && !state.phoneOk) || (isZip && !state.zipFormatOk);
         markFieldError(i, invalid);
       });
       modelInputs.forEach(i => markFieldError(i, !i.value.trim()));
@@ -1978,7 +1847,7 @@ function gatherQuoteSnapshot(){
       markGroupError(serviceWrap, false);
       markGroupError(coatingWrap, false);
     }
-    return ok;
+    return state.ok;
   }
 
   window.getVehicleModels = getVehicleModelsLocal;
@@ -1994,9 +1863,11 @@ function gatherQuoteSnapshot(){
     validateForm(submittedAttempt);
     if(submit) submit.disabled = false;
     if(zipMsg){
-      if(!zip.value){ zipMsg.textContent = 'Enter ZIP to check coverage.'; zipMsg.className='text-xs text-[var(--sub)]'; }
-      else if(inServiceArea(zip.value)){ zipMsg.textContent = "You're in our service area!"; zipMsg.className='text-xs'; zipMsg.style.color='var(--ok)'; }
-      else { zipMsg.textContent = 'Currently outside our demo area. Ask to add your ZIP.'; zipMsg.className='text-xs'; zipMsg.style.color='var(--danger)'; }
+      const z = normalizeZip(zip.value);
+      if(!z){ zipMsg.textContent = 'Enter ZIP to check coverage.'; zipMsg.className='text-xs text-[var(--sub)]'; }
+      else if(!isValidZip(z)){ zipMsg.textContent = 'Enter a valid 5-digit ZIP.'; zipMsg.className='text-xs'; zipMsg.style.color='var(--danger)'; }
+      else if(inServiceArea(z)){ zipMsg.textContent = "You're in our service area!"; zipMsg.className='text-xs'; zipMsg.style.color='var(--ok)'; }
+      else { zipMsg.textContent = 'Outside our standard area, but you can still submit a request.'; zipMsg.className='text-xs'; zipMsg.style.color='var(--warn)'; }
     }
   }
   inputs.forEach(i=> i.addEventListener('input', check));
@@ -2019,17 +1890,21 @@ function gatherQuoteSnapshot(){
     // Basic validation reuse
     submittedAttempt = true;
     saveActiveVehicleConfig();
+    const state = getValidationState();
     const okAll = validateForm(true);
     if (!okAll){
-      setStatus('Please complete all fields, enter a valid 10-digit phone number, add each vehicle model, and ensure your ZIP is in our service area.', false);
+      const issues = [];
+      if (state.requiredMissing.length) issues.push('complete all required fields');
+      if (!state.phoneOk) issues.push('enter a valid 10-digit phone number');
+      if (!state.zipFormatOk) issues.push('enter a valid 5-digit ZIP');
+      if (!state.modelsOk) issues.push('add each vehicle model');
+      if (!state.modeOk) issues.push(inquiryType === 'ceramic' ? 'select a ceramic package' : 'select a service for each vehicle');
+      setStatus(`Please ${issues.join(', ')}.`, false);
       return;
     }
 
     // Snapshot current selections and price
     const snap = gatherQuoteSnapshot();
-
-    // Prepare Telegram message
-    const messageText = buildTelegramMessage();
 
     // Build payload for external webhook (n8n)
     const attribution = getAttributionData();
@@ -2045,8 +1920,7 @@ function gatherQuoteSnapshot(){
       zip: zip.value || '',
       notes: document.getElementById('notes')?.value || '',
       quoteSnapshot: snap,
-      attribution,
-      source: (inquiryType === 'ceramic') ? 'website-ceramic-inquiry' : 'website-contact-form'
+      attribution
     };
 
     // UI: sending state
@@ -2056,31 +1930,10 @@ function gatherQuoteSnapshot(){
     setStatus('', true);
 
     try{
-      let chatId = resolveChatId();
-      // Guard: if the configured chat id equals the bot's own id, it's invalid
-      const botId = tokenBotId();
-      if (chatId === botId) chatId = '';
-      if (!chatId){
-        const botId = tokenBotId();
-        const misMatch = (String(TELEGRAM_CHAT_ID||'').trim() === botId);
-        const hint = misMatch
-          ? 'Config issue: chat_id equals your bot id. Open Telegram, send /start to your bot from your account, then set your actual chat_id (not the bot id).'
-          : 'Setup needed: open Telegram, send /start to your bot (or add it to a group), then reload this page. You can also add ?tg_chat_id=YOUR_ID to the URL once.';
-        setStatus(hint, false);
-        submit.disabled = false;
-        submit.textContent = oldText;
-        return;
-      }
-      // Send to webhook and Telegram in parallel
-      const [webhookOk, sendRes] = await Promise.all([
-        sendLeadWebhook(leadPayload),
-        sendTelegramMessage(chatId, messageText)
-      ]);
+      // Send securely to your Worker (and optionally webhook if you keep it)
+      const workerOk = await sendLeadToWorker(leadPayload);
 
-      if (sendRes.ok){
-        if (!webhookOk){
-          console.warn('Lead webhook did not return OK, but Telegram send succeeded.');
-        }
+      if (workerOk){
         burstConfetti();
         submit.textContent = 'Request sent 🎉';
         submit.classList.remove('btn-accent');
@@ -2108,8 +1961,7 @@ function gatherQuoteSnapshot(){
         updateBreakdownButtonVisibility();
         validateForm(false);
       } else {
-        const detail = sendRes.description ? ` (${sendRes.description})` : '';
-        throw new Error('Telegram send failed' + detail);
+        throw new Error("Secure lead send failed (Worker)");
       }
     } catch(err){
       console.error('Submit error', err);
@@ -2260,13 +2112,32 @@ if (phoneInput && submitBtn) {
   function kToF(c){ return c * 9/5 + 32; }
   function fmtTemp(c){ return state.unit==='F' ? Math.round(kToF(c*1)) + '°' : Math.round(c) + '°'; }
   function mph(ms){ return state.unit==='F' ? Math.round(ms*2.23694) + ' mph' : Math.round(ms*3.6) + ' km/h'; }
-  function dayLabel(iso){ const d = new Date(iso); return d.toLocaleDateString(undefined,{weekday:'short'}); }
+  function parseIsoDate(iso){
+    const [y, m, d] = String(iso).split('-').map(Number);
+    return new Date(y, (m || 1) - 1, d || 1, 12, 0, 0);
+  }
+  function chicagoTodayIso(){
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: state.tz,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).formatToParts(new Date());
+    const year = parts.find(p => p.type === 'year')?.value;
+    const month = parts.find(p => p.type === 'month')?.value;
+    const day = parts.find(p => p.type === 'day')?.value;
+    return `${year}-${month}-${day}`;
+  }
+  function dayLabel(iso){
+    const d = parseIsoDate(iso);
+    return d.toLocaleDateString(undefined, { weekday:'short' });
+  }
 
       function render(){
         if(!state.data) return;
         grid.innerHTML = '';
         const { daily } = state.data;
-        const todayIso = (new Date()).toISOString().slice(0,10);
+        const todayIso = chicagoTodayIso();
         for(let i=0;i<daily.time.length;i++){
           const code = daily.weathercode[i];
           const [desc, icon] = WMO[code] || ['Weather','🌡️'];
@@ -2275,7 +2146,7 @@ if (phoneInput && submitBtn) {
           const pr = daily.precipitation_sum[i];
           // Only highlight if rain is exactly 0 mm
           const greatDay = pr === 0;
-          const dateStr = new Date(daily.time[i]).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+          const dateStr = parseIsoDate(daily.time[i]).toLocaleDateString(undefined,{month:'short',day:'numeric'});
           const weekdayStr = dayLabel(daily.time[i]);
           const isToday = daily.time[i] === todayIso;
           const dateHTML = isToday
