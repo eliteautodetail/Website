@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Quote Request Confirmed | Elite Auto Detailing</title>
+<meta name="robots" content="noindex, nofollow" />
+<meta name="theme-color" content="#0B0D12" />
+<link rel="icon" type="image/svg+xml" href="/Tab%20Logo.svg">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18005163448"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-18005163448');
+  gtag('event', 'quote_confirmation', {
+    event_category: 'lead',
+    event_label: 'quote_request_confirmation'
+  });
+</script>
+
+<style>
+  *, *::before, *::after{ box-sizing:border-box; }
+  html, body{ min-height:100%; margin:0; }
+  body{
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background:
+      radial-gradient(900px 520px at 15% -10%, rgba(82,113,255,.24), transparent 60%),
+      radial-gradient(800px 600px at 120% -20%, rgba(194,103,255,.18), transparent 60%),
+      #0B0D12;
+    color:#E6E8EF;
+    display:grid;
+    place-items:center;
+    padding:24px;
+  }
+  main{
+    width:min(100%, 680px);
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:18px;
+    background:rgba(11,13,18,.72);
+    backdrop-filter:blur(12px);
+    box-shadow:0 24px 70px rgba(0,0,0,.45);
+    padding:28px;
+  }
+  img{ width:170px; max-width:70%; height:auto; display:block; margin-bottom:28px; }
+  .eyebrow{ color:#C267FF; font-weight:800; font-size:13px; text-transform:uppercase; letter-spacing:.08em; }
+  h1{ color:#fff; font-size:clamp(32px, 8vw, 54px); line-height:1.02; margin:10px 0 14px; letter-spacing:0; }
+  p{ color:#B8C0CE; font-size:17px; line-height:1.6; margin:0; }
+  .summary{
+    display:grid;
+    gap:10px;
+    margin:24px 0;
+    padding:16px;
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:14px;
+    background:rgba(255,255,255,.05);
+  }
+  .row{ display:flex; justify-content:space-between; gap:18px; color:#B8C0CE; }
+  .row strong{ color:#fff; text-align:right; }
+  .actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:24px; }
+  a{
+    min-height:50px;
+    display:inline-grid;
+    place-items:center;
+    padding:0 18px;
+    border-radius:14px;
+    font-weight:800;
+    color:#fff;
+    text-decoration:none;
+    border:1px solid rgba(255,255,255,.14);
+  }
+  .primary{ background:linear-gradient(135deg,#5271FF,#6e83ff); border-color:transparent; }
+  .accent{ background:linear-gradient(135deg,#C267FF,#db86ff); color:#0B0D12; border-color:transparent; }
+  .confetti{
+    position:fixed;
+    top:-16px;
+    left:0;
+    width:8px;
+    height:12px;
+    border-radius:2px;
+    pointer-events:none;
+    z-index:0;
+    opacity:.95;
+    will-change:transform, opacity;
+    animation:confetti-fall var(--duration, 4s) linear var(--delay, 0s) forwards;
+  }
+  @keyframes confetti-fall{
+    0%{ transform:translate3d(0, -18px, 0) rotate(0deg); opacity:0; }
+    8%{ opacity:.95; }
+    100%{ transform:translate3d(var(--drift, 0px), 110vh, 0) rotate(var(--spin, 720deg)); opacity:.85; }
+  }
+  @media (max-width:520px){
+    body{ padding:16px; }
+    main{ padding:22px; }
+    .row{ display:grid; gap:2px; }
+    .row strong{ text-align:left; }
+    a{ width:100%; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .confetti{ display:none; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <img src="/Logo.svg" alt="Elite Auto Detailing logo" />
+  <div class="eyebrow">Quote request received</div>
+  <h1>Thanks. We will text you to confirm.</h1>
+  <p>Your request was sent to Elite Auto Detailing. We will review your service area, quote selections, and timing before confirming your appointment.</p>
+
+  <div class="summary" aria-label="Quote summary">
+    <div class="row"><span>Estimated quote</span><strong id="quoteValue">Pending</strong></div>
+    <div class="row"><span>Service</span><strong id="serviceValue">Mobile detailing</strong></div>
+    <div class="row"><span>Vehicle model</span><strong id="vehicleValue">Not selected</strong></div>
+  </div>
+
+  <div class="actions">
+    <a class="primary" href="tel:+17087379781">Call or Text (708) 737-9781</a>
+    <a class="accent" href="/index.html">Back to Website</a>
+  </div>
+</main>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  if (window.location.pathname === '/thank-you/') {
+    window.history.replaceState(null, '', '/thank-you' + window.location.search);
+  }
+  let saved = {};
+  try {
+    saved = JSON.parse(sessionStorage.getItem('ead_quote_confirmation') || '{}');
+  } catch(_) {}
+  const quote = params.get('quote') || saved.quote;
+  const service = params.get('service') || saved.service;
+  const vehicle = params.get('vehicle') || saved.vehicle;
+  if (!quote && !service && !vehicle) {
+    const homePath = window.location.protocol === 'file:' ? '../index.html' : '/index.html';
+    window.location.replace(homePath);
+  }
+  if (quote) document.getElementById('quoteValue').textContent = quote;
+  if (service) document.getElementById('serviceValue').textContent = service;
+  if (vehicle) document.getElementById('vehicleValue').textContent = vehicle;
+</script>
+<script>
+  (function rainConfetti(){
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const colors = ['#5271FF', '#6e83ff', '#C267FF', '#db86ff'];
+    const total = 160;
+    const fragment = document.createDocumentFragment();
+
+    for (let i = 0; i < total; i++) {
+      const piece = document.createElement('span');
+      const size = 6 + Math.random() * 8;
+      piece.className = 'confetti';
+      piece.style.left = Math.random() * 100 + 'vw';
+      piece.style.width = size + 'px';
+      piece.style.height = (size * (0.75 + Math.random() * 0.8)) + 'px';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.setProperty('--drift', (Math.random() * 220 - 110) + 'px');
+      piece.style.setProperty('--spin', (Math.random() * 1080 + 360) + 'deg');
+      piece.style.setProperty('--duration', (3.2 + Math.random() * 2.8) + 's');
+      piece.style.setProperty('--delay', (Math.random() * 1.2) + 's');
+      fragment.appendChild(piece);
+      piece.addEventListener('animationend', () => piece.remove());
+    }
+
+    document.body.appendChild(fragment);
+  })();
+</script>
+</body>
+</html>
